@@ -80,7 +80,7 @@ public class DateField extends AbstractField
     private Asset icon;
 
     /**
-     * Name of theme (one of "blue", "blue2", "brown", "green", "system", "tas", "wink2k-1", "win2k-2", "win2k-cold-1",
+     * Name of theme (one of "blue", "blue2", "brown", "green", "system", "tas", "win2k-1", "win2k-2", "win2k-cold-1",
      * "win2k-cold-2"). Defaults to "system" (via symbol {@link DateFieldSymbols#DEFAULT_SKIN}).
      */
     @Parameter(required = true, allowNull = false)

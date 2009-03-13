@@ -73,6 +73,8 @@ Calendar._SMN = new Array
  "Nov",
  "Dez");
 
+Calendar._FD = 1;
+
 // tooltips
 Calendar._TT = {};
 Calendar._TT["INFO"] = "\u00DCber dieses Kalendarmodul";
