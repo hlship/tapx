@@ -6,15 +6,7 @@
     <h1>TapX DateField Demo</h1>
 
     <t:form>
-        <x:datefield t:id="date" theme="prop:theme" skin="prop:skin"/>
-
-        <br/>
-        <t:label for="theme"/>
-        <t:select t:id="theme" model="literal:blue,blue2,brown,green,system,tas,win2k-1,win2k-2,win2k-cold-1,win2k-cold-2"/>        
-
-        <br/>
-        <t:label for="skin"/>
-        <t:select t:id="skin" model="literal:aqua,tiger"/>
+        <x:datefield t:id="date"/>
 
         <br/>
         <t:label for="localeName"/>

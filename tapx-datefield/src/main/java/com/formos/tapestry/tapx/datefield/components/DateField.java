@@ -16,24 +16,24 @@ package com.formos.tapestry.tapx.datefield.components;
 
 import com.formos.tapestry.tapx.datefield.DateFieldSymbols;
 import org.apache.tapestry5.*;
-import org.apache.tapestry5.internal.TapestryInternalUtils;
 import org.apache.tapestry5.annotations.Environmental;
-import org.apache.tapestry5.annotations.IncludeJavaScriptLibrary;
 import org.apache.tapestry5.annotations.Parameter;
+import org.apache.tapestry5.annotations.Path;
 import org.apache.tapestry5.corelib.base.AbstractField;
+import org.apache.tapestry5.internal.TapestryInternalUtils;
 import org.apache.tapestry5.ioc.Messages;
-import org.apache.tapestry5.ioc.internal.util.CollectionFactory;
-import org.apache.tapestry5.ioc.internal.util.InternalUtils;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.annotations.Symbol;
+import org.apache.tapestry5.ioc.internal.util.CollectionFactory;
+import org.apache.tapestry5.ioc.internal.util.InternalUtils;
 import org.apache.tapestry5.services.AssetSource;
+import org.apache.tapestry5.services.ClientBehaviorSupport;
 import org.apache.tapestry5.services.ComponentDefaultProvider;
 import org.apache.tapestry5.services.Request;
-import org.apache.tapestry5.services.ClientBehaviorSupport;
 
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Set;
@@ -44,9 +44,14 @@ import java.util.Set;
  * JSCalendar Widget</a>.  This is a highly functional calendar, but is distributed as LGPL and so can't be built
  * directly into Tapestry.
  */
-@IncludeJavaScriptLibrary("tapx-datefield.js")
 public class DateField extends AbstractField
 {
+    /**
+     * A request attribute used to ensure that the JavaScript for the component is only generated once (because there's
+     * so many files to calculate).
+     */
+    private static final String SCRIPTS_INCLUDED = "com.formos.tapestry.tapx.datefield.script-loaded";
+
     /**
      * The value parameter of a DateField must be a {@link java.util.Date}.
      */
@@ -78,19 +83,6 @@ public class DateField extends AbstractField
 
     @Parameter(defaultPrefix = BindingConstants.ASSET, value = "datefield.gif")
     private Asset icon;
-
-    /**
-     * Name of theme (one of "blue", "blue2", "brown", "green", "system", "tas", "win2k-1", "win2k-2", "win2k-cold-1",
-     * "win2k-cold-2"). Defaults to "system" (via symbol {@link DateFieldSymbols#DEFAULT_SKIN}).
-     */
-    @Parameter(required = true, allowNull = false)
-    private String theme;
-
-    /**
-     * Name of skin, either "aqua" or "tiger". Defaults to "aqua" (via symbol {@link DateFieldSymbols#DEFAULT_THEME}).
-     */
-    @Parameter(required = true, allowNull = false)
-    private String skin;
 
     @Inject
     private ComponentDefaultProvider defaultProvider;
@@ -125,12 +117,16 @@ public class DateField extends AbstractField
     private String calendarPath;
 
     @Inject
-    @Symbol(DateFieldSymbols.DEFAULT_SKIN)
-    private String defaultSkin;
+    @Symbol(DateFieldSymbols.SKIN)
+    private String skin;
 
     @Inject
-    @Symbol(DateFieldSymbols.DEFAULT_THEME)
-    private String defaultTheme;
+    @Symbol(DateFieldSymbols.THEME)
+    private String theme;
+
+    @Inject
+    @Path("tapx-datefield.js")
+    private Asset datefieldLibrary;
 
     @Inject
     private FieldValidationSupport fieldValidationSupport;
@@ -138,16 +134,6 @@ public class DateField extends AbstractField
     // There's support for some language variations as well, but didn't want to get into that.
     private static final Set<String> SUPPORTED_LANGUAGES = CollectionFactory.newSet(TapestryInternalUtils.splitAtCommas(
             "af,al,big,big5,br,ca,cs,da,de,du,el,en,es,eu,fi,fr,hr,hu,it,jp,ko,lt,lv,nl,no,pl,pt,ro,ru,si,sk,sp,sr,sv,tr,zh"));
-
-    String defaultSkin()
-    {
-        return defaultSkin;
-    }
-
-    String defaultTheme()
-    {
-        return defaultTheme;
-    }
 
 
     /**
@@ -219,18 +205,31 @@ public class DateField extends AbstractField
                        "alt", "[Show]");
         writer.end(); // img
 
-        String language = locale.getLanguage();
+        if (request.getAttribute(SCRIPTS_INCLUDED) == null)
+        {
+            String language = locale.getLanguage();
 
-        String supported = SUPPORTED_LANGUAGES.contains(language) ? language : "en";
+            String supported = SUPPORTED_LANGUAGES.contains(language) ? language : "en";
 
-        // Can't use annotations when so much is calculated dynamically.
+            // Can't use annotations when so much is calculated dynamically.
 
-        renderSupport.addClasspathScriptLink(calendarPath + "/calendar.js",
-                                             calendarPath + "/calendar-setup.js",
-                                             calendarPath + "/lang/calendar-" + supported + ".js");
 
-        renderSupport.addStylesheetLink(findCalendarAsset("calendar-" + theme + ".css"), null);
-        renderSupport.addStylesheetLink(findCalendarAsset("skins/" + skin + "/theme.css"), null);
+            renderSupport.addClasspathScriptLink(calendarPath + "/calendar.js",
+                                                 calendarPath + "/calendar-setup.js",
+                                                 calendarPath + "/lang/calendar-" + supported + ".js");
+
+
+            renderSupport.addScriptLink(datefieldLibrary);
+
+            // All calendars on the page will share the same theme and skin, because that theme/skin is
+            // implemented via including the correct CSS style sheets (and can't be selected per
+            // widget, which would be visually confusing anyway).)
+
+            renderSupport.addStylesheetLink(findCalendarAsset("skins/" + skin + "/theme.css"), null);
+            renderSupport.addStylesheetLink(findCalendarAsset("calendar-" + theme + ".css"), null);
+
+            request.setAttribute(SCRIPTS_INCLUDED, true);
+        }
 
         // TODO: Add support for date format
         renderSupport.addInit("tapxDateField", clientId);

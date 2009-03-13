@@ -15,18 +15,26 @@
 package com.formos.tapestry.tapx.datefield.services;
 
 import com.formos.tapestry.tapx.datefield.DateFieldSymbols;
+import com.formos.tapestry.tapx.internal.datefield.services.DateFieldFormatConverterImpl;
 import org.apache.tapestry5.ioc.Configuration;
 import org.apache.tapestry5.ioc.MappedConfiguration;
+import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.services.LibraryMapping;
 import org.apache.tapestry5.VersionUtils;
 
 public class DateFieldModule
 {
+    public static void bind(ServiceBinder binder)
+    {
+        binder.bind(DateFieldFormatConverter.class, DateFieldFormatConverterImpl.class);
+    }
+
     public static void contributeFactoryDefaults(MappedConfiguration<String, String> configuration)
     {
-        configuration.add(DateFieldSymbols.JSCALENDAR_PATH, "classpath:/com/formos/tapestry/tapx/datefield/jscalendar-1.0");
-        configuration.add(DateFieldSymbols.DEFAULT_SKIN, "aqua");
-        configuration.add(DateFieldSymbols.DEFAULT_THEME, "system");
+        configuration.add(DateFieldSymbols.JSCALENDAR_PATH,
+                          "classpath:/com/formos/tapestry/tapx/datefield/jscalendar-1.0");
+        configuration.add(DateFieldSymbols.SKIN, "aqua");
+        configuration.add(DateFieldSymbols.THEME, "system");
     }
 
     public static void contributeComponentClassResolver(Configuration<LibraryMapping> configuration)

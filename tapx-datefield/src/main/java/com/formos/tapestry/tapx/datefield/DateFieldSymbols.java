@@ -16,9 +16,19 @@ package com.formos.tapestry.tapx.datefield;
 
 public class DateFieldSymbols
 {
+    /**
+     * Path to the JSCalendar scripts and support files.
+     */
     public static final String JSCALENDAR_PATH = "tapx.jscalendar.path";
 
-    public static final String DEFAULT_SKIN = "tapx.datefield.default-skin";
+    /**
+     * Name of skin, either "aqua" or "tiger". Defaults to "aqua".
+     */
+    public static final String SKIN = "tapx.datefield.skin";
 
-    public static final String DEFAULT_THEME = "tapx.datefield.default-theme";
+    /**
+     * Name of theme (one of "blue", "blue2", "brown", "green", "system", "tas", "win2k-1", "win2k-2", "win2k-cold-1",
+     * "win2k-cold-2"). Defaults to "system".
+     */
+    public static final String THEME = "tapx.datefield.theme";
 }
