@@ -1,0 +1,14 @@
+<html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+      xmlns:x="tapestry-library:tapx"
+      xmlns:p="tapestry:parameter">
+
+<body>
+    <h1>TapX DateField Demo</h1>
+
+    <t:form>
+        <x:datefield t:id="date"/>
+    </t:form>
+
+</body>
+
+</html>
