@@ -1,0 +1,13 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="tapx-datefield" annotations="1.5" verbose="2">
+    <test name="Unit Tests">
+        <packages>
+            <package name="com.formos.tapestry.tapx.internal.datefield.services"/>
+        </packages>
+    </test>
+    <test name="Integration Tests">
+        <packages>
+            <package name="com.formos.tapestry.tapx.datefield.integration"/>
+        </packages>
+    </test>
+</suite>

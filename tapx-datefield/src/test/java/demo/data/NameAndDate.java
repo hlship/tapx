@@ -12,14 +12,33 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.formos.tapestry.tapx.datefield.services;
+package demo.data;
 
-import java.text.DateFormat;
+import java.util.Date;
 
-/**
- * Used to convert a {@link java.text.DateFormat} into a string meaningful for the Dynarch Calendar widget.
- */
-public interface DateFieldFormatConverter
+public class NameAndDate
 {
-    String convertToClient(DateFormat format);
+    private String name;
+
+    private Date date;
+
+    public Date getDate()
+    {
+        return date;
+    }
+
+    public void setDate(Date date)
+    {
+        this.date = date;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
+    }
 }

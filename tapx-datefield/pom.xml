@@ -5,6 +5,8 @@
     <groupId>com.formos.tapestry</groupId>
     <artifactId>tapx-datefield</artifactId>
     <packaging>jar</packaging>
+              <name>tapx-datefield</name>
+    <description>Improved JavaScript Calendar Widget for Tapestry</description>
 
     <parent>
         <artifactId>tapx-project</artifactId>

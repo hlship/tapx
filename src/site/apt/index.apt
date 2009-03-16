@@ -1,0 +1,16 @@
+ ----
+ Tapestry Extensions (tapx)
+ ----
+
+ Tapestry Extensions is a collection of components and other add-ons for Tapestry that don't fit (or don't belong)
+ at {{{http://tapestry.apache.org/}Apache}}.  Often, this is due to licensing issues.
+
+
+Modules
+
+* {{{tapx-datefield/}tapx-datefield}}
+
+  Provides an enhanced DateField component for Tapestry.
+  
+
+ 

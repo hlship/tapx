@@ -20,6 +20,7 @@ import org.apache.tapestry5.ioc.Configuration;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.services.LibraryMapping;
+import org.apache.tapestry5.services.BeanBlockContribution;
 import org.apache.tapestry5.VersionUtils;
 
 public class DateFieldModule
@@ -48,5 +49,10 @@ public class DateFieldModule
                 "META-INF/maven/com.formos.tapestry/tapx-datefield/pom.properties");
 
         configuration.add(String.format("tapx/%s/datefield", version), "com/formos/tapestry/tapx/datefield");
+    }
+
+    public static void contributeBeanBlockOverrideSource(Configuration<BeanBlockContribution> configuration)
+    {
+        configuration.add(new BeanBlockContribution("date", "tapx/DateFieldEditBlocks", "date", true));
     }
 }

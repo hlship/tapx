@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="Tapestry Extentions">
+    <skin>
+        <groupId>org.apache.tapestry</groupId>
+        <artifactId>maven-skin</artifactId>
+        <version>1.1</version>
+    </skin>
+
+    <publishDate format="dd MMM yyyy"/>
+    <version/>
+
+    <body>
+
+        <menu name="Project">
+            <item name="About" href="index.html"/>
+        </menu>
+
+        <menu name="Modules">
+            <item name="tapx-datefield" href="tapx-datefield/"/>
+        </menu>
+
+        <menu ref="reports"/>
+
+    </body>
+</project>

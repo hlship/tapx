@@ -1,10 +1,10 @@
-Tapestry.Initializer.tapxDateField = function(clientId)
+Tapestry.Initializer.tapxDateField = function(clientId, clientDateFormat)
 {
-    // TODO: Add support for date format
-    Calendar.setup({
+    $T(clientId).calendar = Calendar.setup({
         inputField: clientId,
         button: clientId + ":trigger",
         weekNumbers : false,
+        ifFormat : clientDateFormat,
         cache : true
     });
 }

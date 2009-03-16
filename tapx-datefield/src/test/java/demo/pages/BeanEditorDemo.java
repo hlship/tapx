@@ -12,14 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.formos.tapestry.tapx.datefield.services;
+package demo.pages;
 
-import java.text.DateFormat;
+import demo.data.NameAndDate;
+import org.apache.tapestry5.annotations.Property;
 
-/**
- * Used to convert a {@link java.text.DateFormat} into a string meaningful for the Dynarch Calendar widget.
- */
-public interface DateFieldFormatConverter
+public class BeanEditorDemo
 {
-    String convertToClient(DateFormat format);
+    @Property
+    private NameAndDate bean;
 }

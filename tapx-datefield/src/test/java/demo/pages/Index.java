@@ -22,6 +22,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.annotations.Symbol;
 import org.apache.tapestry5.services.PersistentLocale;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -51,5 +52,12 @@ public class Index
     public void setLocaleName(String localeName)
     {
         persistentLocale.set(new Locale(localeName));
+    }
+
+    @SuppressWarnings({ "deprecation" })
+    void onActionFromSetup()
+    {
+        setLocaleName("en");
+        date = new Date(109, Calendar.MARCH, 16);
     }
 }

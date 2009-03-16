@@ -15,6 +15,7 @@
 package com.formos.tapestry.tapx.datefield.components;
 
 import com.formos.tapestry.tapx.datefield.DateFieldSymbols;
+import com.formos.tapestry.tapx.datefield.services.DateFieldFormatConverter;
 import org.apache.tapestry5.*;
 import org.apache.tapestry5.annotations.Environmental;
 import org.apache.tapestry5.annotations.Parameter;
@@ -111,7 +112,6 @@ public class DateField extends AbstractField
     @Environmental
     private ClientBehaviorSupport clientBehaviorSupport;
 
-
     @Inject
     @Symbol(DateFieldSymbols.JSCALENDAR_PATH)
     private String calendarPath;
@@ -130,6 +130,9 @@ public class DateField extends AbstractField
 
     @Inject
     private FieldValidationSupport fieldValidationSupport;
+
+    @Inject
+    private DateFieldFormatConverter formatConverter;
 
     // There's support for some language variations as well, but didn't want to get into that.
     private static final Set<String> SUPPORTED_LANGUAGES = CollectionFactory.newSet(TapestryInternalUtils.splitAtCommas(
@@ -231,8 +234,9 @@ public class DateField extends AbstractField
             request.setAttribute(SCRIPTS_INCLUDED, true);
         }
 
-        // TODO: Add support for date format
-        renderSupport.addInit("tapxDateField", clientId);
+        String clientFormat = formatConverter.convertToClient(format);
+
+        renderSupport.addInit("tapxDateField", clientId, clientFormat);
     }
 
 

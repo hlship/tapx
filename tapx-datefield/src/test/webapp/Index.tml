@@ -2,20 +2,30 @@
       xmlns:x="tapestry-library:tapx"
       xmlns:p="tapestry:parameter">
 
-<body>
-    <h1>TapX DateField Demo</h1>
+    <body>
+        <h1>TapX DateField Demo</h1>
 
-    <t:form>
-        <x:datefield t:id="date"/>
+        <t:form>
+            <x:datefield t:id="date"/>
 
-        <br/>
-        <t:label for="localeName"/>
-        <t:select t:id="localeName" model="supportedLocales"/>
+            <br/>
+            <t:label for="localeName"/>
+            <t:select t:id="localeName" model="supportedLocales"/>
 
-        <br/>
-        <input type="submit"/>
-    </t:form>
+            <br/>
+            <input type="submit"/>
+        </t:form>
 
-</body>
+
+        <hr/>
+
+        <p>Entered date:
+            <span id="outputdate">${date}</span>
+        </p>
+
+        <p>
+            <t:actionlink t:id="setup">setup</t:actionlink>
+        </p>
+    </body>
 
 </html>

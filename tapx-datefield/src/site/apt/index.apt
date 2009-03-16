@@ -1,0 +1,60 @@
+  ---
+  tapx-datefield
+  ---
+
+  The tapx-datefield module adds a new component to Tapestry, a replacement DateField based on
+  {{{http://www.dynarch.com/projects/calendar/}Dynarch DHTML Calendar}}.
+
+[images/tapx-datefield.png] tapx DateField component
+
+  The DateField component is natively localized for a wide variety of languages.
+
+  The enhanced DateField becomes the default used by the BeanEditor and BeanEditForm components for
+  properties with the datatype "date".
+
+  The enhanced DateField is much more powerful than Tapestry's built-in DateField; it has a richer and more
+  responsive UI, and works better on older versions of Internet Explorer (primarily because it will temporarily
+  hide drop down lists, which normally render on top of popup windows in IE 6 and earlier).
+
+Skin and Theme
+
+  The component has two skins and a number of themes.  These are configured using
+   {{{../apidocs/com/formos/tapestry/tapx/datefield/DateFieldSymbols.html}configuration symbols}}.
+
+ [tapx.datefield.skin] The skin to use; either "aqua" or "tiger". Defaults to "aqua".
+
+ [tapx.datefield.theme] The color theme to use: one of "blue", "blue2", "brown", "green", "system", "tas", "win2k-1", "win2k-2", "win2k-cold-1",
+     "win2k-cold-2"). Defaults to "system".  
+
+Compatibility
+
+  tapx-datefield is built for use with Tapestry 5.1 and higher.
+
+Explicit Usage
+
+  All component provided as part of tapx are in a virtual folder: "tapx".
+
+  The easy way to reference such components is by defining a namespace for them:
+
+---
+<html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+      xmlns:x="tapestry-library:tapx">
+
+  .
+  .
+  .
+
+  <x:datefield t:id="birthday"/>
+
+----
+
+  Library namespaces are a new feature in Tapestry 5.1.
+  
+Licensing Issues
+
+  The Dynarch DHTML Calendar, the client-side JavaScript at the core of this component, is licensed under the
+  GNU Lesser/Library Public License (LGPL). Therefore you should be aware of two licenses: the module uses the
+  standard Apache Software License (ASL) and the LGPL.
+
+
+

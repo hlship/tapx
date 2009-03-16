@@ -1,0 +1,10 @@
+<html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+xmlns:p="tapestry:parameter">
+    <head><title>BeanEditor Demo</title></head>
+
+    <body>
+        <p>Show that date fields are now handled with the proper tapx DatePicker.</p>
+
+        <t:beaneditform t:id="form" object="bean"/>
+    </body>
+</html>
