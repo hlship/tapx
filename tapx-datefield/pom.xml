@@ -5,7 +5,7 @@
     <groupId>com.formos.tapestry</groupId>
     <artifactId>tapx-datefield</artifactId>
     <packaging>jar</packaging>
-              <name>tapx-datefield</name>
+    <name>tapx-datefield</name>
     <description>Improved JavaScript Calendar Widget for Tapestry</description>
 
     <parent>
@@ -42,6 +42,10 @@
                         </manifestEntries>
                     </archive>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
             </plugin>
         </plugins>
     </build>
