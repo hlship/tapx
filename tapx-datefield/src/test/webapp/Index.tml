@@ -20,7 +20,7 @@
         <hr/>
 
         <p>Entered date:
-            <span id="outputdate">${date}</span>
+            <span id="outputdate"><t:output format="dateFormat" value="date"/></span>
         </p>
 
         <p>

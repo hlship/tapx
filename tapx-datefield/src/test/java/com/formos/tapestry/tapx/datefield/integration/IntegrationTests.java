@@ -32,7 +32,7 @@ public class IntegrationTests extends AbstractIntegrationTestSuite
         clickAndWait("link=setup");
 
         assertFieldValue("date", "3/16/2009");
-        assertText("outputdate", "Mon Mar 16 00:00:00 PDT 2009");
+        assertText("outputdate", "March 16, 2009");
 
         type("date", "03/13/2009");
         select("localeName", "de");
@@ -40,7 +40,7 @@ public class IntegrationTests extends AbstractIntegrationTestSuite
         clickAndWait(SUBMIT);
 
         assertFieldValue("date", "13.03.2009");
-        assertText("outputdate", "Fri Mar 13 00:00:00 PDT 2009");
+        assertText("outputdate", "13. März 2009");
     }
 
     @Test

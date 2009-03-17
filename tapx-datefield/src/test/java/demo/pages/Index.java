@@ -17,6 +17,7 @@ package demo.pages;
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.annotations.Retain;
 import org.apache.tapestry5.beaneditor.Validate;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.annotations.Symbol;
@@ -25,6 +26,7 @@ import org.apache.tapestry5.services.PersistentLocale;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.text.DateFormat;
 
 public class Index
 {
@@ -42,6 +44,10 @@ public class Index
     @Inject
     @Symbol(SymbolConstants.SUPPORTED_LOCALES)
     private String supportedLocales;
+
+    @Retain
+    @Property(write = false)
+    private DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG, locale); 
 
     public String getLocaleName()
     {
