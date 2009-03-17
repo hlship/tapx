@@ -68,7 +68,6 @@
 
     <distributionManagement>
         <site>
-            <!-- Overridden by the deploy profile. -->
             <url>file:/var/www/nightly/tapx</url>
         </site>
     </distributionManagement>
