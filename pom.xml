@@ -66,4 +66,10 @@
         <tapestry-release-version>5.1.0.1</tapestry-release-version>
     </properties>
 
+    <distributionManagement>
+        <site>
+            <!-- Overridden by the deploy profile. -->
+            <url>file:/var/www/nightly/tapx</url>
+        </site>
+    </distributionManagement>
 </project>
