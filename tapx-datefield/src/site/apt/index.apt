@@ -32,7 +32,7 @@ Compatibility
 
 Explicit Usage
 
-  All component provided as part of tapx are in a virtual folder: "tapx".
+  All components provided as part of tapx are in a virtual folder: "tapx".
 
   The easy way to reference such components is by defining a namespace for them:
 
