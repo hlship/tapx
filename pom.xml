@@ -49,6 +49,7 @@
 
     <modules>
         <module>tapx-datefield</module>
+        <module>tapx-templating</module>
     </modules>
 
     <repositories>
@@ -63,7 +64,7 @@
     </repositories>
 
     <properties>
-        <tapestry-release-version>5.1.0.4-SNAPSHOT</tapestry-release-version>
+        <tapestry-release-version>5.1.0.4</tapestry-release-version>
     </properties>
 
     <distributionManagement>

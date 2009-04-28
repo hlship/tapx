@@ -1,0 +1,23 @@
+<html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd"
+      xmlns:p="tapestry:parameter">
+    <body>
+
+        <h1>Classpath Assets</h1>
+
+        <p>
+            We're testing the ability to send classpath assets as inline attachments to the message.
+        </p>
+
+        <ul>
+            <li>
+                <img src="${asset:bt_apply.png}"/>
+            </li>
+            <li>
+                <img src="${asset:bt_delete.png}"/>
+            </li>
+            <li>
+                <img src="${asset:bt_apply.png}"/>
+            </li>
+        </ul>
+    </body>
+</html>

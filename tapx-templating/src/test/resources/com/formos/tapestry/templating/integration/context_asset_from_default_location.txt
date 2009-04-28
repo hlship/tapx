@@ -1,0 +1,5 @@
+<html><head>
+<meta content="Apache Tapestry Framework (version [TAPVERSION])" name="generator"></meta>
+</head>
+<img src="http://defaultcdn.foo.com/content/1.1/images/ball.png"/>
+</html>

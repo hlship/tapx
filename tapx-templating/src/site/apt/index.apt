@@ -1,0 +1,149 @@
+ ---
+ Tapestry Templating
+ ---
+
+Introduction
+
+  This library is an extension to Tapestry that allows it to be used in a completely different way: to generate offline
+  content. Normally, Tapestry is used to generate a dynamic, interactive web application ... but what if you want
+  to generate a text file, or an email message?
+
+  This library allows you to use pages and <templates> that generate content that you can then use as you like: typically,
+  to send email.
+
+  Tapestry templating lets you use Tapestry templates, components, localization support ... even live class reloading.
+  This allows you to have a single templating system for both on-line and off-line content.
+
+  Tapestry Templating is <not> an e-mail system ... the actual mechanics of sending a stream as an e-mail message is
+  left up to you.
+
+  Note that, in its current state, you must use this library <<seperately>> from your normal Tapestry application. Typically,
+  you'll have a secondary server that exists to generate and send mail; this server will <not> be exposed to clients via HTTP.
+
+Content Delivery Locations
+
+  Part of the challenge of off-line delivery is that any references to assets must be handled specially; links to such
+  assets must be fully qualified, with a full URL (http://myservice.myco.com/...).
+
+  That raises the question: how does Tapestry know what the full URL is, given that it may be an entirely different
+  server than the one that constructs the URL as part of an overall content stream? We'll see the configuration shortly.
+
+  A second aspect is that, depending on the recipient, you may want to choose a server located physically close to the
+  recipient. Tapestry Templating calls this a "location" and configuration is a matter of mapping locations to
+  base URLs.
+
+TemplateAPI
+
+  The core of Tapestry Templating is the class
+  {{{apidocs/com/formos/tapestry/templating/TemplateAPI.html}TemplateAPI}}.  Conceptually, TemplateAPI takes the
+  place of the TapestryFilter in a normal Tapestry application: it is the start of any operation.
+
+  You initialize a TemplateAPI instance with a root package name for your application: in this sense, each
+  page in the application is one template available to the TemplateAPI.  You also provide it with a File: a directory
+  that represents your context.  The directory is used to identify what assets, and what localizations of assets,
+  are available: it is presumed that the same files are duplicated across any number of content servers.
+
+  Once you have a TemplateAPI instance, you may ask it for a TemplateRenderer, by providing a template name (that
+  is, a page name: pages are templates),
+  a locale name and
+  a location.
+
+TemplateRenderer
+
+  The {{{apidocs/com/formos/tapestry/templating/TemplateRenderer.html}TemplateRenderer}} is a wrapper around a Tapestry page.
+  The init() method allows you to set the values
+  of properties of the page.
+
+  Once you have configured the template fully, you may render() it. This results in a RenderedStream.
+
+RenderedStream
+
+  A {{{apidocs/com/formos/tapestry/templating/RenderedStream.html}RenderedStream}} contains the content generated
+  by rendering a page.  You can access that content as an InputStream, or you can ask the RenderedStream to write its
+  content to an OutputStream.
+
+MailMessagePreparer
+
+  Once you have your rendered stream, the
+  {{{apidocs/com/formos/tapestry/templating/services/MailMessagePreparer.html}MailMessagePreparer}}
+  service can help you extract the content from the RenderedStream into a Java Mail API Message object. This is
+  especially useful if you are using inline enclosures and therefore need a multi-part message.
+
+Cleanup
+
+  After using the RenderedStream, you should invoke the cleanupThread() method of TemplateAPI.  This ensures that
+  any temporary objects are cleaned up, and that any page instances created or used during the rendering of the
+  template are returned to the page pool.
+
+Global Message Catalog
+
+  A traditional Tapestry application supports a global message catalog that all pages and components can inherit from.
+  This is normally the file <<<WEB-INF/app.properties>>> in the web application context.
+
+  For the TemplateAPI, the global message catalog is named <<<global.properties>>> and is stored on the classpath
+  in the application root package.
+
+Configuration
+
+  Tapestry Template looks for a Tapestry IoC Module class, <<<AppModule>>>, in the services package below the
+  specified root package.
+
+  You can do all the normal configuration you would for any Tapestry application in the AppModule class.
+
+  In addition, you should define at least one location by mapping the location to a URL:
+
+---
+    public static void contributeApplicationDefaults(MappedConfiguration<String, String> configuration)
+    {
+        configuration.add("content.version", "1.1");
+    }
+
+
+    public static void contributeLocationManager(MappedConfiguration<String, String> configuration)
+    {
+        configuration.add("default", "http://defaultcdn.foo.com/content/${content.version}");
+        configuration.add("europe", "http://eurocdn.foo.com/public/${content.version}/shared-content/");
+    }
+---
+
+  The URL should end in a slash character, but one will be provided if you do not. As you can see, it it
+  completely reasonable for different servers to store the content at different URIs.
+
+  In the above example, you may notice that we've incorporated a version number into the URL (we've also
+  used a configuration symbol so as to define it just one place). This is
+  advised for best performance, as is configuring the web servers to use
+  a {{{http://develoepr.yahoo.com/performance/rules.html#expires}far future expires header}}.
+  When any of the content changes,
+  you should change the version number, to ensure that client user agents (that is, browsers or mail readers)
+  download the new content.
+
+Classpath Assets
+
+  If you include any classpath assets on your page, then the RenderedStream will include some number of
+  additional
+  {{{apidocs/com/formos/tapestry/templating/RenderedStreamEnclosure.html}RenderedStreamEnclosure}} objects.
+  These define additional streams of content, along with the content ID of those streams.
+
+  Note that, when using Tapestry Templating, the normal Tapestry behavior of adding Tapestry's default CSS stylesheet
+  (which is a classpath assets) is eliminated. Thus, there will only be classpath assets if you expressly
+  include them.
+
+  Be careful, many built-in Tapestry components can include JavaScript files stored on the classpath;
+  this is another reason to be careful to avoid using Form or Form-related components.
+
+Live Reloading
+
+  Live class and template reloading does operate as expected which means that reloading does not occur for
+  classes or templates that are packaged inside JARs.  Templates stored in the context directory will
+  reload when changed.
+
+Limitations
+
+  Page generation is output only: you should not use Forms, ActionLink, EventLink, PageLink or any other
+  component that will attempt to generate a URL back to the application (there is no real application to link
+  back to!).
+
+  You should not use any server side state, such as via the @Persist annotation. You should limit yourself just
+  to components that generate (localized) output.
+
+

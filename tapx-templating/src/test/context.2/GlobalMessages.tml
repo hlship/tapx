@@ -1,0 +1,11 @@
+<html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd"
+      xmlns:p="tapestry:parameter">
+    <body>
+        <dl>
+            <dt>Global</dt>
+            <dd id="global">${message:global-key}</dd>
+            <dt>Overridden</dt>
+            <dd id="overridden">${message:overridden-key}</dd>
+        </dl>
+    </body>
+</html>

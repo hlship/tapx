@@ -1,0 +1,13 @@
+<html>
+<head>
+<meta content="Apache Tapestry Framework (version [TAPVERSION])" name="generator">
+</meta>
+</head>
+<body>
+<dl><dt>Global</dt>
+<dd id="global">Global</dd>
+<dt>Overridden</dt>
+<dd id="overridden">Overridden by GlobalMessages</dd>
+</dl>
+</body>
+</html>

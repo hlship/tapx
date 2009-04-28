@@ -1,0 +1,14 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Tapestry Templating Library" annotations="1.5" verbose="2">
+    <test name="Internals">
+        <packages>
+            <package name="com.formos.tapestry.templating.internal"/>
+            <package name="com.formos.tapestry.templating.internal.services"/>
+        </packages>
+    </test>
+    <test name="Integration Tests">
+        <packages>
+            <package name="com.formos.tapestry.templating.integration"/>
+        </packages>
+    </test>
+</suite>

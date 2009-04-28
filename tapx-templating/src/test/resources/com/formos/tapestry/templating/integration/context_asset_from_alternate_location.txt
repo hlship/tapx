@@ -1,0 +1,3 @@
+<html><head><meta content="Apache Tapestry Framework (version [TAPVERSION])" name="generator"></meta></head>
+<img src="http://eurocdn.foo.com/public/1.1/shared-content/images/ball_fr.png"/>
+</html>

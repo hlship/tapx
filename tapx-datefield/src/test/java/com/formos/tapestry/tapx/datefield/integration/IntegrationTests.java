@@ -40,7 +40,7 @@ public class IntegrationTests extends AbstractIntegrationTestSuite
         clickAndWait(SUBMIT);
 
         assertFieldValue("date", "13.03.2009");
-        assertText("outputdate", "13. März 2009");
+        assertText("outputdate", "13. M\u00e4rz 2009");
     }
 
     @Test

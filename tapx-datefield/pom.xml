@@ -9,8 +9,8 @@
     <description>Improved JavaScript Calendar Widget for Tapestry</description>
 
     <parent>
-        <artifactId>tapx-project</artifactId>
         <groupId>com.formos.tapestry</groupId>
+        <artifactId>tapx-project</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 

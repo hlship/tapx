@@ -1,0 +1,13 @@
+ ---
+ RFCs
+ ---
+
+Relevent Internet Request For Comments (RFCs)
+
+  * {{{http://tools.ietf.org/html/rfc2046#section-5}RFC-2046}} describes MIME data types, including the
+    multipart/mixed format that is used to transfer a document along with referenced attachments.
+
+  * {{{http://www.ietf.org/rfc/rfc2111.txt}RFC-2111}} describes the Content-ID URL scheme, that allows
+    a document to reference other resources packaged inside the same multipart/mixed content stream.
+
+  []
