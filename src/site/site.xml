@@ -17,6 +17,7 @@
 
         <menu name="Modules">
             <item name="tapx-datefield" href="tapx-datefield/"/>
+            <item name="tapx-templating" href="tapx-templating/"/>
         </menu>
 
         <menu ref="reports"/>

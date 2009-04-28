@@ -12,5 +12,9 @@ Modules
 
   Provides an enhanced DateField component for Tapestry.
   
+* {{{tapx-templating/}tapx-templating}}
+
+  Use Tapestry as a templating engine for offline content generation.
+  
 
  
