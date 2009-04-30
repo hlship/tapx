@@ -1,1 +1,1 @@
-Adding a new file to test commit email.
+Changing existing file to test commit email.
