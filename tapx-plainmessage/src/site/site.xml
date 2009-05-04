@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<project name="Tapestry Extentions">
+<project name="Tapestry Extentions - Plain Messages">
     <skin>
         <groupId>org.apache.tapestry</groupId>
         <artifactId>maven-skin</artifactId>
@@ -11,14 +11,9 @@
 
     <body>
 
-        <menu name="Project">
+        <menu name="Module">
             <item name="About" href="index.html"/>
-        </menu>
-
-        <menu name="Modules">
-            <item name="tapx-datefield" href="tapx-datefield/"/>
-            <item name="tapx-templating" href="tapx-templating/"/>
-            <item name="tapx-plainmessage" href="tapx-plainmessage"/>
+            <item name="Tapx Project" href="../"/>
         </menu>
 
         <menu ref="reports"/>

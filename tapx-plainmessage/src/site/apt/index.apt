@@ -1,0 +1,42 @@
+  ---
+  tapx-plainmessage
+  ---
+
+  This is a very simple extension to Tapestry.  It adds a new binding prefix, "plain:".
+
+  Plain works just like "message:", except that any HTML elements are scrubbed, and XML
+  entities are replaced with the corresponding characters.
+
+  For example, let's say you have the following properties file:
+
+----
+banner=Welcome, <em>honored guest</em>!
+----
+
+  and page template:
+
+----
+<dl>
+  <dt>normal</dt>
+  <dd>${message:banner}</dd>
+  <dt>raw</dt>
+  <dd><t:outputraw value="message:banner"/></dd>
+  <dt>plain</dt>
+  <dd>${plain:banner}</dd>
+</dl>
+----
+
+  Rendered output would be:
+
+----
+<dl>
+  <dt>normal</dt>
+  <dd>Welcome, &lt;em&gt;honored guest&lt;/em&gt;!</dd>
+  <dt>raw</dt>
+  <dd>Welcome, <em>honored guest</em>!</dd>
+  <dt>plain</dt>
+  <dd>Welcome, honored guest!</dd>
+</dl>
+----
+
+

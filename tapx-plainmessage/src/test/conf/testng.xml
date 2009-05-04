@@ -1,0 +1,13 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="tapx-plainmessage" annotations="1.5" verbose="2">
+    <test name="Unit Tests">
+        <packages>
+            <package name="com.formos.tapestry.tapx.plainmessage.internal.services"/>
+        </packages>
+    </test>
+    <test name="Integration Tests">
+        <packages>
+            <package name="com.formos.tapestry.tapx.plainmessage.integration"/>
+        </packages>
+    </test>
+</suite>
