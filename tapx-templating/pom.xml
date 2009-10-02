@@ -21,21 +21,6 @@
             <version>${tapestry-release-version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.apache.tapestry</groupId>
-            <artifactId>tapestry-test</artifactId>
-            <version>${tapestry-release-version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.easymock</groupId>
-            <artifactId>easymock</artifactId>
-            <version>2.4</version>
-            <scope>test</scope>
-        </dependency>
-
-
 	<!-- Override with the current version of Selenium, compatible with FF 3 -->
 
 
@@ -62,6 +47,14 @@
             <groupId>org.apache.tapestry</groupId>
             <artifactId>tapestry-test</artifactId>
             <version>${tapestry-release-version}</version>
+            <scope>test</scope>
+        </dependency>
+       
+
+        <dependency>
+            <groupId>org.easymock</groupId>
+            <artifactId>easymock</artifactId>
+            <version>2.4</version>
             <scope>test</scope>
         </dependency>
 
