@@ -51,6 +51,7 @@
         <module>tapx-datefield</module>
         <module>tapx-templating</module>
         <module>tapx-plainmessage</module>
+        <module>tapx-prototype</module>
     </modules>
 
     <build>
