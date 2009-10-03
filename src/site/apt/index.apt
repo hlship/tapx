@@ -21,6 +21,10 @@ Modules
 
   Adds "plain:" binding prefix, which works like "message:", but strips out any HTML tags, and converts HTML entities.
 
+* {{{tapx-prototype/}tapx-prototype}}
+
+  A patch for Tapestry 5.1.0.5 that changes the bundled version of Prototype to version 1.6.1, which is compatible
+  with Internet Explorer 8.
 
 POM Changes
 
