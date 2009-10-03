@@ -147,3 +147,8 @@ Limitations
   to components that generate (localized) output.
 
 
+Upgrade Notes
+
+  Earlier versions of this module used a root package name of <<<com.formos.tapestry.templating>>>, but the new package
+  is <<<com.howardlewisship.tapx.templating>>>. You may have to revise some of your imports if you have been using
+  this module for some time.
