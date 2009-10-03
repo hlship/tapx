@@ -22,3 +22,22 @@ Modules
   Adds "plain:" binding prefix, which works like "message:", but strips out any HTML tags, and converts HTML entities.
 
 
+POM Changes
+
+  In order to make use of these modules, you must update your POM to identify the Tapestry360 repositories:
+  
+----
+    <repositories>
+        <repository>
+            <id>tapestry360-stable</id>
+            <url>http://tapestry.formos.com/maven-repository</url>
+        </repository>
+        <repository>
+            <id>tapestry360-snapshot</id>
+            <url>http://tapestry.formos.com/maven-snapshot-repository</url>
+        </repository>
+    </repositories>
+----
+  
+  
+   

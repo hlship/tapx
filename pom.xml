@@ -66,11 +66,11 @@
 
     <repositories>
         <repository>
-            <id>tapestry-stable</id>
+            <id>tapestry360-stable</id>
             <url>http://tapestry.formos.com/maven-repository</url>
         </repository>
         <repository>
-            <id>tapestry-snapshot</id>
+            <id>tapestry360-snapshot</id>
             <url>http://tapestry.formos.com/maven-snapshot-repository</url>
         </repository>
     </repositories>
