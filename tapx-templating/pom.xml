@@ -99,7 +99,7 @@ of testing facilities designed for use with TestNG (http://testng.org/), so it's
                 <configuration>
                     <archive>
                         <manifestEntries>
-                            <Tapestry-Module-Classes>com.formos.tapestry.templating.services.TemplateModule
+                            <Tapestry-Module-Classes>com.howardlewisship.tapx.templating.services.TemplateModule
                             </Tapestry-Module-Classes>
                         </manifestEntries>
                     </archive>

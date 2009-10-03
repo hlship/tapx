@@ -35,7 +35,7 @@ Content Delivery Locations
 TemplateAPI
 
   The core of Tapestry Templating is the class
-  {{{apidocs/com/formos/tapestry/templating/TemplateAPI.html}TemplateAPI}}.  Conceptually, TemplateAPI takes the
+  {{{apidocs/com/howardlewisship/tapx/templating/TemplateAPI.html}TemplateAPI}}.  Conceptually, TemplateAPI takes the
   place of the TapestryFilter in a normal Tapestry application: it is the start of any operation.
 
   You initialize a TemplateAPI instance with a root package name for your application: in this sense, each
@@ -50,7 +50,7 @@ TemplateAPI
 
 TemplateRenderer
 
-  The {{{apidocs/com/formos/tapestry/templating/TemplateRenderer.html}TemplateRenderer}} is a wrapper around a Tapestry page.
+  The {{{apidocs/com/howardlewisship/tapx/templating/TemplateRenderer.html}TemplateRenderer}} is a wrapper around a Tapestry page.
   The init() method allows you to set the values
   of properties of the page.
 
@@ -58,14 +58,14 @@ TemplateRenderer
 
 RenderedStream
 
-  A {{{apidocs/com/formos/tapestry/templating/RenderedStream.html}RenderedStream}} contains the content generated
+  A {{{apidocs/com/howardlewisship/tapx/templating/RenderedStream.html}RenderedStream}} contains the content generated
   by rendering a page.  You can access that content as an InputStream, or you can ask the RenderedStream to write its
   content to an OutputStream.
 
 MailMessagePreparer
 
   Once you have your rendered stream, the
-  {{{apidocs/com/formos/tapestry/templating/services/MailMessagePreparer.html}MailMessagePreparer}}
+  {{{apidocs/com/howardlewisship/tapx/templating/services/MailMessagePreparer.html}MailMessagePreparer}}
   service can help you extract the content from the RenderedStream into a Java Mail API Message object. This is
   especially useful if you are using inline enclosures and therefore need a multi-part message.
 
@@ -121,7 +121,7 @@ Classpath Assets
 
   If you include any classpath assets on your page, then the RenderedStream will include some number of
   additional
-  {{{apidocs/com/formos/tapestry/templating/RenderedStreamEnclosure.html}RenderedStreamEnclosure}} objects.
+  {{{apidocs/com/howardlewisship/tapx/templating/RenderedStreamEnclosure.html}RenderedStreamEnclosure}} objects.
   These define additional streams of content, along with the content ID of those streams.
 
   Note that, when using Tapestry Templating, the normal Tapestry behavior of adding Tapestry's default CSS stylesheet

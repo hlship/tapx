@@ -14,7 +14,8 @@
 
 package app2.services;
 
-import com.formos.tapestry.templating.base.AbstractTemplatingIntegrationTest;
+import com.howardlewisship.tapx.templating.base.AbstractTemplatingIntegrationTest;
+
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 

@@ -2,13 +2,13 @@
 <suite name="Tapestry Templating Library" annotations="1.5" verbose="2">
     <test name="Internals">
         <packages>
-            <package name="com.formos.tapestry.templating.internal"/>
-            <package name="com.formos.tapestry.templating.internal.services"/>
+            <package name="com.howardlewisship.tapx.templating.internal"/>
+            <package name="com.howardlewisship.tapx.templating.internal.services"/>
         </packages>
     </test>
     <test name="Integration Tests">
         <packages>
-            <package name="com.formos.tapestry.templating.integration"/>
+            <package name="com.howardlewisship.tapx.templating.integration"/>
         </packages>
     </test>
 </suite>
