@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.formos.tapestry.tapx.plainmessage.services;
+package com.howardlewisship.tapx.plainmessage.services;
 
 import org.apache.tapestry5.ioc.Messages;
 

@@ -43,7 +43,7 @@
                 <configuration>
                     <archive>
                         <manifestEntries>
-                            <Tapestry-Module-Classes>com.formos.tapestry.tapx.plainmessage.services.PlainMessageModule
+                            <Tapestry-Module-Classes>com.howardlewisship.tapx.plainmessage.services.PlainMessageModule
                             </Tapestry-Module-Classes>
                         </manifestEntries>
                     </archive>

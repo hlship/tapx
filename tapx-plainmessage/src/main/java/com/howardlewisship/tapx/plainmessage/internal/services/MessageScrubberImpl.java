@@ -12,9 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.formos.tapestry.tapx.plainmessage.internal.services;
+package com.howardlewisship.tapx.plainmessage.internal.services;
 
-import com.formos.tapestry.tapx.plainmessage.services.MessageScrubber;
+import com.howardlewisship.tapx.plainmessage.services.MessageScrubber;
+
 import org.apache.tapestry5.ioc.MessageFormatter;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.internal.util.CollectionFactory;

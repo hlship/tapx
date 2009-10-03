@@ -12,10 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.formos.tapestry.tapx.plainmessage.services;
+package com.howardlewisship.tapx.plainmessage.services;
 
-import com.formos.tapestry.tapx.plainmessage.internal.services.MessageScrubberImpl;
-import com.formos.tapestry.tapx.plainmessage.internal.services.PlainMessageBindingFactory;
+import com.howardlewisship.tapx.plainmessage.internal.services.MessageScrubberImpl;
+import com.howardlewisship.tapx.plainmessage.internal.services.PlainMessageBindingFactory;
+
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.Local;

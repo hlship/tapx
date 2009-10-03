@@ -12,9 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.formos.tapestry.tapx.plainmessage.internal.services;
+package com.howardlewisship.tapx.plainmessage.internal.services;
 
-import com.formos.tapestry.tapx.plainmessage.services.MessageScrubber;
+import com.howardlewisship.tapx.plainmessage.services.MessageScrubber;
+
 import org.apache.tapestry5.Binding;
 import org.apache.tapestry5.ComponentResources;
 import org.apache.tapestry5.internal.bindings.LiteralBinding;
@@ -23,7 +24,7 @@ import org.apache.tapestry5.services.BindingFactory;
 
 /**
  * Mapped to the "plain:" binding prefix; this works like the built-in "message:" binding prefix, but {@linkplain
- * com.formos.tapestry.tapx.plainmessage.services.MessageScrubber#scrub(String) scrubs} HTML elements and entities out
+ * com.howardlewisship.tapx.plainmessage.services.MessageScrubber#scrub(String) scrubs} HTML elements and entities out
  * of the content.
  */
 public class PlainMessageBindingFactory implements BindingFactory

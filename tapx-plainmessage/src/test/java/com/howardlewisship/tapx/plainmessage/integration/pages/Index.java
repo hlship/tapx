@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.formos.tapestry.tapx.plainmessage.integration.pages;
+package com.howardlewisship.tapx.plainmessage.integration.pages;
 
 public class Index
 {

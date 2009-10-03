@@ -2,12 +2,12 @@
 <suite name="tapx-plainmessage" annotations="1.5" verbose="2">
     <test name="Unit Tests">
         <packages>
-            <package name="com.formos.tapestry.tapx.plainmessage.internal.services"/>
+            <package name="com.howardlewisship.tapx.plainmessage.internal.services"/>
         </packages>
     </test>
     <test name="Integration Tests">
         <packages>
-            <package name="com.formos.tapestry.tapx.plainmessage.integration"/>
+            <package name="com.howardlewisship.tapx.plainmessage.integration"/>
         </packages>
     </test>
 </suite>

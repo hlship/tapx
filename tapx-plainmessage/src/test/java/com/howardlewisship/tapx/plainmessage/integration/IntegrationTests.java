@@ -12,9 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.formos.tapestry.tapx.plainmessage.integration;
+package com.howardlewisship.tapx.plainmessage.integration;
 
-import com.formos.tapestry.tapx.plainmessage.services.PlainMessageModule;
+import com.howardlewisship.tapx.plainmessage.services.PlainMessageModule;
+
 import org.apache.tapestry5.dom.Document;
 import org.apache.tapestry5.test.PageTester;
 import org.testng.Assert;
@@ -25,7 +26,7 @@ public class IntegrationTests extends Assert
     @Test
     public void sanity_check() throws Exception
     {
-        PageTester pt = new PageTester("com.formos.tapestry.tapx.plainmessage.integration",
+        PageTester pt = new PageTester("com.howardlewisship.tapx.plainmessage.integration",
                                        "app",
                                        "/",
                                        PlainMessageModule.class);
