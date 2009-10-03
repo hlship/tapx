@@ -12,10 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.formos.tapestry.tapx.datefield.services;
+package com.howardlewisship.tapx.datefield.services;
 
-import com.formos.tapestry.tapx.datefield.DateFieldSymbols;
-import com.formos.tapestry.tapx.internal.datefield.services.DateFieldFormatConverterImpl;
+import com.howardlewisship.tapx.datefield.DateFieldSymbols;
+import com.howardlewisship.tapx.internal.datefield.services.DateFieldFormatConverterImpl;
+
 import org.apache.tapestry5.ioc.Configuration;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
@@ -33,22 +34,22 @@ public class DateFieldModule
     public static void contributeFactoryDefaults(MappedConfiguration<String, String> configuration)
     {
         configuration.add(DateFieldSymbols.JSCALENDAR_PATH,
-                          "classpath:/com/formos/tapestry/tapx/datefield/jscalendar-1.0");
+                          "classpath:/com/howardlewisship/tapx/datefield/jscalendar-1.0");
         configuration.add(DateFieldSymbols.SKIN, "aqua");
         configuration.add(DateFieldSymbols.THEME, "system");
     }
 
     public static void contributeComponentClassResolver(Configuration<LibraryMapping> configuration)
     {
-        configuration.add(new LibraryMapping("tapx", "com.formos.tapestry.tapx.datefield"));
+        configuration.add(new LibraryMapping("tapx", "com.howardlewisship.tapx.datefield"));
     }
 
     public static void contributeClasspathAssetAliasManager(MappedConfiguration<String, String> configuration)
     {
         String version = VersionUtils.readVersionNumber(
-                "META-INF/maven/com.formos.tapestry/tapx-datefield/pom.properties");
+                "META-INF/maven/com.howardlewisship/tapx-datefield/pom.properties");
 
-        configuration.add(String.format("tapx/%s/datefield", version), "com/formos/tapestry/tapx/datefield");
+        configuration.add(String.format("tapx/%s/datefield", version), "com/howardlewisship/tapx/datefield");
     }
 
     public static void contributeBeanBlockOverrideSource(Configuration<BeanBlockContribution> configuration)

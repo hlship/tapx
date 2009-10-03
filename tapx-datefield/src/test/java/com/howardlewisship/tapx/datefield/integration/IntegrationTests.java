@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.formos.tapestry.tapx.datefield.integration;
+package com.howardlewisship.tapx.datefield.integration;
 
 import org.apache.tapestry5.test.AbstractIntegrationTestSuite;
 import org.testng.annotations.Test;

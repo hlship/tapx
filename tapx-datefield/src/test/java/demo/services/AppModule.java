@@ -17,7 +17,8 @@ package demo.services;
 import org.apache.tapestry5.ioc.annotations.SubModule;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.SymbolConstants;
-import com.formos.tapestry.tapx.datefield.services.DateFieldModule;
+
+import com.howardlewisship.tapx.datefield.services.DateFieldModule;
 
 @SubModule(DateFieldModule.class)
 public class AppModule

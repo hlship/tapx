@@ -12,9 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.formos.tapestry.tapx.datefield.pages;
+package com.howardlewisship.tapx.datefield.pages;
 
-import com.formos.tapestry.tapx.datefield.components.DateField;
+import com.howardlewisship.tapx.datefield.components.DateField;
+
 import org.apache.tapestry5.annotations.Component;
 import org.apache.tapestry5.annotations.Environmental;
 import org.apache.tapestry5.annotations.Property;                                                                                                          

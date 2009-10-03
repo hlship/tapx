@@ -12,9 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.formos.tapestry.tapx.internal.datefield.services;
+package com.howardlewisship.tapx.internal.datefield.services;
 
-import com.formos.tapestry.tapx.datefield.services.DateFieldFormatConverter;
+import com.howardlewisship.tapx.datefield.services.DateFieldFormatConverter;
+
 import org.apache.tapestry5.ioc.internal.util.Defense;
 
 import java.text.DateFormat;

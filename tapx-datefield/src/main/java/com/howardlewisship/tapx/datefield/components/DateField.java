@@ -12,10 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.formos.tapestry.tapx.datefield.components;
+package com.howardlewisship.tapx.datefield.components;
 
-import com.formos.tapestry.tapx.datefield.DateFieldSymbols;
-import com.formos.tapestry.tapx.datefield.services.DateFieldFormatConverter;
+import com.howardlewisship.tapx.datefield.DateFieldSymbols;
+import com.howardlewisship.tapx.datefield.services.DateFieldFormatConverter;
+
 import org.apache.tapestry5.*;
 import org.apache.tapestry5.annotations.Environmental;
 import org.apache.tapestry5.annotations.Parameter;
@@ -51,7 +52,7 @@ public class DateField extends AbstractField
      * A request attribute used to ensure that the JavaScript for the component is only generated once (because there's
      * so many files to calculate).
      */
-    private static final String SCRIPTS_INCLUDED = "com.formos.tapestry.tapx.datefield.script-loaded";
+    private static final String SCRIPTS_INCLUDED = "com.howardlewisship.tapx.datefield.script-loaded";
 
     /**
      * The value parameter of a DateField must be a {@link java.util.Date}.

@@ -2,12 +2,12 @@
 <suite name="tapx-datefield" annotations="1.5" verbose="2">
     <test name="Unit Tests">
         <packages>
-            <package name="com.formos.tapestry.tapx.internal.datefield.services"/>
+            <package name="com.howardlewisship.tapx.internal.datefield.services"/>
         </packages>
     </test>
     <test name="Integration Tests">
         <packages>
-            <package name="com.formos.tapestry.tapx.datefield.integration"/>
+            <package name="com.howardlewisship.tapx.datefield.integration"/>
         </packages>
     </test>
 </suite>

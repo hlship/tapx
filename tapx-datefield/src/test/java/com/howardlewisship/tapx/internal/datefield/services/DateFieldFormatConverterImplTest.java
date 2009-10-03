@@ -12,9 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.formos.tapestry.tapx.internal.datefield.services;
+package com.howardlewisship.tapx.internal.datefield.services;
 
-import com.formos.tapestry.tapx.datefield.services.DateFieldFormatConverter;
+import com.howardlewisship.tapx.datefield.services.DateFieldFormatConverter;
+import com.howardlewisship.tapx.internal.datefield.services.DateFieldFormatConverterImpl;
+
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -84,7 +86,7 @@ public class DateFieldFormatConverterImplTest extends Assert
         catch (IllegalArgumentException ex)
         {
             assertEquals(ex.getMessage(),
-                         "Conversion to client date format requires a SimpleDateFormat instance; unable to convert from class com.formos.tapestry.tapx.internal.datefield.services.DateFieldFormatConverterImplTest$DateFormatFixture.");
+                         "Conversion to client date format requires a SimpleDateFormat instance; unable to convert from class com.howardlewisship.tapx.internal.datefield.services.DateFieldFormatConverterImplTest$DateFormatFixture.");
         }
     }
 
