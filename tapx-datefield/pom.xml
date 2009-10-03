@@ -59,7 +59,7 @@
                 <configuration>
                     <archive>
                         <manifestEntries>
-                            <Tapestry-Module-Classes>com.formos.tapestry.tapx.datefield.services.DateFieldModule
+                            <Tapestry-Module-Classes>com.howardlewisship.tapx.datefield.services.DateFieldModule
                             </Tapestry-Module-Classes>
                         </manifestEntries>
                     </archive>
