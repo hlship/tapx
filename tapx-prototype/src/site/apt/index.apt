@@ -2,7 +2,7 @@
   tapx-prototype
   ---
 
-  This module patches the version of {{{http://www.openqa.org/selenium/}Prototype}} available from version <<1.6.0.3>> 
+  This module patches the version of {{{http://prototypejs.org/}Prototype}} available from version <<1.6.0.3>> 
   (as packaged with Tapestry 5.1.0.5) to version
   <<1.6.1>>. This is very important for compatibility with Internet Explorer 8.
   
