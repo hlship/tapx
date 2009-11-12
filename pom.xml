@@ -75,6 +75,23 @@
 		</repository>
 	</repositories>
 
+	<profiles>
+		<profile>
+			<id>release</id>
+			<distributionManagement>
+				<site>
+					<url>file:/var/www/projects/tapx</url>
+				</site>
+			</distributionManagement>
+		</profile>
+	</profiles>
+
+	<distributionManagement>
+		<site>
+			<url>file:/var/www/nightly/tapx</url>
+		</site>
+	</distributionManagement>
+
 	<properties>
 		<tapestry-release-version>5.1.0.5</tapestry-release-version>
 		<selenium-version>1.0.1</selenium-version>
