@@ -1,88 +1,82 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>com.howardlewisship</groupId>
-    <artifactId>tapx-project</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
-    <packaging>pom</packaging>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.howardlewisship</groupId>
+	<artifactId>tapx-project</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
 
-    <name>Tapestry Extensions</name>
-    <description>Enhanced components, services and utilities for Tapestry.</description>
+	<name>Tapestry Extensions</name>
+	<description>Enhanced components, services and utilities for Tapestry.</description>
 
-    <parent>
-        <groupId>com.formos.tapestry</groupId>
-        <artifactId>tapestry360-project</artifactId>
-        <version>1.0.0.0</version>
-    </parent>
+	<parent>
+		<groupId>com.formos.tapestry</groupId>
+		<artifactId>tapestry360-project</artifactId>
+		<version>1.0.0.0</version>
+	</parent>
 
-    <issueManagement>
-        <system>GitHub</system>
-        <url>http://github.com/hlship/tapx/issues</url>
-    </issueManagement>
+	<issueManagement>
+		<system>GitHub</system>
+		<url>http://github.com/hlship/tapx/issues</url>
+	</issueManagement>
 
-    <scm>
-        <connection>scm:git://github.com/hlship/tapx.git</connection>
-        <url>http://github.com/hlship/tapx/</url>
-    </scm>
+	<scm>
+		<connection>scm:git://github.com/hlship/tapx.git</connection>
+		<url>http://github.com/hlship/tapx/</url>
+	</scm>
 
 
-    <developers>
-        <developer>
-            <id>hls</id>
-            <name>Howard M. Lewis Ship</name>
-            <email>hlship@apache.org</email>
-            <url>http://howardlewisship.com</url>
-            <roles>
-                <role>Menace</role>
-            </roles>
-        </developer>
-    </developers>
+	<developers>
+		<developer>
+			<id>hls</id>
+			<name>Howard M. Lewis Ship</name>
+			<email>hlship@apache.org</email>
+			<url>http://howardlewisship.com</url>
+			<roles>
+				<role>Menace</role>
+			</roles>
+		</developer>
+	</developers>
 
-    <licenses>
-        <license>
-            <name>Apache Software License 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
+	<licenses>
+		<license>
+			<name>Apache Software License 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
 
-    <modules>
-        <module>tapx-datefield</module>
-        <module>tapx-templating</module>
-        <module>tapx-plainmessage</module>
-        <module>tapx-prototype</module>
-    </modules>
+	<modules>
+		<module>tapx-datefield</module>
+		<module>tapx-templating</module>
+		<module>tapx-plainmessage</module>
+		<module>tapx-prototype</module>
+	</modules>
 
-    <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <artifactId>maven-site-plugin</artifactId>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-    </build>
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<artifactId>maven-site-plugin</artifactId>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
 
-    <repositories>
-        <repository>
-            <id>tapestry360-stable</id>
-            <url>http://tapestry.formos.com/maven-repository</url>
-        </repository>
-        <repository>
-            <id>tapestry360-snapshot</id>
-            <url>http://tapestry.formos.com/maven-snapshot-repository</url>
-        </repository>
-    </repositories>
+	<repositories>
+		<repository>
+			<id>tapestry360-stable</id>
+			<url>http://tapestry.formos.com/maven-repository</url>
+		</repository>
+		<repository>
+			<id>tapestry360-snapshot</id>
+			<url>http://tapestry.formos.com/maven-snapshot-repository</url>
+		</repository>
+	</repositories>
 
-    <properties>
-        <tapestry-release-version>5.1.0.5</tapestry-release-version>
-        <selenium-version>1.0.1</selenium-version>
-    </properties>
-
-    <distributionManagement>
-        <site>
-            <url>file:/var/www/nightly/tapx</url>
-        </site>
-    </distributionManagement>
+	<properties>
+		<tapestry-release-version>5.1.0.5</tapestry-release-version>
+		<selenium-version>1.0.1</selenium-version>
+	</properties>
 </project>
