@@ -48,6 +48,7 @@
 	</licenses>
 
 	<modules>
+    <module>tapx-core</module>
 		<module>tapx-datefield</module>
 		<module>tapx-templating</module>
 		<module>tapx-plainmessage</module>
