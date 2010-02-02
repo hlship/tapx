@@ -22,6 +22,13 @@
     </dependency>
 
     <dependency>
+      <groupId>com.google.code.kaptcha</groupId>
+      <artifactId>kaptcha</artifactId>
+      <version>2.3</version>
+    </dependency>
+
+
+    <dependency>
       <groupId>org.apache.tapestry</groupId>
       <artifactId>tapestry-test</artifactId>
       <version>${tapestry-release-version}</version>
