@@ -14,7 +14,6 @@
 
 package com.howardlewisship.tapx.datefield.services;
 
-import org.apache.tapestry5.VersionUtils;
 import org.apache.tapestry5.ioc.Configuration;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
@@ -42,16 +41,6 @@ public class DateFieldModule
     public static void contributeComponentClassResolver(Configuration<LibraryMapping> configuration)
     {
         configuration.add(new LibraryMapping("tapx", "com.howardlewisship.tapx.datefield"));
-    }
-
-    public static void contributeClasspathAssetAliasManager(
-            MappedConfiguration<String, String> configuration)
-    {
-        String version = VersionUtils
-                .readVersionNumber("META-INF/maven/com.howardlewisship/tapx-datefield/pom.properties");
-
-        configuration.add(String.format("tapx/%s/datefield", version),
-                "com/howardlewisship/tapx/datefield");
     }
 
     public static void contributeBeanBlockOverrideSource(
