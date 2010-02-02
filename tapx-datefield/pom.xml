@@ -1,74 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.howardlewisship</groupId>
+  <artifactId>tapx-datefield</artifactId>
+  <packaging>jar</packaging>
+  <name>tapx-datefield</name>
+  <description>Improved JavaScript Calendar Widget for Tapestry</description>
+
+  <parent>
     <groupId>com.howardlewisship</groupId>
-    <artifactId>tapx-datefield</artifactId>
-    <packaging>jar</packaging>
-    <name>tapx-datefield</name>
-    <description>Improved JavaScript Calendar Widget for Tapestry</description>
+    <artifactId>tapx-project</artifactId>
+    <version>1.1-SNAPSHOT</version>
+  </parent>
 
-    <parent>
-        <groupId>com.howardlewisship</groupId>
-        <artifactId>tapx-project</artifactId>
-        <version>1.0.0</version>
-    </parent>
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.tapestry</groupId>
+      <artifactId>tapestry-core</artifactId>
+      <version>${tapestry-release-version}</version>
+    </dependency>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.apache.tapestry</groupId>
-            <artifactId>tapestry-core</artifactId>
-            <version>${tapestry-release-version}</version>
-        </dependency>
+    <dependency>
+      <groupId>org.apache.tapestry</groupId>
+      <artifactId>tapestry-test</artifactId>
+      <version>${tapestry-release-version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
 
-	<!-- Override with the current version of Selenium, compatible with FF 3 -->
-
-
-        <dependency>
-            <groupId>org.seleniumhq.selenium.client-drivers</groupId>
-            <artifactId>selenium-java-client-driver</artifactId>
-            <version>${selenium-version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.seleniumhq.selenium.server</groupId>
-            <artifactId>selenium-server</artifactId>
-            <version>${selenium-version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.seleniumhq.selenium.server</groupId>
-            <artifactId>selenium-server-coreless</artifactId>
-            <version>${selenium-version}</version>
-            <scope>test</scope>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.apache.tapestry</groupId>
-            <artifactId>tapestry-test</artifactId>
-            <version>${tapestry-release-version}</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <configuration>
-                    <archive>
-                        <manifestEntries>
-                            <Tapestry-Module-Classes>com.howardlewisship.tapx.datefield.services.DateFieldModule
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifestEntries>
+              <Tapestry-Module-Classes>com.howardlewisship.tapx.datefield.services.DateFieldModule
                             </Tapestry-Module-Classes>
-                        </manifestEntries>
-                    </archive>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
+            </manifestEntries>
+          </archive>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
 </project>

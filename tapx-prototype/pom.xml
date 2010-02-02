@@ -11,7 +11,7 @@
     <parent>
         <groupId>com.howardlewisship</groupId>
         <artifactId>tapx-project</artifactId>
-        <version>1.0.0</version>
+        <version>1.1-SNAPSHOT</version>
     </parent>
 
     <dependencies>
@@ -19,28 +19,6 @@
             <groupId>org.apache.tapestry</groupId>
             <artifactId>tapestry-core</artifactId>
             <version>${tapestry-release-version}</version>
-        </dependency>
-
-	<!-- Override with the current version of Selenium, compatible with FF 3 -->
-
-
-        <dependency>
-            <groupId>org.seleniumhq.selenium.client-drivers</groupId>
-            <artifactId>selenium-java-client-driver</artifactId>
-            <version>${selenium-version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.seleniumhq.selenium.server</groupId>
-            <artifactId>selenium-server</artifactId>
-            <version>${selenium-version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.seleniumhq.selenium.server</groupId>
-            <artifactId>selenium-server-coreless</artifactId>
-            <version>${selenium-version}</version>
-            <scope>test</scope>
         </dependency>
         
         <dependency>

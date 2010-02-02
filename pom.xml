@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.howardlewisship</groupId>
 	<artifactId>tapx-project</artifactId>
-	<version>1.0.0</version>
+	<version>1.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>Tapestry Extensions</name>
@@ -93,7 +93,6 @@
 	</distributionManagement>
 
 	<properties>
-		<tapestry-release-version>5.1.0.5</tapestry-release-version>
-		<selenium-version>1.0.1</selenium-version>
+		<tapestry-release-version>5.2.0-SNAPSHOT</tapestry-release-version>
 	</properties>
 </project>
