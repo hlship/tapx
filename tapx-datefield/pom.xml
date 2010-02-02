@@ -16,9 +16,9 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.apache.tapestry</groupId>
-      <artifactId>tapestry-core</artifactId>
-      <version>${tapestry-release-version}</version>
+      <groupId>com.howardlewisship</groupId>
+      <artifactId>tapx-core</artifactId>
+      <version>${project.version}</version>
     </dependency>
 
     <dependency>

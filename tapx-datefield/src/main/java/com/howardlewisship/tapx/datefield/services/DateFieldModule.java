@@ -14,15 +14,15 @@
 
 package com.howardlewisship.tapx.datefield.services;
 
-import com.howardlewisship.tapx.datefield.DateFieldSymbols;
-import com.howardlewisship.tapx.internal.datefield.services.DateFieldFormatConverterImpl;
-
+import org.apache.tapestry5.VersionUtils;
 import org.apache.tapestry5.ioc.Configuration;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
-import org.apache.tapestry5.services.LibraryMapping;
 import org.apache.tapestry5.services.BeanBlockContribution;
-import org.apache.tapestry5.VersionUtils;
+import org.apache.tapestry5.services.LibraryMapping;
+
+import com.howardlewisship.tapx.datefield.DateFieldSymbols;
+import com.howardlewisship.tapx.internal.datefield.services.DateFieldFormatConverterImpl;
 
 public class DateFieldModule
 {
@@ -59,14 +59,5 @@ public class DateFieldModule
     {
         configuration.add(new BeanBlockContribution("date", "tapx/DateFieldEditBlocks", "date",
                 true));
-    }
-
-    /**
-     * Temporary: enable access to all of tapx as T5.2.0 is overly protective.
-     */
-    public void contributeRegexAuthorizer(
-            org.apache.tapestry5.ioc.Configuration<String> configuration)
-    {
-        configuration.add("^com/howardlewisship/tapx/.*");
     }
 }
