@@ -1,10 +1,10 @@
-// Copyright 2009 Howard M. Lewis Ship
+// Copyright 2009, 2010 Howard M. Lewis Ship
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//     http://www.apache.org/licenses/LICENSE-2.0
+// http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,13 +14,12 @@
 
 package com.howardlewisship.tapx.datefield.pages;
 
-import com.howardlewisship.tapx.datefield.components.DateField;
-
 import org.apache.tapestry5.annotations.Component;
 import org.apache.tapestry5.annotations.Environmental;
-import org.apache.tapestry5.annotations.Property;                                                                                                          
+import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.services.PropertyEditContext;
-import org.apache.tapestry5.FieldValidator;
+
+import com.howardlewisship.tapx.datefield.components.DateField;
 
 public class DateFieldEditBlocks
 {
@@ -28,15 +27,10 @@ public class DateFieldEditBlocks
     @Environmental
     private PropertyEditContext context;
 
+    @Property
     @SuppressWarnings("unused")
-    @Component(
-            parameters = { "value=context.propertyValue", "label=prop:context.label",
-                    "clientId=prop:context.propertyid",
-                    "validate=prop:dateFieldValidator" })
+    @Component(parameters =
+    { "value=context.propertyValue", "label=prop:context.label", "annotationProvider=context",
+            "clientId=prop:context.propertyid", "validate=prop:context.getValidator(dateField)" })
     private DateField dateField;
-
-    public FieldValidator getDateFieldValidator()
-    {
-        return context.getValidator(dateField);
-    }
 }

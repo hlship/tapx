@@ -16,10 +16,17 @@
   responsive UI, and works better on older versions of Internet Explorer (primarily because it will temporarily
   hide drop down lists, which normally render on top of popup windows in IE 6 and earlier).
 
+New in 1.1
+
+  The DateField component has a new <<time>> parameter, which enables editing the time portion of the date (hours
+  and minutes) as well as the month, day and year. A new annotation, 
+  {{{../apidocs/com/howardlewisship/tapx/datefield/TimeSignificant.html}TimeSignificant}}, can be placed on
+  Date properties which the default for the time parameter should be true.
+
 Skin and Theme
 
   The component has two skins and a number of themes.  These are configured using
-   {{{../apidocs/com/formos/tapestry/tapx/datefield/DateFieldSymbols.html}configuration symbols}}.
+   {{{../apidocs/com/howardlewisship/tapx/datefield/DateFieldSymbols.html}configuration symbols}}.
 
  [tapx.datefield.skin] The skin to use; either "aqua" or "tiger". Defaults to "aqua".
 
@@ -28,7 +35,7 @@ Skin and Theme
 
 Compatibility
 
-  tapx-datefield is built for use with Tapestry 5.1 and higher.
+  tapx-datefield is built for use with Tapestry 5.2 and higher.
 
 Explicit Usage
 
@@ -38,18 +45,18 @@ Explicit Usage
 
 ---
 <html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
-      xmlns:x="tapestry-library:tapx">
+      xmlns:tx="tapestry-library:tapx">
 
   .
   .
   .
 
-  <x:datefield t:id="birthday"/>
+  <tx:datefield t:id="birthday"/>
 
 ----
 
   Library namespaces are a new feature in Tapestry 5.1.
-  
+      
 Licensing Issues
 
   The Dynarch DHTML Calendar, the client-side JavaScript at the core of this component, is licensed under the

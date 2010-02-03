@@ -1,31 +1,37 @@
-<html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
-      xmlns:x="tapestry-library:tapx"
-      xmlns:p="tapestry:parameter">
+<html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:tx="tapestry-library:tapx"
+  xmlns:p="tapestry:parameter">
 
-    <body>
-        <h1>TapX DateField Demo</h1>
+  <body>
+    <h1>TapX DateField Demo</h1>
 
-        <t:form>
-            <x:datefield t:id="date"/>
+    <t:form>
+      <tx:datefield t:id="date" time="time"/>
 
-            <br/>
-            <t:label for="localeName"/>
-            <t:select t:id="localeName" model="supportedLocales"/>
+      <br/>
+      <t:label for="localeName"/>
+      <t:select t:id="localeName" model="supportedLocales"/>
 
-            <br/>
-            <input type="submit"/>
-        </t:form>
+      <br/>
+      <t:checkbox t:id="time" label="Show Time"/>
+      <t:label for="time"/>
+
+      <br/>
+      <input type="submit"/>
+    </t:form>
 
 
-        <hr/>
+    <hr/>
 
-        <p>Entered date:
-            <span id="outputdate"><t:output format="dateFormat" value="date"/></span>
-        </p>
+    <p>
+      Entered date:
+      <span id="outputdate">
+        <t:output format="dateFormat" value="date"/>
+      </span>
+    </p>
 
-        <p>
-            <t:actionlink t:id="setup">setup</t:actionlink>
-        </p>
-    </body>
+    <p>
+      <t:actionlink t:id="setup">setup</t:actionlink>
+    </p>
+  </body>
 
 </html>

@@ -4,7 +4,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//     http://www.apache.org/licenses/LICENSE-2.0
+// http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -32,6 +32,10 @@ public class Index
 {
     @Property
     @Persist
+    private boolean time;
+
+    @Property
+    @Persist
     private Date date;
 
     @Inject
@@ -45,9 +49,14 @@ public class Index
     @Symbol(SymbolConstants.SUPPORTED_LOCALES)
     private String supportedLocales;
 
-    @Retain
-    @Property(write = false)
-    private DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG, locale); 
+    public DateFormat getDateFormat()
+    {
+        return time
+
+        ? DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.MEDIUM, locale)
+
+        : DateFormat.getDateInstance(DateFormat.LONG, locale);
+    }
 
     public String getLocaleName()
     {
@@ -60,10 +69,12 @@ public class Index
         persistentLocale.set(new Locale(localeName));
     }
 
-    @SuppressWarnings({ "deprecation" })
+    @SuppressWarnings(
+    { "deprecation" })
     void onActionFromSetup()
     {
         setLocaleName("en");
         date = new Date(109, Calendar.MARCH, 16);
+        time = false;
     }
 }

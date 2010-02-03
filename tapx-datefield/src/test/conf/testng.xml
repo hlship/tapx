@@ -1,13 +1,17 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="tapx-datefield" annotations="1.5" verbose="2">
-    <test name="Unit Tests">
-        <packages>
-            <package name="com.howardlewisship.tapx.internal.datefield.services"/>
-        </packages>
-    </test>
-    <test name="Integration Tests">
-        <packages>
-            <package name="com.howardlewisship.tapx.datefield.integration"/>
-        </packages>
-    </test>
+  <test name="Unit Tests">
+    <packages>
+      <package name="com.howardlewisship.tapx.internal.datefield.services"/>
+    </packages>
+  </test>
+  <test name="Integration Tests">
+    <parameter name="tapestry.web-app-folder" value="src/test/webapp"/>
+    <packages>
+      <package name="com.howardlewisship.tapx.datefield.integration"/>
+    </packages>
+    <classes>
+      <class name="org.apache.tapestry5.test.SeleniumLauncher"/>
+    </classes>
+  </test>
 </suite>

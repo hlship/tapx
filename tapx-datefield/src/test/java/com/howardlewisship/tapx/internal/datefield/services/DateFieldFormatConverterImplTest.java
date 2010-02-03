@@ -1,10 +1,10 @@
-// Copyright 2009 Howard M. Lewis Ship
+// Copyright 2009, 2010 Howard M. Lewis Ship
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//     http://www.apache.org/licenses/LICENSE-2.0
+// http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -51,10 +51,9 @@ public class DateFieldFormatConverterImplTest extends Assert
     private Object[][] format_conversion_data()
     {
         return new Object[][]
-                {
-                        { "dd/MM/yyyy", "%d/%m/%Y" },
-                        { "MMM dd, yyyy", "%b %d, %Y" }
-                };
+        {
+        { "dd/MM/yyyy", "%d/%m/%Y" },
+        { "MMM dd, yyyy", "%b %d, %Y" } };
     }
 
     @Test(dataProvider = "format_conversion_data")
@@ -74,6 +73,17 @@ public class DateFieldFormatConverterImplTest extends Assert
     }
 
     @Test
+    public void english_default_locale_with_time()
+    {
+        DateFormat format = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, Locale.ENGLISH);
+
+        // Note that DateField manipulates the Java "yy" format into "yyyy" before passing into the converter.
+        // But this works because of an additional (and otherwise unnecessary) mapping from "yy".
+        
+        assertEquals(converter.convertToClient(format), "%m/%e/%Y %l:%M %p");
+    }
+
+    @Test
     public void not_simple_date_format()
     {
         DateFormat fixture = new DateFormatFixture();
@@ -85,10 +95,10 @@ public class DateFieldFormatConverterImplTest extends Assert
         }
         catch (IllegalArgumentException ex)
         {
-            assertEquals(ex.getMessage(),
-                         "Conversion to client date format requires a SimpleDateFormat instance; unable to convert from class com.howardlewisship.tapx.internal.datefield.services.DateFieldFormatConverterImplTest$DateFormatFixture.");
+            assertEquals(
+                    ex.getMessage(),
+                    "Conversion to client date format requires a SimpleDateFormat instance; unable to convert from class com.howardlewisship.tapx.internal.datefield.services.DateFieldFormatConverterImplTest$DateFormatFixture.");
         }
     }
-
 
 }

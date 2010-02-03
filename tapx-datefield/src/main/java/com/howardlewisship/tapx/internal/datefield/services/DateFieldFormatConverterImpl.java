@@ -1,4 +1,4 @@
-// Copyright 2009 Howard M. Lewis Ship
+// Copyright 2009, 2010 Howard M. Lewis Ship
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,12 +24,13 @@ import java.text.SimpleDateFormat;
 public class DateFieldFormatConverterImpl implements DateFieldFormatConverter
 {
     /**
-     * Pairs: left column is Java/server-side, right column in client-side. Order longest to shortest.
+     * Pairs: left column is Java/server-side, right column is client-side. Order longest to shortest.
      */
     private final String[] conversion = new String[] {
 
             // year
             "yyyy", "Y",
+            "yy", "Y",
 
             // month
             "MMMM", "B",
@@ -42,13 +43,25 @@ public class DateFieldFormatConverterImpl implements DateFieldFormatConverter
             "d", "e",
 
             // am/pm
-            "a", "P",
+            "a", "p",
 
             // day name
             "EEEE", "A",
             "EEE", "a",
             "EE", "a",
-            "E", "a"
+            "E", "a",
+            
+            // hour (0-23)            
+            "HH", "k",
+            "H", "k",
+            
+            // hour (1-12)            
+            "hh", "l",
+            "h", "l",
+            
+            // minute            
+            "mm", "M",
+            "m", "M"
     };
 
 
