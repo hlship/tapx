@@ -3,11 +3,8 @@ Tapestry.Initializer.tapxConfirm = function(spec) {
 	var element = $(spec.clientId);
 	var type = element.type;
 
-	// Problem is, we don't know the order in which Initializer functions get
-	// executed; it very
-	// arbitrary. So what we do is defer the hookup of the "click" listener so
-	// that wer
-	// can undo the normal "click" event handler for.
+	// This function is executed with "early" priority, so it gets
+	// to add its own "click" handlers before others.
 
 	// Function that runs the dialog, and invokes the proceed button if the user
 	// clicks "Yes"
@@ -51,50 +48,43 @@ Tapestry.Initializer.tapxConfirm = function(spec) {
 		});
 	};
 
-	(function() {
+	var interceptClickEvent = true;
 
-		if (element.type == "submit") {
+	element.observe("click", function(event) {
 
-			var interceptClickEvent = true;
-
-			element.observe("click", function(event) {
-
-				if (interceptClickEvent) {
-					event.stop();
-
-					runModalDialog(function() {
-						interceptClickEvent = false;
-
-						element.click();
-					});
-				}
-			});
-
-			return;
-		}
-
-		// Assume it is a link component of some kind.
-
-		// Delete any prior click listener.
-
-		element.stopObserving("click");
-
-		element.observe("click", function(event) {
+		if (interceptClickEvent) {
 			event.stop();
 
 			runModalDialog(function() {
 
-				// If the zoneId property exists, then we just fire an event to
-				// take
-				// it from here.`
-				if ($T(element).zoneId) {
-					element.fire(Tapestry.TRIGGER_ZONE_UPDATE_EVENT);
-					return;
-				}
+			if (element.click) {
+				interceptClickEvent = false;
 
-				window.location = element.href;
-			});
+				element.click();
+				return;
+			}
+
+			// It's a link, does it have an event handler?
+
+			if (element.onclick) {
+				// This is a necessary assumption, alas. There is no good way to
+				// get an Element to fire a built-in event such as "click".
+				// fire()
+				// is really for user-defined events only. fire("click") here
+				// does
+				// not work. Anyway, this assumes the link is a zone trigger and
+				// fires
+				// the event that initiates the zone update.
+				element.fire(Tapestry.TRIGGER_ZONE_UPDATE_EVENT);
+				return;
+			}
+
+			// Otherwise, no event handler, just change the window location as
+			// if the user
+			// clicked the link.
+			window.location = element.href;
 		});
+	}
+}	);
 
-	}).defer();
 };
