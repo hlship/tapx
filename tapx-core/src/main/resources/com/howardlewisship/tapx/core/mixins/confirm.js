@@ -3,22 +3,21 @@ Tapestry.Initializer.tapxConfirm = function(spec) {
 	var element = $(spec.clientId);
 	var type = element.type;
 
-	// This function is executed with "early" priority, so it gets
-	// to add its own "click" handlers before others.
-
-	// Function that runs the dialog, and invokes the proceed button if the user
-	// clicks "Yes"
-	// Otherwise, the (if "No" or the modal dialog is closed), no further
-	// processing occurs.
-
+	/*
+	 * This function is executed with "early" priority, so it gets to add its
+	 * own "click" handlers before others. Function that runs the dialog, and
+	 * invokes the proceed button if the user clicks "Yes" Otherwise, the (if
+	 * "No" or the modal dialog is closed), no further processing occurs.
+	 */
 	var runModalDialog = function(proceed) {
 		var div = new Element('div', {
 			className : 'mb-confirm'
 		}).update(new Element('p').update(spec.message));
 
-		// Have to assign ids and reconnect at after load, because ModalBox
-		// copies DOM elements, rather than moves them.
-
+		/*
+		 * Have to assign ids and reconnect at after load, because ModalBox
+		 * copies DOM elements, rather than moves them.
+		 */
 		var baseId = "mb-" + new Date().getTime();
 		var yesId = baseId + "-yes";
 		var noId = baseId + "-no";
@@ -50,41 +49,44 @@ Tapestry.Initializer.tapxConfirm = function(spec) {
 
 	var interceptClickEvent = true;
 
+	/*
+	 * Replace the normal click event, knowing that in most cases, the original
+	 * link or button has an Tapestry.ACTION_EVENT event handler to do its real
+	 * work.
+	 */
+	element.stopObserving("click");
+
 	element.observe("click", function(event) {
 
 		if (interceptClickEvent) {
+
 			event.stop();
 
 			runModalDialog(function() {
 
-			if (element.click) {
-				interceptClickEvent = false;
+				if ($T(element).hasAction) {
+					element.fire(Tapestry.ACTION_EVENT, event);
+					return;
+				}
 
-				element.click();
-				return;
-			}
+				/*
+				 * A submit element (i.e., it has a click() method)? Try that
+				 * next.
+				 */
 
-			// It's a link, does it have an event handler?
+				if (element.click) {
+					interceptClickEvent = false;
 
-			if (element.onclick) {
-				// This is a necessary assumption, alas. There is no good way to
-				// get an Element to fire a built-in event such as "click".
-				// fire()
-				// is really for user-defined events only. fire("click") here
-				// does
-				// not work. Anyway, this assumes the link is a zone trigger and
-				// fires
-				// the event that initiates the zone update.
-				element.fire(Tapestry.TRIGGER_ZONE_UPDATE_EVENT);
-				return;
-			}
+					element.click();
+				}
 
-			// Otherwise, no event handler, just change the window location as
-			// if the user
-			// clicked the link.
-			window.location = element.href;
-		});
-	}
-}	);
+				/*
+				 * Not a zone updater, so just do a full page refresh to the
+				 * indicated URL.
+				 */
+				window.location = element.href;
+			});
+		}
+	});
 
 };

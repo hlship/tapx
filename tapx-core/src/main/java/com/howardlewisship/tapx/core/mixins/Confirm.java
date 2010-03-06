@@ -35,7 +35,7 @@ public class Confirm
     private String title;
 
     @Environmental
-    private JavascriptSupport rjavaenderSupport;
+    private JavascriptSupport javascriptSupport;
 
     void afterRender()
     {
@@ -45,6 +45,7 @@ public class Confirm
         spec.put("message", message);
         spec.put("title", title);
 
-        rjavaenderSupport.addInitializerCall(InitializationPriority.EARLY, "tapxConfirm", spec);
+        // Late, to overwrite other event handlers
+        javascriptSupport.addInitializerCall(InitializationPriority.LATE, "tapxConfirm", spec);
     }
 }
