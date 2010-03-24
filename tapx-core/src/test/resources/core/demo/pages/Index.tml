@@ -13,6 +13,9 @@
       <li>
         <t:pagelink page="ConfirmDemo">Confirm Mixin Demo</t:pagelink>
       </li>
+      <li>
+        <t:pagelink page="SetEditorDemo">SetEditor Demo</t:pagelink>
+      </li>
     </ul>
 
   </body>

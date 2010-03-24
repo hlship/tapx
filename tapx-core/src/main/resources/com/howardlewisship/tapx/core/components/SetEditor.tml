@@ -1,0 +1,25 @@
+<div class="tx-seteditor" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+  xmlns:p="tapestry:parameter">
+  <div class="tx-fieldcolumn">
+    <div class="tx-columnlabel">
+      <t:delegate to="fieldLabel"/>
+    </div>
+    <input type="text" id="${fieldId}"/>
+    <t:remove>A hidden field is added, on the client side.</t:remove>
+  </div>
+  <div class="tx-valuescolumn">
+    <div class="tx-valueslabel">
+      <t:delegate to="valuesLabel"/>
+    </div>
+    <t:remove>Rendering of the values occurs on the client.</t:remove>
+  </div>
+
+
+  <t:block id="defaultFieldLabel">
+    <label>New value</label>
+  </t:block>
+
+  <t:block id="defaultValuesLabel">
+    <label>Values</label>
+  </t:block>
+</div>
