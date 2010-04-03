@@ -38,7 +38,7 @@
         <configuration>
           <archive>
             <manifestEntries>
-              <Tapestry-Module-Classes>com.howardlewisship.tapx.core.services.CoreModule
+              <Tapestry-Module-Classes>com.howardlewisship.tapx.yui.services.YuiModule
                             </Tapestry-Module-Classes>
             </manifestEntries>
           </archive>
