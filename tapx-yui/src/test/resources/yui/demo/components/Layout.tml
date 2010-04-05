@@ -1,0 +1,24 @@
+<html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+  <head>
+    <title>YUI Test App: ${title}</title>
+  </head>
+  <body>
+
+    <h1>${title}</h1>
+
+    <t:body/>
+
+    <hr/>
+
+    <ul>
+      <li>
+        <t:pagelink page="index">Back to index</t:pagelink>
+      </li>
+      <li>
+        <t:actionlink t:id="reset">Reset page</t:actionlink>
+      </li>
+    </ul>
+
+  </body>
+
+</html>
