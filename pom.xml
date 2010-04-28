@@ -5,7 +5,7 @@
   <artifactId>tapx-project</artifactId>
   <version>1.1-SNAPSHOT</version>
   <packaging>pom</packaging>
-  <name>Tapestry Extensions</name>
+  <name>Tapestry Extensions: Master POM</name>
   <description>Enhanced components, services and utilities for Tapestry.</description>
   <issueManagement>
     <system>GitHub</system>
