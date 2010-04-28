@@ -18,7 +18,7 @@ public class CoreSymbols
 {
     /**
      * Used to enable test mode, which changes the behavior of some services to be testable. Defaults to "false".
-     * This is often overriden at the command line.
+     * This is often overridden at the command line.
      */
     public static final String TEST_MODE = "tapx.test-mode";
 }
