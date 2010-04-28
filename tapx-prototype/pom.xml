@@ -17,6 +17,12 @@
   <dependencies>
     <dependency>
       <groupId>org.apache.tapestry</groupId>
+      <artifactId>tapestry-core</artifactId>
+      <version>${tapestry-release-version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.tapestry</groupId>
       <artifactId>tapestry-test</artifactId>
       <version>${tapestry-release-version}</version>
       <scope>test</scope>
