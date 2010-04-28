@@ -14,7 +14,6 @@
 
 package com.howardlewisship.tapx.core.services;
 
-import org.apache.tapestry5.VersionUtils;
 import org.apache.tapestry5.ioc.Configuration;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
@@ -37,21 +36,5 @@ public class CoreModule
     public static void contributeComponentClassResolver(Configuration<LibraryMapping> configuration)
     {
         configuration.add(new LibraryMapping("tapx", "com.howardlewisship.tapx.core"));
-    }
-
-    /**
-     * Temporary: enable access to all of tapx as T5.2.0 is overly protective.
-     */
-    public void contributeRegexAuthorizer(org.apache.tapestry5.ioc.Configuration<String> configuration)
-    {
-        configuration.add("^com/howardlewisship/tapx/.*");
-    }
-
-    /** All of the different modules (core, datefield, etc.) work off this one mapping. */
-    public static void contributeClasspathAssetAliasManager(MappedConfiguration<String, String> configuration)
-    {
-        String version = VersionUtils.readVersionNumber("META-INF/maven/com.howardlewisship/tapx-core/pom.properties");
-
-        configuration.add(String.format("tapx/%s", version), "com/howardlewisship/tapx");
     }
 }
