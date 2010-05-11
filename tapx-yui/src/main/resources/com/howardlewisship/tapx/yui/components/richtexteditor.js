@@ -4,7 +4,6 @@ Tapestry.Initializer.tapxRichTextEditor = function(spec) {
 
 	var editor = new YAHOO.widget.SimpleEditor(spec.clientId, {
 		dompath : false,
-		handleSubmit : true,
 		width : spec.width + "px",
 		height : spec.height + "px",
 		toolbar : {
@@ -29,4 +28,6 @@ Tapestry.Initializer.tapxRichTextEditor = function(spec) {
 	});
 
 	editor.render();
+	
+	$(spec.clientId).up("form").observe(Tapestry.FORM_PREPARE_FOR_SUBMIT_EVENT, function() { editor.saveHTML(); });
 }
