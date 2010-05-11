@@ -1,0 +1,4 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="tapx-yui" annotations="1.5" verbose="2">
+
+</suite>
