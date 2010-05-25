@@ -16,7 +16,10 @@ package com.howardlewisship.tapx.core.services;
 
 import org.apache.tapestry5.ioc.Configuration;
 import org.apache.tapestry5.ioc.MappedConfiguration;
+import org.apache.tapestry5.ioc.OrderedConfiguration;
+import org.apache.tapestry5.ioc.Resource;
 import org.apache.tapestry5.ioc.ServiceBinder;
+import org.apache.tapestry5.ioc.annotations.Value;
 import org.apache.tapestry5.services.LibraryMapping;
 
 import com.howardlewisship.tapx.core.CoreSymbols;
@@ -36,5 +39,12 @@ public class CoreModule
     public static void contributeComponentClassResolver(Configuration<LibraryMapping> configuration)
     {
         configuration.add(new LibraryMapping("tapx", "com.howardlewisship.tapx.core"));
+    }
+
+    public static void contributeComponentMessagesSource(OrderedConfiguration<Resource> configuration,
+            @Value("classpath:com/howardlewisship/tapx/core/tapx-core.properties")
+            Resource coreCatalog)
+    {
+        configuration.add("TapxCore", coreCatalog, "before:AppCatalog");
     }
 }

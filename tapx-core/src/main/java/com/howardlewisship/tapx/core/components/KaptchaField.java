@@ -74,7 +74,7 @@ public class KaptchaField extends AbstractField
         if (TapestryInternalUtils.isEqual(image.getCaptchaText(), userValue))
             return;
 
-        validationTracker.recordError(this, messages.get("incorrect-captcha"));
+        validationTracker.recordError(this, messages.get("tapx-incorrect-captcha"));
     }
 
     @BeginRender

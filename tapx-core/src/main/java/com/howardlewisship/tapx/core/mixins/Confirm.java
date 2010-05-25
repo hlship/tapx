@@ -1,10 +1,23 @@
+// Copyright 2010 Howard M. Lewis Ship
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 package com.howardlewisship.tapx.core.mixins;
 
 import org.apache.tapestry5.BindingConstants;
 import org.apache.tapestry5.ClientElement;
 import org.apache.tapestry5.annotations.Environmental;
-import org.apache.tapestry5.annotations.IncludeJavaScriptLibrary;
-import org.apache.tapestry5.annotations.IncludeStylesheet;
+import org.apache.tapestry5.annotations.Import;
 import org.apache.tapestry5.annotations.InjectContainer;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.corelib.components.EventLink;
@@ -20,18 +33,17 @@ import org.apache.tapestry5.services.javascript.JavascriptSupport;
  * ordinary links such as {@link PageLink} or {@link EventLink}, and will operate correctly when
  * the link is being used as a {@link Zone} trigger.
  */
-@IncludeJavaScriptLibrary(
-{ "${tapestry.scriptaculous}/builder.js", "modalbox.js", "confirm.js" })
-@IncludeStylesheet("modalbox.css")
+@Import(library =
+{ "${tapestry.scriptaculous}/builder.js", "modalbox.js", "confirm.js" }, stylesheet = "modalbox.css")
 public class Confirm
 {
     @InjectContainer
     private ClientElement container;
 
-    @Parameter(value = "message:default-confirm-message", defaultPrefix = BindingConstants.LITERAL)
+    @Parameter(value = "message:tapx-default-confirm-message", defaultPrefix = BindingConstants.LITERAL)
     private String message;
 
-    @Parameter(value = "message:default-confirm-title", defaultPrefix = BindingConstants.LITERAL)
+    @Parameter(value = "message:tapx-default-confirm-title", defaultPrefix = BindingConstants.LITERAL)
     private String title;
 
     @Environmental
@@ -39,11 +51,7 @@ public class Confirm
 
     void afterRender()
     {
-        JSONObject spec = new JSONObject();
-
-        spec.put("clientId", container.getClientId());
-        spec.put("message", message);
-        spec.put("title", title);
+        JSONObject spec = new JSONObject("clientId", container.getClientId(), "message", message, "title", title);
 
         // Late, to overwrite other event handlers
         javascriptSupport.addInitializerCall(InitializationPriority.LATE, "tapxConfirm", spec);
