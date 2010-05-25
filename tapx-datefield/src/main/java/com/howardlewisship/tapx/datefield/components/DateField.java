@@ -20,29 +20,31 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Set;
 
-import org.apache.tapestry5.*;
+import org.apache.tapestry5.Asset;
+import org.apache.tapestry5.Binding;
+import org.apache.tapestry5.BindingConstants;
+import org.apache.tapestry5.ComponentResources;
+import org.apache.tapestry5.FieldValidationSupport;
+import org.apache.tapestry5.FieldValidator;
+import org.apache.tapestry5.MarkupWriter;
+import org.apache.tapestry5.ValidationException;
+import org.apache.tapestry5.ValidationTracker;
 import org.apache.tapestry5.annotations.Environmental;
+import org.apache.tapestry5.annotations.Import;
 import org.apache.tapestry5.annotations.Parameter;
-import org.apache.tapestry5.annotations.Path;
 import org.apache.tapestry5.corelib.base.AbstractField;
 import org.apache.tapestry5.corelib.components.BeanEditor;
-import org.apache.tapestry5.internal.TapestryInternalUtils;
 import org.apache.tapestry5.internal.bindings.AbstractBinding;
 import org.apache.tapestry5.ioc.AnnotationProvider;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.ioc.annotations.Symbol;
-import org.apache.tapestry5.ioc.internal.util.CollectionFactory;
 import org.apache.tapestry5.ioc.internal.util.InternalUtils;
 import org.apache.tapestry5.json.JSONObject;
-import org.apache.tapestry5.services.AssetSource;
-import org.apache.tapestry5.services.ClientBehaviorSupport;
 import org.apache.tapestry5.services.ComponentDefaultProvider;
 import org.apache.tapestry5.services.Request;
+import org.apache.tapestry5.services.javascript.JavascriptSupport;
 
-import com.howardlewisship.tapx.datefield.DateFieldSymbols;
 import com.howardlewisship.tapx.datefield.TimeSignificant;
 import com.howardlewisship.tapx.datefield.services.DateFieldFormatConverter;
 
@@ -52,14 +54,9 @@ import com.howardlewisship.tapx.datefield.services.DateFieldFormatConverter;
  * JSCalendar Widget</a>. This is a highly functional calendar, but is distributed as LGPL and so can't be built
  * directly into Tapestry.
  */
+@Import(stack = "tapx-datefield")
 public class DateField extends AbstractField
 {
-    /**
-     * A request attribute used to ensure that the JavaScript for the component is only generated once (because there's
-     * so many files to calculate).
-     */
-    private static final String SCRIPTS_INCLUDED = "com.howardlewisship.tapx.datefield.script-loaded";
-
     /**
      * The value parameter of a DateField must be a {@link java.util.Date}.
      */
@@ -127,44 +124,17 @@ public class DateField extends AbstractField
     @Inject
     private Messages messages;
 
-    @Inject
-    private AssetSource assetSource;
-
     @Environmental
     private ValidationTracker tracker;
 
     @Environmental
-    private RenderSupport renderSupport;
-
-    @Environmental
-    private ClientBehaviorSupport clientBehaviorSupport;
-
-    @Inject
-    @Symbol(DateFieldSymbols.JSCALENDAR_PATH)
-    private String calendarPath;
-
-    @Inject
-    @Symbol(DateFieldSymbols.SKIN)
-    private String skin;
-
-    @Inject
-    @Symbol(DateFieldSymbols.THEME)
-    private String theme;
-
-    @Inject
-    @Path("tapx-datefield.js")
-    private Asset datefieldLibrary;
+    private JavascriptSupport javascriptSupport;
 
     @Inject
     private FieldValidationSupport fieldValidationSupport;
 
     @Inject
     private DateFieldFormatConverter formatConverter;
-
-    // There's support for some language variations as well, but didn't want to get into that.
-    private static final Set<String> SUPPORTED_LANGUAGES = CollectionFactory
-            .newSet(TapestryInternalUtils
-                    .splitAtCommas("af,al,big,big5,br,ca,cs,da,de,du,el,en,es,eu,fi,fr,hr,hu,it,jp,ko,lt,lv,nl,no,pl,pt,ro,ru,si,sk,sp,sr,sv,tr,zh"));
 
     /**
      * Computes a default value for the "validate" parameter using
@@ -272,44 +242,10 @@ public class DateField extends AbstractField
         "alt", "[Show]");
         writer.end(); // img
 
-        if (request.getAttribute(SCRIPTS_INCLUDED) == null)
-        {
-            String language = locale.getLanguage();
+        JSONObject spec = new JSONObject("clientId", clientId, "clientDateFormat", formatConverter
+                .convertToClient(format)).put("time", time);
 
-            String supported = SUPPORTED_LANGUAGES.contains(language) ? language : "en";
-
-            // Can't use annotations when so much is calculated dynamically.
-
-            renderSupport.addClasspathScriptLink(calendarPath + "/calendar.js",
-
-            calendarPath + "/calendar-setup.js",
-
-            calendarPath + "/lang/calendar-" + supported + ".js");
-
-            renderSupport.addScriptLink(datefieldLibrary);
-
-            // All calendars on the page will share the same theme and skin, because that theme/skin is
-            // implemented via including the correct CSS style sheets (and can't be selected per
-            // widget, which would be visually confusing anyway).)
-
-            renderSupport.addStylesheetLink(findCalendarAsset("skins/" + skin + "/theme.css"), null);
-            renderSupport.addStylesheetLink(findCalendarAsset("calendar-" + theme + ".css"), null);
-
-            request.setAttribute(SCRIPTS_INCLUDED, true);
-        }
-
-        JSONObject spec = new JSONObject();
-
-        spec.put("clientId", clientId);
-        spec.put("time", time);
-        spec.put("clientDateFormat", formatConverter.convertToClient(format));
-
-        renderSupport.addInit("tapxDateField", spec);
-    }
-
-    private Asset findCalendarAsset(String path)
-    {
-        return assetSource.getAsset(null, calendarPath + "/" + path, null);
+        javascriptSupport.addInitializerCall("tapxDateField", spec);
     }
 
     private String formatCurrentValue()
@@ -336,7 +272,7 @@ public class DateField extends AbstractField
         }
         catch (ParseException ex)
         {
-            tracker.recordError(this, messages.format("date-value-not-parseable", value));
+            tracker.recordError(this, messages.format("tapx-date-value-not-parseable", value));
             return;
         }
 
