@@ -11,6 +11,8 @@ Calendar._DN = new Array
 
 Calendar._SDN_len = 2;
 
+Calendar._FD = 0;
+
 Calendar._MN = new Array
 ("Januari",
  "Februari",
