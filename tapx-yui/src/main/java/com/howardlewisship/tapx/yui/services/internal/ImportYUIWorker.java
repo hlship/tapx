@@ -17,7 +17,6 @@ package com.howardlewisship.tapx.yui.services.internal;
 import org.apache.tapestry5.Asset;
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.annotations.BeginRender;
-import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.annotations.Symbol;
 import org.apache.tapestry5.model.MutableComponentModel;
 import org.apache.tapestry5.services.AssetSource;
@@ -46,7 +45,6 @@ public class ImportYUIWorker implements ComponentClassTransformWorker
 
     JavascriptSupport javascriptSupport,
 
-    @Inject
     @Symbol(YuiSymbols.BASE)
     String yuiBase,
 

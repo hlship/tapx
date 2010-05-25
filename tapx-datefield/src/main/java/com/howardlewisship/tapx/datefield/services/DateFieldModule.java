@@ -58,7 +58,7 @@ public class DateFieldModule
     }
 
     public static void contributeComponentMessagesSource(OrderedConfiguration<Resource> configuration,
-            @Value("classpath:com/howardlewisship/tapx/datefield/tapx-datefield.properties")
+            @Value("com/howardlewisship/tapx/datefield/tapx-datefield.properties")
             Resource catalog)
     {
         configuration.add("TapxDateField", catalog, "before:AppCatalog");

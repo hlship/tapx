@@ -19,7 +19,6 @@ import java.util.Set;
 
 import org.apache.tapestry5.Asset;
 import org.apache.tapestry5.internal.TapestryInternalUtils;
-import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.annotations.Symbol;
 import org.apache.tapestry5.ioc.internal.util.CollectionFactory;
 import org.apache.tapestry5.ioc.internal.util.Func;
@@ -44,9 +43,11 @@ public class DateFieldStack implements JavascriptStack
 
     private final List<StylesheetLink> stylesheets;
 
-    public DateFieldStack(ThreadLocale threadLocale, AssetSource assetSource, @Inject
+    public DateFieldStack(ThreadLocale threadLocale, AssetSource assetSource,
+
     @Symbol(DateFieldSymbols.SKIN)
-    String skin, @Inject
+    String skin,
+
     @Symbol(DateFieldSymbols.THEME)
     String theme)
     {
