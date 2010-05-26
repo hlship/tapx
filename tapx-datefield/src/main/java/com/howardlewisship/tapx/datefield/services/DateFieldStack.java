@@ -75,13 +75,11 @@ public class DateFieldStack implements JavascriptStack
         }, paths);
     }
 
-    @Override
     public String getInitialization()
     {
         return null;
     }
 
-    @Override
     public List<Asset> getJavascriptLibraries()
     {
         String language = threadLocale.getLocale().getLanguage();
@@ -93,7 +91,6 @@ public class DateFieldStack implements JavascriptStack
                 "com/howardlewisship/tapx/datefield/tapx-datefield.js");
     }
 
-    @Override
     public List<StylesheetLink> getStylesheets()
     {
         return stylesheets;
