@@ -23,12 +23,13 @@ import org.apache.tapestry5.ioc.annotations.Value;
 import org.apache.tapestry5.services.LibraryMapping;
 
 import com.howardlewisship.tapx.core.CoreSymbols;
+import com.howardlewisship.tapx.core.internal.services.KaptchaProducerImpl;
 
 public class CoreModule
 {
     public static void bind(ServiceBinder binder)
     {
-        binder.bind(KaptchaProducer.class);
+        binder.bind(KaptchaProducer.class, KaptchaProducerImpl.class);
     }
 
     public static void contributeFactoryDefaults(MappedConfiguration<String, String> configuration)
