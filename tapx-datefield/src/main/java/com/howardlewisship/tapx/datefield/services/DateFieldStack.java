@@ -21,9 +21,9 @@ import org.apache.tapestry5.Asset;
 import org.apache.tapestry5.internal.TapestryInternalUtils;
 import org.apache.tapestry5.ioc.annotations.Symbol;
 import org.apache.tapestry5.ioc.internal.util.CollectionFactory;
-import org.apache.tapestry5.ioc.internal.util.Func;
-import org.apache.tapestry5.ioc.services.Coercion;
 import org.apache.tapestry5.ioc.services.ThreadLocale;
+import org.apache.tapestry5.ioc.util.func.AbstractMapper;
+import org.apache.tapestry5.ioc.util.func.F;
 import org.apache.tapestry5.services.AssetSource;
 import org.apache.tapestry5.services.javascript.JavascriptStack;
 import org.apache.tapestry5.services.javascript.StylesheetLink;
@@ -66,11 +66,10 @@ public class DateFieldStack implements JavascriptStack
 
     private List<Asset> toAssets(String... paths)
     {
-        return Func.map(new Coercion<String, Asset>()
+        return F.map(new AbstractMapper<String, Asset>()
         {
-            public Asset coerce(String path)
+            public Asset map(String path)
             {
-
                 return assetSource.getExpandedAsset(path);
             };
         }, paths);
