@@ -1,22 +1,18 @@
-<html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:tx="tapestry-library:tapx">
-  <head>
-    <title>tapx-core Demos</title>
-  </head>
-  <body>
+<t:layout xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:tx="tapestry-library:tapx">
 
-    <h1>tapx-core Demos</h1>
 
-    <ul>
-      <li>
-        <t:pagelink page="kaptchaDemo">Kaptcha Demo</t:pagelink>
-      </li>
-      <li>
-        <t:pagelink page="ConfirmDemo">Confirm Mixin Demo</t:pagelink>
-      </li>
-      <li>
-        <t:pagelink page="SetEditorDemo">SetEditor Demo</t:pagelink>
-      </li>
-    </ul>
+  <h1>tapx-core Demos</h1>
 
-  </body>
-</html>
+  <ul>
+    <li>
+      <t:pagelink page="kaptchaDemo">Kaptcha Demo</t:pagelink>
+    </li>
+    <li>
+      <t:pagelink page="ConfirmDemo">Confirm Mixin Demo</t:pagelink>
+    </li>
+    <li>
+      <t:pagelink page="SetEditorDemo">SetEditor Demo</t:pagelink>
+    </li>
+  </ul>
+
+</t:layout>

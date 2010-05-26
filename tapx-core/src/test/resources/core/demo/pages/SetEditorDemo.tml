@@ -1,32 +1,24 @@
-<html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter"
-  xmlns:x="tapestry-library:tapx">
-  <head>
-    <title>SetEditor Demo</title>
-  </head>
-
-  <body>
-
-    <h1>SetEditor Demo</h1>
-
-    <h2>Input Form</h2>
-
-    <t:form>
-
-      <x:seteditor set="values"/>
-
-      <br clear="both"/>
-
-      <input type="submit" value="Update"/>
-    </t:form>
+<t:layout xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:x="tapestry-library:tapx">
 
 
-    <h2>Output</h2>
+  <h2>Input Form</h2>
 
-    <ul id="submitted-values">
-      <li t:type="loop" source="values" value="value">
-        ${value}
+  <t:form>
+
+    <x:seteditor set="values"/>
+
+    <br clear="both"/>
+
+    <input type="submit" value="Update"/>
+  </t:form>
+
+
+  <h2>Output</h2>
+
+  <ul id="submitted-values">
+    <li t:type="loop" source="values" value="value">
+      ${value}
       </li>
-    </ul>
+  </ul>
 
-  </body>
-</html>
+</t:layout>
