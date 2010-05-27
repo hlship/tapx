@@ -13,6 +13,9 @@
     <li>
       <t:pagelink page="SetEditorDemo">SetEditor Demo</t:pagelink>
     </li>
+    <li>
+      <t:pagelink page="DynamicDemo">Dynamic Demo</t:pagelink>
+    </li>
   </ul>
 
 </t:layout>

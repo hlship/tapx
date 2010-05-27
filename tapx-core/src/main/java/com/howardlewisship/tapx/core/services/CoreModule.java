@@ -14,15 +14,25 @@
 
 package com.howardlewisship.tapx.core.services;
 
+import org.apache.tapestry5.Asset;
 import org.apache.tapestry5.ioc.Configuration;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.OrderedConfiguration;
 import org.apache.tapestry5.ioc.Resource;
 import org.apache.tapestry5.ioc.ServiceBinder;
+import org.apache.tapestry5.ioc.annotations.Autobuild;
+import org.apache.tapestry5.ioc.annotations.Local;
 import org.apache.tapestry5.ioc.annotations.Value;
+import org.apache.tapestry5.ioc.services.ClasspathURLConverter;
+import org.apache.tapestry5.ioc.services.Coercion;
+import org.apache.tapestry5.ioc.services.CoercionTuple;
 import org.apache.tapestry5.services.LibraryMapping;
+import org.apache.tapestry5.services.UpdateListenerHub;
 
 import com.howardlewisship.tapx.core.CoreSymbols;
+import com.howardlewisship.tapx.core.dynamic.DynamicTemplate;
+import com.howardlewisship.tapx.core.dynamic.DynamicTemplateParser;
+import com.howardlewisship.tapx.core.internal.dynamic.DynamicTemplateParserImpl;
 import com.howardlewisship.tapx.core.internal.services.KaptchaProducerImpl;
 
 public class CoreModule
@@ -47,5 +57,43 @@ public class CoreModule
             Resource coreCatalog)
     {
         configuration.add("TapxCore", coreCatalog, "before:AppCatalog");
+    }
+
+    /**
+     * Contributes:
+     * <ul>
+     * <li>{@link Resource} to {@link DynamicTemplate}</li>
+     * <li>{@link Asset} to {@link Resource}</li>
+     * </ul>
+     */
+    public static void contributeTypeCoercer(Configuration<CoercionTuple> configuration,
+
+    @Local
+    final DynamicTemplateParser parser)
+    {
+        configuration.add(CoercionTuple.create(Resource.class, DynamicTemplate.class,
+                new Coercion<Resource, DynamicTemplate>()
+                {
+                    public DynamicTemplate coerce(Resource input)
+                    {
+                        return parser.parseTemplate(input);
+                    }
+                }));
+
+        configuration.add(CoercionTuple.create(Asset.class, Resource.class, new Coercion<Asset, Resource>()
+        {
+            public Resource coerce(Asset input)
+            {
+                return input.getResource();
+            }
+        }));
+    }
+
+    public static DynamicTemplateParser buildDynamicTemplateParser(@Autobuild
+    DynamicTemplateParserImpl service, UpdateListenerHub updateListenerHub)
+    {
+        updateListenerHub.addUpdateListener(service);
+
+        return service;
     }
 }
