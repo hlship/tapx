@@ -16,6 +16,7 @@
         </menu>
 
         <menu name="Modules">
+            <item name="tapx-core" href="tapx-core/"/>
             <item name="tapx-datefield" href="tapx-datefield/"/>
             <item name="tapx-templating" href="tapx-templating/"/>
             <item name="tapx-plainmessage" href="tapx-plainmessage"/>
