@@ -33,12 +33,10 @@ import org.apache.tapestry5.ioc.Resource;
 import org.apache.tapestry5.ioc.internal.util.CollectionFactory;
 import org.apache.tapestry5.ioc.internal.util.InternalUtils;
 import org.apache.tapestry5.ioc.internal.util.TapestryException;
-import org.apache.tapestry5.ioc.util.func.AbstractMapper;
-import org.apache.tapestry5.ioc.util.func.AbstractWorker;
-import org.apache.tapestry5.ioc.util.func.F;
-import org.apache.tapestry5.ioc.util.func.Flow;
-import org.apache.tapestry5.ioc.util.func.Mapper;
-import org.apache.tapestry5.ioc.util.func.Worker;
+import org.apache.tapestry5.func.F;
+import org.apache.tapestry5.func.Flow;
+import org.apache.tapestry5.func.Mapper;
+import org.apache.tapestry5.func.Worker;
 import org.apache.tapestry5.runtime.RenderCommand;
 import org.apache.tapestry5.runtime.RenderQueue;
 
@@ -363,7 +361,7 @@ class DynamicTemplateSaxParser
 
     private static Worker<RenderCommand> createQueueRenderCommand(final RenderQueue queue)
     {
-        return new AbstractWorker<RenderCommand>()
+        return new Worker<RenderCommand>()
         {
             public void work(RenderCommand value)
             {
@@ -386,7 +384,7 @@ class DynamicTemplateSaxParser
     private static Mapper<DynamicTemplateElement, RenderCommand> createToRenderCommandMapper(
             final BlockSource blockSource)
     {
-        return new AbstractMapper<DynamicTemplateElement, RenderCommand>()
+        return new Mapper<DynamicTemplateElement, RenderCommand>()
         {
             public RenderCommand map(final DynamicTemplateElement value)
             {

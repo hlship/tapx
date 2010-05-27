@@ -18,12 +18,12 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.tapestry5.Asset;
+import org.apache.tapestry5.func.F;
+import org.apache.tapestry5.func.Mapper;
 import org.apache.tapestry5.internal.TapestryInternalUtils;
 import org.apache.tapestry5.ioc.annotations.Symbol;
 import org.apache.tapestry5.ioc.internal.util.CollectionFactory;
 import org.apache.tapestry5.ioc.services.ThreadLocale;
-import org.apache.tapestry5.ioc.util.func.AbstractMapper;
-import org.apache.tapestry5.ioc.util.func.F;
 import org.apache.tapestry5.services.AssetSource;
 import org.apache.tapestry5.services.javascript.JavascriptStack;
 import org.apache.tapestry5.services.javascript.StylesheetLink;
@@ -66,13 +66,13 @@ public class DateFieldStack implements JavascriptStack
 
     private List<Asset> toAssets(String... paths)
     {
-        return F.map(new AbstractMapper<String, Asset>()
+        return F.flow(paths).map(new Mapper<String, Asset>()
         {
             public Asset map(String path)
             {
                 return assetSource.getExpandedAsset(path);
             };
-        }, paths);
+        }).toList();
     }
 
     public String getInitialization()
