@@ -52,7 +52,6 @@ public class Dynamic
 
     private final BlockSource blockSource = new BlockSource()
     {
-        @Override
         public Block getBlock(String name)
         {
             Block result = resources.getBlockParameter(name);
