@@ -17,6 +17,10 @@ package com.howardlewisship.tapx.yui.services.internal;
 import org.apache.tapestry5.Asset;
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.annotations.BeginRender;
+import org.apache.tapestry5.func.F;
+import org.apache.tapestry5.func.Flow;
+import org.apache.tapestry5.func.Mapper;
+import org.apache.tapestry5.func.Worker;
 import org.apache.tapestry5.ioc.annotations.Symbol;
 import org.apache.tapestry5.model.MutableComponentModel;
 import org.apache.tapestry5.services.AssetSource;
@@ -39,7 +43,7 @@ public class ImportYUIWorker implements ComponentClassTransformWorker
 
     private final String yuiBase;
 
-    private final String suffix;
+    private final boolean productionMode;
 
     public ImportYUIWorker(AssetSource assetSource,
 
@@ -55,9 +59,45 @@ public class ImportYUIWorker implements ComponentClassTransformWorker
         this.javascriptSupport = javascriptSupport;
 
         this.yuiBase = yuiBase;
-
-        this.suffix = productionMode ? "-min.js" : ".js";
+        this.productionMode = productionMode;
     }
+
+    private final Mapper<String, String> expandSimpleName = new Mapper<String, String>()
+    {
+        public String map(String name)
+        {
+            String relativePath = name.contains("/") ? name : name + "/" + name;
+
+            return yuiBase + "/build/" + relativePath;
+        }
+    };
+
+    private final Mapper<String, Asset> pathToAsset = new Mapper<String, Asset>()
+    {
+        public Asset map(String path)
+        {
+
+            if (!productionMode)
+            {
+                String minPath = path + "-min.js";
+
+                Asset asset = assetSource.getExpandedAsset(minPath);
+
+                if (asset.getResource().exists())
+                    return asset;
+            }
+
+            return assetSource.getExpandedAsset(path + ".js");
+        }
+    };
+
+    private final Worker<Asset> importLibrary = new Worker<Asset>()
+    {
+        public void work(Asset value)
+        {
+            javascriptSupport.importJavascriptLibrary(value);
+        }
+    };
 
     public void transform(ClassTransformation transformation, MutableComponentModel model)
     {
@@ -66,65 +106,31 @@ public class ImportYUIWorker implements ComponentClassTransformWorker
         if (annotation == null)
             return;
 
-        String[] paths = expand(annotation.value());
+        Flow<Asset> assetFlow = F.flow(annotation.value()).map(expandSimpleName).map(pathToAsset);
 
-        addAdvicetoBeginRender(transformation, paths);
+        addAdvicetoBeginRender(transformation, assetFlow);
 
         model.addRenderPhase(BeginRender.class);
     }
 
-    private void addAdvicetoBeginRender(ClassTransformation transformation, String[] paths)
+    private void addAdvicetoBeginRender(ClassTransformation transformation, Flow<Asset> assetFlow)
     {
         TransformMethod method = transformation.getOrCreateMethod(TransformConstants.BEGIN_RENDER_SIGNATURE);
 
-        method.addAdvice(createBeginRenderAdvice(paths));
+        method.addAdvice(createBeginRenderAdvice(assetFlow));
     }
 
-    private ComponentMethodAdvice createBeginRenderAdvice(final String[] paths)
+    private ComponentMethodAdvice createBeginRenderAdvice(final Flow<Asset> assetFlow)
     {
+
         return new ComponentMethodAdvice()
         {
             public void advise(ComponentMethodInvocation invocation)
             {
-                importJavascriptLibrariesForPaths(paths);
+                assetFlow.each(importLibrary);
 
                 invocation.proceed();
             }
         };
     }
-
-    private String[] expand(String[] names)
-    {
-        String[] result = new String[names.length];
-
-        for (int i = 0; i < names.length; i++)
-        {
-            result[i] = expand(names[i]);
-        }
-
-        return result;
-    }
-
-    private String expand(String name)
-    {
-        String relativePath = name.contains("/") ? name : name + "/" + name;
-
-        return yuiBase + "/build/" + relativePath + suffix;
-    }
-
-    private void importJavascriptLibrariesForPaths(final String[] paths)
-    {
-        for (String path : paths)
-        {
-            importJavascriptLibraryForPath(path);
-        }
-    }
-
-    private void importJavascriptLibraryForPath(String path)
-    {
-        Asset pathAsset = assetSource.getAsset(null, path, null);
-
-        javascriptSupport.importJavascriptLibrary(pathAsset);
-    }
-
 }

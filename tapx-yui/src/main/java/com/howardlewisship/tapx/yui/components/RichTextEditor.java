@@ -15,8 +15,7 @@
 package com.howardlewisship.tapx.yui.components;
 
 import org.apache.tapestry5.annotations.Environmental;
-import org.apache.tapestry5.annotations.IncludeJavaScriptLibrary;
-import org.apache.tapestry5.annotations.IncludeStylesheet;
+import org.apache.tapestry5.annotations.Import;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.corelib.components.TextArea;
 import org.apache.tapestry5.json.JSONObject;
@@ -26,8 +25,7 @@ import com.howardlewisship.tapx.yui.ImportYUI;
 
 @ImportYUI(
 { "yahoo-dom-event", "element", "container/container_core", "menu", "button", "editor/simpleeditor" })
-@IncludeJavaScriptLibrary("richtexteditor.js")
-@IncludeStylesheet("${tapx-yui.skins}/sam/skin.css")
+@Import(library = "richtexteditor.js", stylesheet = "${tapx-yui.skins}/sam/skin.css")
 public class RichTextEditor extends TextArea
 {
     @Environmental
