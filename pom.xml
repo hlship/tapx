@@ -163,6 +163,10 @@
         <enabled>true</enabled>
       </snapshots>
     </repository>
+    <repository>
+      <id>tapestry-360</id>
+      <url>http://tapestry.formos.com/maven-repository/</url>
+    </repository>
   </repositories>
   <distributionManagement>
     <repository>
