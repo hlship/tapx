@@ -16,6 +16,9 @@
     <li>
       <t:pagelink page="DynamicDemo">Dynamic Demo</t:pagelink>
     </li>
+    <li>
+      <t:pagelink page="DynamicExpansionsDemo">Expansions in Dynamic Templates</t:pagelink>
+    </li>
   </ul>
 
 </t:layout>

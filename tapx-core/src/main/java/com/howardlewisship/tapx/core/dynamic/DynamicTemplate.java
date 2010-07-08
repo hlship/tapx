@@ -26,5 +26,9 @@ import org.apache.tapestry5.runtime.RenderCommand;
  */
 public interface DynamicTemplate
 {
-    RenderCommand createRenderCommand(BlockSource blockSource);
+    /**
+     * Given a delegate (to assist with locating Blocks and evaluating expressions) ... create a
+     * RenderCommand that can be returned from a render phase method.
+     */
+    RenderCommand createRenderCommand(DynamicDelegate delegate);
 }

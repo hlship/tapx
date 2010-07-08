@@ -1,0 +1,11 @@
+<div>
+  <style>
+  
+    em.red { color: red; }
+</style>
+
+  <p xml:space="preserve">
+    The value of the color property is
+    <em id="color-value" class="red">${color}</em>.
+  </p>
+</div>

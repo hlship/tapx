@@ -14,6 +14,7 @@
 
 package com.howardlewisship.tapx.core.components;
 
+import org.apache.tapestry5.BindingConstants;
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.ComponentResources;
 import org.apache.tapestry5.annotations.Parameter;
@@ -23,7 +24,7 @@ import org.apache.tapestry5.ioc.util.AvailableValues;
 import org.apache.tapestry5.ioc.util.UnknownValueException;
 import org.apache.tapestry5.runtime.RenderCommand;
 
-import com.howardlewisship.tapx.core.dynamic.BlockSource;
+import com.howardlewisship.tapx.core.dynamic.DynamicDelegate;
 import com.howardlewisship.tapx.core.dynamic.DynamicTemplate;
 import com.howardlewisship.tapx.core.dynamic.DynamicTemplateParser;
 
@@ -44,14 +45,19 @@ import com.howardlewisship.tapx.core.dynamic.DynamicTemplateParser;
 @SupportsInformalParameters
 public class Dynamic
 {
-    @Parameter(required = true, allowNull = false)
+    @Parameter(required = true, allowNull = false, defaultPrefix = BindingConstants.ASSET)
     private DynamicTemplate template;
 
     @Inject
     private ComponentResources resources;
 
-    private final BlockSource blockSource = new BlockSource()
+    private final DynamicDelegate delegate = new DynamicDelegate()
     {
+        public Object getExpressionRoot()
+        {
+            return resources.getContainer();
+        }
+
         public Block getBlock(String name)
         {
             Block result = resources.getBlockParameter(name);
@@ -69,6 +75,6 @@ public class Dynamic
     {
         // Probably some room for caching here as well. It shouldn't be necessary to re-create the outermost
         // RenderCommand every time, unless the template has changed from the previous render.
-        return template.createRenderCommand(blockSource);
+        return template.createRenderCommand(delegate);
     }
 }

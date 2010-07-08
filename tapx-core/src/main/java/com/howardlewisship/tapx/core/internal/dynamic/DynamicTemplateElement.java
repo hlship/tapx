@@ -18,7 +18,7 @@ import org.apache.tapestry5.MarkupWriter;
 import org.apache.tapestry5.runtime.RenderCommand;
 import org.apache.tapestry5.runtime.RenderQueue;
 
-import com.howardlewisship.tapx.core.dynamic.BlockSource;
+import com.howardlewisship.tapx.core.dynamic.DynamicDelegate;
 import com.howardlewisship.tapx.core.dynamic.DynamicTemplate;
 
 /**
@@ -31,5 +31,5 @@ public interface DynamicTemplateElement
      * is used to queue up rendering commands for the body of the element as well as a command to close
      * the element started.
      */
-    void render(MarkupWriter writer, RenderQueue queue, BlockSource blockSource);
+    void render(MarkupWriter writer, RenderQueue queue, DynamicDelegate delegate);
 }

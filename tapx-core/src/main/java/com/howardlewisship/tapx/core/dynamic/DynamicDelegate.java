@@ -24,8 +24,14 @@ import com.howardlewisship.tapx.core.components.Dynamic;
  * 
  * @since 1.1
  */
-public interface BlockSource
+public interface DynamicDelegate
 {
+    /**
+     * Returns the root object used when evaluation property expressions. This will be the
+     * container of the {@link Dynamic} component.
+     */
+    Object getExpressionRoot();
+
     /**
      * Returns the Block with the given unique name.
      * 

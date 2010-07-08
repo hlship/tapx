@@ -19,11 +19,15 @@ import org.testng.annotations.Test;
 
 class DynamicTest extends SeleniumTestCase
 {
+    void clickThru(link) {
+        openBaseURL();
+        
+        clickAndWait "link=$link"
+    }
+    
     @Test
     void dynamic_component() {
-        openBaseURL()
-        
-        clickAndWait "link=Dynamic Demo"
+        clickThru "Dynamic Demo"
         
         assertText "templateid", "1"
         assertText "target", "2"
@@ -36,5 +40,14 @@ class DynamicTest extends SeleniumTestCase
         clickAndWait "link=1"
         
         assertText "templateid", "1"
+    }
+    
+    @Test
+    void expansion_in_dynamic_template_body() {
+        clickThru "Expansions in Dynamic Templates"
+        
+        // red is from a property, the expansion is in expansion.xml (not the TML file)
+        
+        assertText "color-value", "red"
     }
 }

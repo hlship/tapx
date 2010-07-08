@@ -25,6 +25,11 @@ import javax.xml.namespace.QName;
 
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.MarkupWriter;
+import org.apache.tapestry5.PropertyConduit;
+import org.apache.tapestry5.func.F;
+import org.apache.tapestry5.func.Flow;
+import org.apache.tapestry5.func.Mapper;
+import org.apache.tapestry5.func.Worker;
 import org.apache.tapestry5.internal.parser.AttributeToken;
 import org.apache.tapestry5.internal.services.XMLTokenStream;
 import org.apache.tapestry5.internal.services.XMLTokenType;
@@ -33,20 +38,19 @@ import org.apache.tapestry5.ioc.Resource;
 import org.apache.tapestry5.ioc.internal.util.CollectionFactory;
 import org.apache.tapestry5.ioc.internal.util.InternalUtils;
 import org.apache.tapestry5.ioc.internal.util.TapestryException;
-import org.apache.tapestry5.func.F;
-import org.apache.tapestry5.func.Flow;
-import org.apache.tapestry5.func.Mapper;
-import org.apache.tapestry5.func.Worker;
 import org.apache.tapestry5.runtime.RenderCommand;
 import org.apache.tapestry5.runtime.RenderQueue;
+import org.apache.tapestry5.services.PropertyConduitSource;
 
-import com.howardlewisship.tapx.core.dynamic.BlockSource;
+import com.howardlewisship.tapx.core.dynamic.DynamicDelegate;
 import com.howardlewisship.tapx.core.dynamic.DynamicTemplate;
 
 /** Does the heavy lifting for {@link DynamicTemplateParserImpl}. */
 class DynamicTemplateSaxParser
 {
     private final Resource resource;
+
+    private final PropertyConduitSource propertyConduitSource;
 
     private final XMLTokenStream tokenStream;
 
@@ -55,18 +59,22 @@ class DynamicTemplateSaxParser
     private static final Pattern PARAM_ID_PATTERN = Pattern.compile("^param:(\\p{Alpha}\\w*)$",
             Pattern.CASE_INSENSITIVE);
 
+    private static final Pattern EXPANSION_PATTERN = Pattern.compile("\\$\\{\\s*(.*?)\\s*}");
+
     private static final DynamicTemplateElement END = new DynamicTemplateElement()
     {
-        public void render(MarkupWriter writer, RenderQueue queue, BlockSource blockSource)
+        public void render(MarkupWriter writer, RenderQueue queue, DynamicDelegate delegate)
         {
             // End the previously started element
             writer.end();
         }
     };
 
-    DynamicTemplateSaxParser(Resource resource)
+    DynamicTemplateSaxParser(Resource resource, PropertyConduitSource propertyConduitSource)
     {
         this.resource = resource;
+        this.propertyConduitSource = propertyConduitSource;
+
         this.tokenStream = new XMLTokenStream(resource, publicIdToURL);
     }
 
@@ -94,9 +102,9 @@ class DynamicTemplateSaxParser
 
         return new DynamicTemplate()
         {
-            public RenderCommand createRenderCommand(final BlockSource blockSource)
+            public RenderCommand createRenderCommand(final DynamicDelegate delegate)
             {
-                final Mapper<DynamicTemplateElement, RenderCommand> toRenderCommand = createToRenderCommandMapper(blockSource);
+                final Mapper<DynamicTemplateElement, RenderCommand> toRenderCommand = createToRenderCommandMapper(delegate);
 
                 return new RenderCommand()
                 {
@@ -128,7 +136,7 @@ class DynamicTemplateSaxParser
                     break;
 
                 default:
-                    result.add(textContent());
+                    addTextContent(result);
             }
         }
 
@@ -202,7 +210,7 @@ class DynamicTemplateSaxParser
 
                 default:
 
-                    body.add(textContent());
+                    addTextContent(body);
             }
         }
 
@@ -216,7 +224,7 @@ class DynamicTemplateSaxParser
 
         return new DynamicTemplateElement()
         {
-            public void render(MarkupWriter writer, RenderQueue queue, BlockSource blockSource)
+            public void render(MarkupWriter writer, RenderQueue queue, DynamicDelegate delegate)
             {
                 // Write the element ...
 
@@ -232,7 +240,7 @@ class DynamicTemplateSaxParser
                 // And convert the DTEs for the direct children of this element into RenderCommands and push them onto
                 // the queue. This includes the child that will end the started element.
 
-                Mapper<DynamicTemplateElement, RenderCommand> toRenderCommand = createToRenderCommandMapper(blockSource);
+                Mapper<DynamicTemplateElement, RenderCommand> toRenderCommand = createToRenderCommandMapper(delegate);
                 Worker<RenderCommand> pushOnQueue = createQueueRenderCommand(queue);
 
                 bodyFlow.map(toRenderCommand).each(pushOnQueue);
@@ -253,19 +261,19 @@ class DynamicTemplateSaxParser
     {
         return new DynamicTemplateElement()
         {
-            public void render(MarkupWriter writer, RenderQueue queue, BlockSource blockSource)
+            public void render(MarkupWriter writer, RenderQueue queue, DynamicDelegate delegate)
             {
                 try
                 {
-                    Block block = blockSource.getBlock(blockId);
+                    Block block = delegate.getBlock(blockId);
 
                     queue.push((RenderCommand) block);
                 }
                 catch (Exception ex)
                 {
                     throw new TapestryException(String.format(
-                            "Exception rendering block '%s' as part of dynamic template: %s", blockId, InternalUtils
-                                    .toMessage(ex)), location, ex);
+                            "Exception rendering block '%s' as part of dynamic template: %s", blockId,
+                            InternalUtils.toMessage(ex)), location, ex);
                 }
             }
         };
@@ -304,20 +312,60 @@ class DynamicTemplateSaxParser
         }
     }
 
-    private DynamicTemplateElement textContent()
+    void addTextContent(List<DynamicTemplateElement> elements)
     {
         switch (tokenStream.getEventType())
         {
             case COMMENT:
-                return comment();
+                elements.add(comment());
+                break;
 
             case CHARACTERS:
             case SPACE:
-                return characters();
+                addTokensForText(elements);
+                break;
 
             default:
-                return unexpectedEventType();
+                unexpectedEventType();
         }
+    }
+
+    private void addTokensForText(List<DynamicTemplateElement> elements)
+    {
+        Location location = tokenStream.getLocation();
+
+        String text = tokenStream.getText();
+
+        Matcher matcher = EXPANSION_PATTERN.matcher(text);
+
+        int startx = 0;
+
+        while (matcher.find())
+        {
+            int matchStart = matcher.start();
+
+            if (matchStart != startx)
+            {
+                String prefix = text.substring(startx, matchStart);
+
+                elements.add(createTextWriterElement(prefix));
+            }
+
+            // Group 1 includes the real text of the expansion, with whitespace
+            // around the
+            // expression (but inside the curly braces) excluded.
+
+            String expression = matcher.group(1);
+
+            elements.add(createExpansionElement(expression, location, propertyConduitSource));
+
+            startx = matcher.end();
+        }
+
+        // Catch anything after the final regexp match.
+
+        if (startx < text.length())
+            elements.add(createTextWriterElement(text.substring(startx, text.length())));
     }
 
     private DynamicTemplateElement comment()
@@ -329,25 +377,46 @@ class DynamicTemplateSaxParser
     {
         return new DynamicTemplateElement()
         {
-            public void render(MarkupWriter writer, RenderQueue queue, BlockSource blockSource)
+            public void render(MarkupWriter writer, RenderQueue queue, DynamicDelegate delegate)
             {
                 writer.comment(content);
             }
         };
     }
 
-    private DynamicTemplateElement characters()
-    {
-        return createTextWriterElement(tokenStream.getText());
-    }
-
     private static DynamicTemplateElement createTextWriterElement(final String content)
     {
         return new DynamicTemplateElement()
         {
-            public void render(MarkupWriter writer, RenderQueue queue, BlockSource blockSource)
+            public void render(MarkupWriter writer, RenderQueue queue, DynamicDelegate delegate)
             {
                 writer.write(content);
+            }
+        };
+    }
+
+    private static DynamicTemplateElement createExpansionElement(final String expression, final Location location,
+            final PropertyConduitSource conduitSource)
+    {
+        return new DynamicTemplateElement()
+        {
+            public void render(MarkupWriter writer, RenderQueue queue, DynamicDelegate delegate)
+            {
+                Object expressionRoot = delegate.getExpressionRoot();
+
+                try
+                {
+                    PropertyConduit conduit = conduitSource.create(expressionRoot.getClass(), expression);
+
+                    Object value = conduit.get(expressionRoot);
+
+                    if (value != null)
+                        writer.write(value.toString());
+                }
+                catch (Throwable t)
+                {
+                    throw new TapestryException(InternalUtils.toMessage(t), location, t);
+                }
             }
         };
     }
@@ -370,25 +439,25 @@ class DynamicTemplateSaxParser
         };
     }
 
-    private static RenderCommand toRenderCommand(final DynamicTemplateElement value, final BlockSource blockSource)
+    private static RenderCommand toRenderCommand(final DynamicTemplateElement value, final DynamicDelegate delegate)
     {
         return new RenderCommand()
         {
             public void render(MarkupWriter writer, RenderQueue queue)
             {
-                value.render(writer, queue, blockSource);
+                value.render(writer, queue, delegate);
             }
         };
     }
 
     private static Mapper<DynamicTemplateElement, RenderCommand> createToRenderCommandMapper(
-            final BlockSource blockSource)
+            final DynamicDelegate delegate)
     {
         return new Mapper<DynamicTemplateElement, RenderCommand>()
         {
             public RenderCommand map(final DynamicTemplateElement value)
             {
-                return toRenderCommand(value, blockSource);
+                return toRenderCommand(value, delegate);
             }
         };
     }

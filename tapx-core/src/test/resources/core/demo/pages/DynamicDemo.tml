@@ -8,7 +8,7 @@
   <p>Selected template: ${selectedTemplate.resource}</p>
 
   <div class="dynamic">
-    <x:dynamic template="selectedTemplate">
+    <x:dynamic template="prop:selectedTemplate">
       <p:switchTo1>
         <p>
           Switch back to [
