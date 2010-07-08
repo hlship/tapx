@@ -19,6 +19,9 @@
     <li>
       <t:pagelink page="DynamicExpansionsDemo">Expansions in Dynamic Templates</t:pagelink>
     </li>
+    <li>
+      <t:pagelink page="InvalidExpressionInDynamicTemplate">Invalid expression in a dynamic template</t:pagelink>
+    </li>
   </ul>
 
 </t:layout>

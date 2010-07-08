@@ -1,0 +1,6 @@
+<t:layout xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter"
+  xmlns:x="tapestry-library:tapx">
+
+  <x:dynamic template="invalid-expression.tml"/>
+
+</t:layout>

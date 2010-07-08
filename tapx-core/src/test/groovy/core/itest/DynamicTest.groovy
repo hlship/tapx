@@ -59,9 +59,18 @@ class DynamicTest extends SeleniumTestCase
     }
     
     @Test
-    public void embedded_expansion_that_is_null_removed() {
+    void embedded_expansion_that_is_null_removed() {
         clickThru "Expansions in Dynamic Templates"
         
         assertText "with-null", "[]"
+    }
+    
+    @Test
+    void exception_inside_expansion() {
+        clickThru "Invalid expression in a dynamic template"
+        
+        assertTextPresent "An unexpected application exception has occurred", 
+                "InvalidExpressionInDynamicTemplate does not contain a property (or public field) named 'xyzzyx'", 
+                'The magic word is: ${xyzzyx}'
     }
 }
