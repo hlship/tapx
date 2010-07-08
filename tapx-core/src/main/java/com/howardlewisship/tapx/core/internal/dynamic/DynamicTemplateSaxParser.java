@@ -152,7 +152,7 @@ class DynamicTemplateSaxParser
 
         int count = tokenStream.getAttributeCount();
 
-        List<AttributeToken> attributes = CollectionFactory.newList();
+        List<DynamicTemplateAttribute> attributes = CollectionFactory.newList();
 
         Location location = getLocation();
 
@@ -182,7 +182,9 @@ class DynamicTemplateSaxParser
                 }
             }
 
-            attributes.add(new AttributeToken(uri, localName, value, location));
+            Mapper<DynamicDelegate, String> attributeValueExtractor = createCompositeExtractorFromText(value, location);
+
+            attributes.add(new DynamicTemplateAttribute(uri, localName, attributeValueExtractor));
         }
 
         if (blockId != null)
@@ -218,7 +220,7 @@ class DynamicTemplateSaxParser
     }
 
     private static DynamicTemplateElement createElementWriterElement(final String elementURI, final String elementName,
-            final List<AttributeToken> attributes, List<DynamicTemplateElement> body)
+            final List<DynamicTemplateAttribute> attributes, List<DynamicTemplateElement> body)
     {
         final Flow<DynamicTemplateElement> bodyFlow = F.flow(body).reverse();
 
@@ -232,9 +234,9 @@ class DynamicTemplateSaxParser
 
                 // ... and the attributes
 
-                for (AttributeToken attribute : attributes)
+                for (DynamicTemplateAttribute attribute : attributes)
                 {
-                    writer.attributeNS(attribute.getNamespaceURI(), attribute.getName(), attribute.getValue());
+                    attribute.write(writer, delegate);
                 }
 
                 // And convert the DTEs for the direct children of this element into RenderCommands and push them onto
@@ -332,11 +334,30 @@ class DynamicTemplateSaxParser
 
     private void addTokensForText(List<DynamicTemplateElement> elements)
     {
-        Location location = tokenStream.getLocation();
+        Mapper<DynamicDelegate, String> composite = createCompositeExtractorFromText(tokenStream.getText(),
+                tokenStream.getLocation());
 
-        String text = tokenStream.getText();
+        elements.add(createTextWriterElement(composite));
+    }
 
+    private static DynamicTemplateElement createTextWriterElement(final Mapper<DynamicDelegate, String> composite)
+    {
+        return new DynamicTemplateElement()
+        {
+            public void render(MarkupWriter writer, RenderQueue queue, DynamicDelegate delegate)
+            {
+                String value = composite.map(delegate);
+
+                writer.write(value);
+            }
+        };
+    }
+
+    private Mapper<DynamicDelegate, String> createCompositeExtractorFromText(String text, Location location)
+    {
         Matcher matcher = EXPANSION_PATTERN.matcher(text);
+
+        List<Mapper<DynamicDelegate, String>> extractors = CollectionFactory.newList();
 
         int startx = 0;
 
@@ -348,7 +369,7 @@ class DynamicTemplateSaxParser
             {
                 String prefix = text.substring(startx, matchStart);
 
-                elements.add(createTextWriterElement(prefix));
+                extractors.add(createTextExtractor(prefix));
             }
 
             // Group 1 includes the real text of the expansion, with whitespace
@@ -357,7 +378,7 @@ class DynamicTemplateSaxParser
 
             String expression = matcher.group(1);
 
-            elements.add(createExpansionElement(expression, location, propertyConduitSource));
+            extractors.add(createExpansionExtractor(expression, location, propertyConduitSource));
 
             startx = matcher.end();
         }
@@ -365,7 +386,34 @@ class DynamicTemplateSaxParser
         // Catch anything after the final regexp match.
 
         if (startx < text.length())
-            elements.add(createTextWriterElement(text.substring(startx, text.length())));
+            extractors.add(createTextExtractor(text.substring(startx, text.length())));
+
+        if (extractors.size() == 1)
+            return extractors.get(0);
+
+        return creatCompositeExtractor(extractors);
+    }
+
+    private static Mapper<DynamicDelegate, String> creatCompositeExtractor(
+            final List<Mapper<DynamicDelegate, String>> extractors)
+    {
+        return new Mapper<DynamicDelegate, String>()
+        {
+            public String map(final DynamicDelegate delegate)
+            {
+                StringBuilder builder = new StringBuilder();
+
+                for (Mapper<DynamicDelegate, String> extractor : extractors)
+                {
+                    String value = extractor.map(delegate);
+
+                    if (value != null)
+                        builder.append(value);
+                }
+
+                return builder.toString();
+            }
+        };
     }
 
     private DynamicTemplateElement comment()
@@ -384,23 +432,23 @@ class DynamicTemplateSaxParser
         };
     }
 
-    private static DynamicTemplateElement createTextWriterElement(final String content)
+    private static Mapper<DynamicDelegate, String> createTextExtractor(final String content)
     {
-        return new DynamicTemplateElement()
+        return new Mapper<DynamicDelegate, String>()
         {
-            public void render(MarkupWriter writer, RenderQueue queue, DynamicDelegate delegate)
+            public String map(DynamicDelegate delegate)
             {
-                writer.write(content);
+                return content;
             }
         };
     }
 
-    private static DynamicTemplateElement createExpansionElement(final String expression, final Location location,
-            final PropertyConduitSource conduitSource)
+    private static Mapper<DynamicDelegate, String> createExpansionExtractor(final String expression,
+            final Location location, final PropertyConduitSource conduitSource)
     {
-        return new DynamicTemplateElement()
+        return new Mapper<DynamicDelegate, String>()
         {
-            public void render(MarkupWriter writer, RenderQueue queue, DynamicDelegate delegate)
+            public String map(DynamicDelegate delegate)
             {
                 Object expressionRoot = delegate.getExpressionRoot();
 
@@ -410,8 +458,7 @@ class DynamicTemplateSaxParser
 
                     Object value = conduit.get(expressionRoot);
 
-                    if (value != null)
-                        writer.write(value.toString());
+                    return value == null ? null : value.toString();
                 }
                 catch (Throwable t)
                 {

@@ -50,4 +50,18 @@ class DynamicTest extends SeleniumTestCase
         
         assertText "color-value", "red"
     }
+    
+    @Test
+    void expansion_in_attribute() {
+        clickThru "Expansions in Dynamic Templates"
+        
+        assertAttribute "//em[@id='color-value']/@class", "important"
+    }
+    
+    @Test
+    public void embedded_expansion_that_is_null_removed() {
+        clickThru "Expansions in Dynamic Templates"
+        
+        assertText "with-null", "[]"
+    }
 }

@@ -1,11 +1,15 @@
 <div>
   <style>
-  
-    em.red { color: red; }
+
+    em.important { color: red; }
 </style>
 
   <p xml:space="preserve">
     The value of the color property is
-    <em id="color-value" class="red">${color}</em>.
+    <em id="color-value" class="${cssClass}">${color}</em>.
+  </p>
+  
+  <p>
+    Expansion text with null in the middle: <span id="with-null">[${null}]</span>
   </p>
 </div>
