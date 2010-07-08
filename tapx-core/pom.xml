@@ -34,10 +34,48 @@
       <version>${tapestry-release-version}</version>
       <scope>test</scope>
     </dependency>
+
+    <dependency>
+      <groupId>org.codehaus.groovy</groupId>
+      <artifactId>groovy-all</artifactId>
+      <!-- 1.7.0 seems to match what the Eclipse Groovy plugin uses -->
+      <version>1.7.0</version>
+      <scope>test</scope>
+    </dependency>
+
+
   </dependencies>
 
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.codehaus.groovy.maven</groupId>
+        <artifactId>gmaven-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <!-- generateStubs and compile omitted as no Groovy code in main code base -->
+              <!-- generateTestStubs ommitted as it confused TestNG and/or Surefire -->
+              <goal>testCompile</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-eclipse-plugin</artifactId>
+        <version>2.8</version>
+        <configuration>
+          <downloadSources>true</downloadSources>
+          <downloadJavadocs>false</downloadJavadocs>
+          <additionalProjectnatures>
+            <projectnature>
+              org.eclipse.jdt.groovy.core.groovyNature
+             </projectnature>
+          </additionalProjectnatures>
+          <!--  NOTE: Haven't figured out how to get Maven to add src/test/groovy to the .classpath !!! -->
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
