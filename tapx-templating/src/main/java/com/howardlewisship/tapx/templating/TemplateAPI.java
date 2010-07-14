@@ -1,4 +1,4 @@
-// Copyright 2009 Howard M. Lewis Ship
+// Copyright 2009, 2010 Howard M. Lewis Ship
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,20 +14,20 @@
 
 package com.howardlewisship.tapx.templating;
 
-import com.howardlewisship.tapx.templating.internal.TemplateContext;
-import com.howardlewisship.tapx.templating.services.TemplateModule;
-import com.howardlewisship.tapx.templating.services.TemplateRendererSource;
+import java.io.File;
+import java.io.IOException;
 
 import org.apache.tapestry5.internal.TapestryAppInitializer;
 import org.apache.tapestry5.ioc.Registry;
-import org.apache.tapestry5.ioc.internal.util.Defense;
+import org.apache.tapestry5.ioc.internal.util.InternalUtils;
 import org.apache.tapestry5.services.ApplicationInitializer;
 import org.apache.tapestry5.services.Context;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.io.IOException;
+import com.howardlewisship.tapx.templating.internal.TemplateContext;
+import com.howardlewisship.tapx.templating.services.TemplateModule;
+import com.howardlewisship.tapx.templating.services.TemplateRendererSource;
 
 /**
  * Responsible for starting up the Tapestry Template Library, analagous to how TapestryFilter starts up a Tapestry
@@ -54,8 +54,8 @@ public class TemplateAPI implements TemplateRendererSource
      */
     public TemplateAPI(String applicationPackage, File contextDirectory)
     {
-        Defense.notBlank(applicationPackage, "applicationPackage");
-        Defense.notNull(contextDirectory, "contextDirectory");
+        assert InternalUtils.isNonBlank(applicationPackage);
+        assert contextDirectory != null;
 
         Context context = new TemplateContext(contextDirectory);
 

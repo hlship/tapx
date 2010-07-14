@@ -1,10 +1,10 @@
-// Copyright 2009 Howard M. Lewis Ship
+// Copyright 2009, 2010 Howard M. Lewis Ship
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//     http://www.apache.org/licenses/LICENSE-2.0
+// http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,18 +14,24 @@
 
 package com.howardlewisship.tapx.templating.internal.services;
 
-import com.howardlewisship.tapx.templating.RenderedStream;
-import com.howardlewisship.tapx.templating.RenderedStreamEnclosure;
-
 import static com.howardlewisship.tapx.templating.internal.TemplatingUtils.notSupported;
 
-import org.apache.tapestry5.Link;
-import org.apache.tapestry5.ioc.internal.util.Defense;
-import org.apache.tapestry5.services.Response;
-
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.Writer;
 import java.util.Collection;
 import java.util.Collections;
+
+import org.apache.tapestry5.Link;
+import org.apache.tapestry5.ioc.internal.util.InternalUtils;
+import org.apache.tapestry5.services.Response;
+
+import com.howardlewisship.tapx.templating.RenderedStream;
+import com.howardlewisship.tapx.templating.RenderedStreamEnclosure;
 
 public class ResponseRenderedStream extends ContentStreamImpl implements Response, RenderedStream
 {
@@ -50,7 +56,7 @@ public class ResponseRenderedStream extends ContentStreamImpl implements Respons
 
     public OutputStream getOutputStream(String contentType) throws IOException
     {
-        Defense.notBlank(contentType, "contentType");
+        assert InternalUtils.isNonBlank(contentType);
 
         // TODO: Add checks to ensure getOutputStream() is only called once.
 

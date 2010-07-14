@@ -1,4 +1,4 @@
-// Copyright 2009 Howard M. Lewis Ship
+// Copyright 2009, 2010 Howard M. Lewis Ship
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,12 +14,9 @@
 
 package com.howardlewisship.tapx.templating.internal.services;
 
-import com.howardlewisship.tapx.templating.ContentStream;
-import com.howardlewisship.tapx.templating.RenderedStream;
-import com.howardlewisship.tapx.templating.RenderedStreamEnclosure;
-import com.howardlewisship.tapx.templating.services.MailMessagePreparer;
-
-import org.apache.tapestry5.ioc.internal.util.Defense;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -29,9 +26,11 @@ import javax.mail.Multipart;
 import javax.mail.Part;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMultipart;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+
+import com.howardlewisship.tapx.templating.ContentStream;
+import com.howardlewisship.tapx.templating.RenderedStream;
+import com.howardlewisship.tapx.templating.RenderedStreamEnclosure;
+import com.howardlewisship.tapx.templating.services.MailMessagePreparer;
 
 public class MailMessagePreparerImpl implements MailMessagePreparer
 {
@@ -78,8 +77,8 @@ public class MailMessagePreparerImpl implements MailMessagePreparer
 
     public void prepareMessage(Message message, RenderedStream renderedStream) throws MessagingException
     {
-        Defense.notNull(message, "message");
-        Defense.notNull(renderedStream, "renderedStream");
+        assert message != null;
+        assert renderedStream != null;
 
         // This is a little inefficient when there is no extra content.
 

@@ -103,7 +103,6 @@ public class DateField extends AbstractField
      * generally used to provide this object in a declarative fashion.
      */
     @Parameter(defaultPrefix = BindingConstants.VALIDATE)
-    @SuppressWarnings("unchecked")
     private FieldValidator<Object> validate;
 
     @Parameter(defaultPrefix = BindingConstants.ASSET, value = "datefield.gif")

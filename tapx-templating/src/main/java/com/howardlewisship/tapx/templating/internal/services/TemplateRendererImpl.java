@@ -1,4 +1,4 @@
-// Copyright 2009 Howard M. Lewis Ship
+// Copyright 2009, 2010 Howard M. Lewis Ship
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,18 +14,18 @@
 
 package com.howardlewisship.tapx.templating.internal.services;
 
-import com.howardlewisship.tapx.templating.RenderedStream;
-import com.howardlewisship.tapx.templating.TemplateRenderer;
+import java.io.IOException;
 
 import org.apache.tapestry5.PropertyConduit;
-import org.apache.tapestry5.ioc.internal.util.Defense;
+import org.apache.tapestry5.ioc.internal.util.InternalUtils;
 import org.apache.tapestry5.ioc.internal.util.OneShotLock;
 import org.apache.tapestry5.ioc.services.ThreadCleanupListener;
 import org.apache.tapestry5.ioc.services.TypeCoercer;
 import org.apache.tapestry5.runtime.Component;
 import org.apache.tapestry5.services.PropertyConduitSource;
 
-import java.io.IOException;
+import com.howardlewisship.tapx.templating.RenderedStream;
+import com.howardlewisship.tapx.templating.TemplateRenderer;
 
 public class TemplateRendererImpl implements TemplateRenderer, ThreadCleanupListener
 {
@@ -57,7 +57,7 @@ public class TemplateRendererImpl implements TemplateRenderer, ThreadCleanupList
     @SuppressWarnings({ "unchecked" })
     public TemplateRenderer init(String propertyExpression, Object value)
     {
-        Defense.notBlank(propertyExpression, "propertyExpression");
+        assert InternalUtils.isNonBlank(propertyExpression);
 
         lock.check();
 

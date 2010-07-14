@@ -1,4 +1,4 @@
-// Copyright 2009 Howard M. Lewis Ship
+// Copyright 2009, 2010 Howard M. Lewis Ship
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,16 +14,15 @@
 
 package com.howardlewisship.tapx.plainmessage.internal.services;
 
-import com.howardlewisship.tapx.plainmessage.services.MessageScrubber;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.tapestry5.ioc.MessageFormatter;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.internal.util.CollectionFactory;
-import org.apache.tapestry5.ioc.internal.util.Defense;
 
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import com.howardlewisship.tapx.plainmessage.services.MessageScrubber;
 
 public class MessageScrubberImpl implements MessageScrubber
 {
@@ -44,7 +43,7 @@ public class MessageScrubberImpl implements MessageScrubber
 
     public String scrub(String input)
     {
-        Defense.notNull(input, "input");
+        assert input != null;
 
         String elementsStripped = element.matcher(input).replaceAll("");
 
@@ -101,7 +100,7 @@ public class MessageScrubberImpl implements MessageScrubber
 
     public Messages scrub(final Messages messages)
     {
-        Defense.notNull(messages, "messages");
+        assert messages != null;
 
         return new Messages()
         {

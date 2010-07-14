@@ -1,4 +1,4 @@
-// Copyright 2009 Howard M. Lewis Ship
+// Copyright 2009, 2010 Howard M. Lewis Ship
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ import org.apache.tapestry5.services.AssetFactory;
 import org.apache.tapestry5.services.AssetPathConverter;
 import org.apache.tapestry5.services.MarkupRendererFilter;
 
+@SuppressWarnings("all")
 public class TemplateModule
 {
     public static void bind(ServiceBinder binder)

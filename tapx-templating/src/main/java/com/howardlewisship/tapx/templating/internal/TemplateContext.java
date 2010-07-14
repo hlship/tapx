@@ -1,10 +1,10 @@
-// Copyright 2009 Howard M. Lewis Ship
+// Copyright 2009, 2010 Howard M. Lewis Ship
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//     http://www.apache.org/licenses/LICENSE-2.0
+// http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,15 +14,14 @@
 
 package com.howardlewisship.tapx.templating.internal;
 
-import org.apache.tapestry5.ioc.internal.util.CollectionFactory;
-import org.apache.tapestry5.ioc.internal.util.Defense;
-import org.apache.tapestry5.services.Context;
-
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collections;
 import java.util.List;
+
+import org.apache.tapestry5.ioc.internal.util.CollectionFactory;
+import org.apache.tapestry5.services.Context;
 
 public class TemplateContext implements Context
 {
@@ -55,7 +54,7 @@ public class TemplateContext implements Context
 
     public File getRealFile(String path)
     {
-        Defense.notNull(path, "path");
+        assert path != null;
 
         return new File(rootDirectory, path);
     }
@@ -64,7 +63,8 @@ public class TemplateContext implements Context
     {
         File file = getRealFile(path);
 
-        if (file == null || !file.exists()) return null;
+        if (file == null || !file.exists())
+            return null;
 
         try
         {
@@ -124,9 +124,7 @@ public class TemplateContext implements Context
 
     private String toRelative(String path)
     {
-        return path.startsWith("/")
-               ? path.substring(1)
-               : path;
+        return path.startsWith("/") ? path.substring(1) : path;
     }
 
     @Override

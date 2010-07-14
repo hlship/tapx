@@ -1,10 +1,10 @@
-// Copyright 2009 Howard M. Lewis Ship
+// Copyright 2009, 2010 Howard M. Lewis Ship
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//     http://www.apache.org/licenses/LICENSE-2.0
+// http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,15 +14,15 @@
 
 package com.howardlewisship.tapx.templating.internal.services;
 
-import com.howardlewisship.tapx.templating.TemplateRenderer;
-import com.howardlewisship.tapx.templating.services.LocationManager;
-import com.howardlewisship.tapx.templating.services.TemplateRendererSource;
-
-import org.apache.tapestry5.ioc.internal.util.Defense;
+import org.apache.tapestry5.ioc.internal.util.InternalUtils;
 import org.apache.tapestry5.runtime.Component;
 import org.apache.tapestry5.services.ComponentSource;
 import org.apache.tapestry5.services.LocalizationSetter;
 import org.apache.tapestry5.services.RequestGlobals;
+
+import com.howardlewisship.tapx.templating.TemplateRenderer;
+import com.howardlewisship.tapx.templating.services.LocationManager;
+import com.howardlewisship.tapx.templating.services.TemplateRendererSource;
 
 public class TemplateRendererSourceImpl implements TemplateRendererSource
 {
@@ -39,8 +39,8 @@ public class TemplateRendererSourceImpl implements TemplateRendererSource
     private final TemplateRequestGlobals globals;
 
     public TemplateRendererSourceImpl(ComponentSource source, LocalizationSetter localizationSetter,
-                                      TemplateRendererFactory factory, RequestGlobals requestGlobals,
-                                      LocationManager locationManager, TemplateRequestGlobals globals)
+            TemplateRendererFactory factory, RequestGlobals requestGlobals, LocationManager locationManager,
+            TemplateRequestGlobals globals)
     {
         this.source = source;
         this.localizationSetter = localizationSetter;
@@ -52,9 +52,9 @@ public class TemplateRendererSourceImpl implements TemplateRendererSource
 
     public TemplateRenderer createRenderer(String templateName, String localeName, String location)
     {
-        Defense.notBlank(templateName, "templateName");
-        Defense.notBlank(localeName, "localeName");
-        Defense.notBlank(location, "location");
+        assert InternalUtils.isNonBlank(templateName);
+        assert InternalUtils.isNonBlank(localeName);
+        assert InternalUtils.isNonBlank(location);
 
         TemplateRequest request = new TemplateRequest();
 

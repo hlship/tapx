@@ -14,12 +14,10 @@
 
 package com.howardlewisship.tapx.internal.datefield.services;
 
-import com.howardlewisship.tapx.datefield.services.DateFieldFormatConverter;
-
-import org.apache.tapestry5.ioc.internal.util.Defense;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+
+import com.howardlewisship.tapx.datefield.services.DateFieldFormatConverter;
 
 public class DateFieldFormatConverterImpl implements DateFieldFormatConverter
 {
@@ -67,7 +65,7 @@ public class DateFieldFormatConverterImpl implements DateFieldFormatConverter
 
     public String convertToClient(DateFormat format)
     {
-        Defense.notNull(format, "format");
+        assert format != null;
 
         if (!(format instanceof SimpleDateFormat))
             throw new IllegalArgumentException(String.format(
