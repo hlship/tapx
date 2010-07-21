@@ -8,6 +8,10 @@
 
 Modules
 
+* {{{tapx-core/}tapx-core}}
+
+  Generally re-usable components, including the Dynamic templating component.
+
 * {{{tapx-datefield/}tapx-datefield}}
 
   Provides an enhanced DateField component for Tapestry.
@@ -16,7 +20,6 @@ Modules
 
   Use Tapestry as a templating engine for offline content generation.
   
-
 * {{{tapx-plainmessage/}tapx-plainmessage}}
 
   Adds "plain:" binding prefix, which works like "message:", but strips out any HTML tags, and converts HTML entities.
@@ -24,7 +27,7 @@ Modules
 * {{{tapx-prototype/}tapx-prototype}}
 
   A patch for Tapestry 5.1.0.5 that changes the bundled version of Prototype to version 1.6.1, which is compatible
-  with Internet Explorer 8.
+  with Internet Explorer 8.  This is <<not needed>> for Tapestry 5.2.
 
 POM Changes
 
