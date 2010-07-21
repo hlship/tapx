@@ -162,6 +162,51 @@
       </reporting>
     </profile>
   </profiles>
+  <reporting>
+    <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <version>2.2</version>
+          <configuration>
+            <linksource>true</linksource>
+            <links>
+              <link>http://java.sun.com/j2se/1.5.0/docs/api/</link>
+              <link>http://java.sun.com/j2ee/1.4/docs/api/</link>
+            </links>
+            <aggregate>true</aggregate>
+          </configuration>
+        </plugin>        
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>        
+        <version>2.1</version>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>summary</report>
+              <report>dependencies</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>cobertura-maven-plugin</artifactId>
+        <version>${cobertura-plugin-version}</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.tapestry</groupId>
+        <artifactId>tapestry-component-report</artifactId>
+        <version>${tapestry-release-version}</version>
+        <configuration>
+          <rootPackage>org.apache.tapestry5.corelib</rootPackage>
+          <apidocs>../apidocs</apidocs>
+          <tapestryJavadoc>../apidocs</tapestryJavadoc>
+        </configuration>
+      </plugin>
+    </plugins>
+  </reporting>
   <repositories>
     <repository>
       <id>apache-snapshots</id>
@@ -192,6 +237,7 @@
     </site>
   </distributionManagement>
   <properties>
+    <cobertura-plugin-version>2.2</cobertura-plugin-version>
     <tapestry-release-version>5.2.0-SNAPSHOT</tapestry-release-version>
   </properties>
 </project>

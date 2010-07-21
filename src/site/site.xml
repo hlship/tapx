@@ -13,6 +13,7 @@
 
         <menu name="Project">
             <item name="About" href="index.html"/>
+            <item name="Javadoc" href="apidocs/index.html"/>
         </menu>
 
         <menu name="Modules">
