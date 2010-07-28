@@ -25,7 +25,7 @@ import org.apache.tapestry5.corelib.components.PageLink;
 import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.json.JSONObject;
 import org.apache.tapestry5.services.javascript.InitializationPriority;
-import org.apache.tapestry5.services.javascript.JavascriptSupport;
+import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 
 /**
  * Uses <a href="http://github.com/okonet/modalbox/tree/release1.6.1">ModalBox 1.6.1</a> to present a confirmation
@@ -47,7 +47,7 @@ public class Confirm
     private String title;
 
     @Environmental
-    private JavascriptSupport javascriptSupport;
+    private JavaScriptSupport javascriptSupport;
 
     void afterRender()
     {

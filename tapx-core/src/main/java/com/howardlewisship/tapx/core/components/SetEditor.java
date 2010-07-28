@@ -23,8 +23,7 @@ import org.apache.tapestry5.Block;
 import org.apache.tapestry5.ComponentAction;
 import org.apache.tapestry5.ComponentResources;
 import org.apache.tapestry5.annotations.Environmental;
-import org.apache.tapestry5.annotations.IncludeJavaScriptLibrary;
-import org.apache.tapestry5.annotations.IncludeStylesheet;
+import org.apache.tapestry5.annotations.Import;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -32,7 +31,7 @@ import org.apache.tapestry5.json.JSONArray;
 import org.apache.tapestry5.json.JSONObject;
 import org.apache.tapestry5.services.FormSupport;
 import org.apache.tapestry5.services.Request;
-import org.apache.tapestry5.services.javascript.JavascriptSupport;
+import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 
 /**
  * A SetEditor is an dynamic client-side element used to edit a set of values (currently limited to Strings). The
@@ -45,9 +44,7 @@ import org.apache.tapestry5.services.javascript.JavascriptSupport;
  * When the form is submitted, the component will obtain the current Set and clear it (if non-null). If the current Set
  * is null, a new {@link HashSet} instance is created. The empty Set is populated with the values in the submission.
  */
-@IncludeJavaScriptLibrary(
-{ "../tapx.js", "seteditor.js" })
-@IncludeStylesheet("seteditor.css")
+@Import(library={"../tapx.js", "seteditor.js"}, stylesheet="seteditor.css" )
 public class SetEditor
 {
     @Parameter(required = true, autoconnect = true)
@@ -65,7 +62,7 @@ public class SetEditor
     private Block valuesLabel;
 
     @Environmental
-    private JavascriptSupport javascriptSupport;
+    private JavaScriptSupport javaScriptSupport;
 
     @Environmental
     private FormSupport formSupport;
@@ -98,7 +95,7 @@ public class SetEditor
 
     void setupRender()
     {
-        fieldId = javascriptSupport.allocateClientId(resources);
+        fieldId = javaScriptSupport.allocateClientId(resources);
     }
 
     void afterRender()
@@ -117,7 +114,7 @@ public class SetEditor
 
         spec.put("values", values);
 
-        javascriptSupport.addInitializerCall("tapxSetEditor", spec);
+        javaScriptSupport.addInitializerCall("tapxSetEditor", spec);
 
         formSupport.store(this, new HandleSubmission(name));
     }

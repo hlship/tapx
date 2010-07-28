@@ -22,7 +22,7 @@ import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.Value;
 import org.apache.tapestry5.services.BeanBlockContribution;
 import org.apache.tapestry5.services.LibraryMapping;
-import org.apache.tapestry5.services.javascript.JavascriptStack;
+import org.apache.tapestry5.services.javascript.JavaScriptStack;
 
 import com.howardlewisship.tapx.datefield.DateFieldSymbols;
 import com.howardlewisship.tapx.internal.datefield.services.DateFieldFormatConverterImpl;
@@ -52,7 +52,7 @@ public class DateFieldModule
         configuration.add(new BeanBlockContribution("date", "tapx/DateFieldEditBlocks", "date", true));
     }
 
-    public static void contributeJavascriptStackSource(MappedConfiguration<String, JavascriptStack> configuration)
+    public static void contributeJavaScriptStackSource(MappedConfiguration<String, JavaScriptStack> configuration)
     {
         configuration.addInstance("tapx-datefield", DateFieldStack.class);
     }

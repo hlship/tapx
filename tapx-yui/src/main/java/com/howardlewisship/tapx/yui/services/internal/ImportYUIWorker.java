@@ -30,7 +30,7 @@ import org.apache.tapestry5.services.ComponentMethodAdvice;
 import org.apache.tapestry5.services.ComponentMethodInvocation;
 import org.apache.tapestry5.services.TransformConstants;
 import org.apache.tapestry5.services.TransformMethod;
-import org.apache.tapestry5.services.javascript.JavascriptSupport;
+import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 
 import com.howardlewisship.tapx.yui.ImportYUI;
 import com.howardlewisship.tapx.yui.YuiSymbols;
@@ -39,7 +39,7 @@ public class ImportYUIWorker implements ComponentClassTransformWorker
 {
     private final AssetSource assetSource;
 
-    private final JavascriptSupport javascriptSupport;
+    private final JavaScriptSupport javaScriptSupport;
 
     private final String yuiBase;
 
@@ -47,7 +47,7 @@ public class ImportYUIWorker implements ComponentClassTransformWorker
 
     public ImportYUIWorker(AssetSource assetSource,
 
-    JavascriptSupport javascriptSupport,
+    JavaScriptSupport javaScriptSupport,
 
     @Symbol(YuiSymbols.BASE)
     String yuiBase,
@@ -56,7 +56,7 @@ public class ImportYUIWorker implements ComponentClassTransformWorker
     boolean productionMode)
     {
         this.assetSource = assetSource;
-        this.javascriptSupport = javascriptSupport;
+        this.javaScriptSupport = javaScriptSupport;
 
         this.yuiBase = yuiBase;
         this.productionMode = productionMode;
@@ -95,7 +95,7 @@ public class ImportYUIWorker implements ComponentClassTransformWorker
     {
         public void work(Asset value)
         {
-            javascriptSupport.importJavascriptLibrary(value);
+            javaScriptSupport.importJavaScriptLibrary(value);
         }
     };
 

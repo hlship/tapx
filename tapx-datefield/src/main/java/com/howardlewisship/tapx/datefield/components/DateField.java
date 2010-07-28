@@ -43,7 +43,7 @@ import org.apache.tapestry5.ioc.internal.util.InternalUtils;
 import org.apache.tapestry5.json.JSONObject;
 import org.apache.tapestry5.services.ComponentDefaultProvider;
 import org.apache.tapestry5.services.Request;
-import org.apache.tapestry5.services.javascript.JavascriptSupport;
+import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 
 import com.howardlewisship.tapx.datefield.TimeSignificant;
 import com.howardlewisship.tapx.datefield.services.DateFieldFormatConverter;
@@ -127,7 +127,7 @@ public class DateField extends AbstractField
     private ValidationTracker tracker;
 
     @Environmental
-    private JavascriptSupport javascriptSupport;
+    private JavaScriptSupport javascriptSupport;
 
     @Inject
     private FieldValidationSupport fieldValidationSupport;

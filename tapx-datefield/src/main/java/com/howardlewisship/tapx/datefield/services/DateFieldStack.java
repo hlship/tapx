@@ -25,12 +25,12 @@ import org.apache.tapestry5.ioc.annotations.Symbol;
 import org.apache.tapestry5.ioc.internal.util.CollectionFactory;
 import org.apache.tapestry5.ioc.services.ThreadLocale;
 import org.apache.tapestry5.services.AssetSource;
-import org.apache.tapestry5.services.javascript.JavascriptStack;
+import org.apache.tapestry5.services.javascript.JavaScriptStack;
 import org.apache.tapestry5.services.javascript.StylesheetLink;
 
 import com.howardlewisship.tapx.datefield.DateFieldSymbols;
 
-public class DateFieldStack implements JavascriptStack
+public class DateFieldStack implements JavaScriptStack
 {
     // There's support for some language variations as well, but didn't want to get into that.
     private static final Set<String> SUPPORTED_LANGUAGES = CollectionFactory
@@ -80,7 +80,7 @@ public class DateFieldStack implements JavascriptStack
         return null;
     }
 
-    public List<Asset> getJavascriptLibraries()
+    public List<Asset> getJavaScriptLibraries()
     {
         String language = threadLocale.getLocale().getLanguage();
 

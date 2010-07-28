@@ -19,7 +19,7 @@ import org.apache.tapestry5.annotations.Import;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.corelib.components.TextArea;
 import org.apache.tapestry5.json.JSONObject;
-import org.apache.tapestry5.services.javascript.JavascriptSupport;
+import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 
 import com.howardlewisship.tapx.yui.ImportYUI;
 
@@ -29,7 +29,7 @@ import com.howardlewisship.tapx.yui.ImportYUI;
 public class RichTextEditor extends TextArea
 {
     @Environmental
-    private JavascriptSupport javascriptSupport;
+    private JavaScriptSupport javaScriptSupport;
 
     @Parameter
     private int width = 385;
@@ -39,9 +39,9 @@ public class RichTextEditor extends TextArea
 
     void afterRender()
     {
-        JSONObject spec = new JSONObject("clientId", getClientId(), "width", Integer.toString(width), "height", Integer
-                .toString(height));
+        JSONObject spec = new JSONObject("clientId", getClientId(), "width", Integer.toString(width), "height",
+                Integer.toString(height));
 
-        javascriptSupport.addInitializerCall("tapxRichTextEditor", spec);
+        javaScriptSupport.addInitializerCall("tapxRichTextEditor", spec);
     }
 }
