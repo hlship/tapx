@@ -14,6 +14,7 @@
 
 package com.howardlewisship.tapx.datefield.services;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -94,6 +95,11 @@ public class DateFieldStack implements JavaScriptStack
     public List<StylesheetLink> getStylesheets()
     {
         return stylesheets;
+    }
+
+    public List<String> getStacks()
+    {
+        return Collections.emptyList();
     }
 
 }
