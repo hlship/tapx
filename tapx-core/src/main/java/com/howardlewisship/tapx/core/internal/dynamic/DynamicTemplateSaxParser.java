@@ -23,14 +23,14 @@ import java.util.regex.Pattern;
 
 import javax.xml.namespace.QName;
 
+import org.apache.tapestry5.Binding;
+import org.apache.tapestry5.BindingConstants;
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.MarkupWriter;
-import org.apache.tapestry5.PropertyConduit;
 import org.apache.tapestry5.func.F;
 import org.apache.tapestry5.func.Flow;
 import org.apache.tapestry5.func.Mapper;
 import org.apache.tapestry5.func.Worker;
-import org.apache.tapestry5.internal.parser.AttributeToken;
 import org.apache.tapestry5.internal.services.XMLTokenStream;
 import org.apache.tapestry5.internal.services.XMLTokenType;
 import org.apache.tapestry5.ioc.Location;
@@ -40,7 +40,7 @@ import org.apache.tapestry5.ioc.internal.util.InternalUtils;
 import org.apache.tapestry5.ioc.internal.util.TapestryException;
 import org.apache.tapestry5.runtime.RenderCommand;
 import org.apache.tapestry5.runtime.RenderQueue;
-import org.apache.tapestry5.services.PropertyConduitSource;
+import org.apache.tapestry5.services.BindingSource;
 
 import com.howardlewisship.tapx.core.dynamic.DynamicDelegate;
 import com.howardlewisship.tapx.core.dynamic.DynamicTemplate;
@@ -50,7 +50,7 @@ class DynamicTemplateSaxParser
 {
     private final Resource resource;
 
-    private final PropertyConduitSource propertyConduitSource;
+    private final BindingSource bindingSource;
 
     private final XMLTokenStream tokenStream;
 
@@ -70,10 +70,10 @@ class DynamicTemplateSaxParser
         }
     };
 
-    DynamicTemplateSaxParser(Resource resource, PropertyConduitSource propertyConduitSource)
+    DynamicTemplateSaxParser(Resource resource, BindingSource bindingSource)
     {
         this.resource = resource;
-        this.propertyConduitSource = propertyConduitSource;
+        this.bindingSource = bindingSource;
 
         this.tokenStream = new XMLTokenStream(resource, publicIdToURL);
     }
@@ -378,7 +378,7 @@ class DynamicTemplateSaxParser
 
             String expression = matcher.group(1);
 
-            extractors.add(createExpansionExtractor(expression, location, propertyConduitSource));
+            extractors.add(createExpansionExtractor(expression, location, bindingSource));
 
             startx = matcher.end();
         }
@@ -444,21 +444,21 @@ class DynamicTemplateSaxParser
     }
 
     private static Mapper<DynamicDelegate, String> createExpansionExtractor(final String expression,
-            final Location location, final PropertyConduitSource conduitSource)
+            final Location location, final BindingSource bindingSource)
     {
         return new Mapper<DynamicDelegate, String>()
         {
             public String map(DynamicDelegate delegate)
             {
-                Object expressionRoot = delegate.getExpressionRoot();
-
                 try
                 {
-                    PropertyConduit conduit = conduitSource.create(expressionRoot.getClass(), expression);
+                    Binding binding = bindingSource.newBinding("dynamic template binding", delegate
+                            .getComponentResources().getContainerResources(), delegate.getComponentResources(),
+                            BindingConstants.PROP, expression, location);
 
-                    Object value = conduit.get(expressionRoot);
+                    Object boundValue = binding.get();
 
-                    return value == null ? null : value.toString();
+                    return boundValue == null ? null : boundValue.toString();
                 }
                 catch (Throwable t)
                 {

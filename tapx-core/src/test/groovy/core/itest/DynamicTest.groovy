@@ -49,6 +49,10 @@ class DynamicTest extends SeleniumTestCase
         // red is from a property, the expansion is in expansion.xml (not the TML file)
         
         assertText "color-value", "red"
+        
+        // Likewise, this is provided via a message: expansion
+        
+        assertText "//h2", "Dynamic Expansions Demo"
     }
     
     @Test
@@ -57,7 +61,7 @@ class DynamicTest extends SeleniumTestCase
         
         assertAttribute "//em[@id='color-value']/@class", "important"
     }
-    
+        
     @Test
     void embedded_expansion_that_is_null_removed() {
         clickThru "Expansions in Dynamic Templates"

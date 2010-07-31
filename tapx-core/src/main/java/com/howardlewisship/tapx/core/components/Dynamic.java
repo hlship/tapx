@@ -37,6 +37,12 @@ import com.howardlewisship.tapx.core.dynamic.DynamicTemplateParser;
  * <strong>id</strong> of the element. When the id attribute has the prefix <code>param:</code>, the remainder is the
  * name of a Block parameter. There are no limitations on what can appear inside such a Block: text, components, forms,
  * even the &lt;t:body/&gt; directive.
+ * <p>
+ * Dynamic templates emulate how expansions work in standard Tapestry templates:  Expansions (the <code>${ ... }</code> syntax)
+ * can appear in attribute values or interspersed in element text. This allows container properties, messages, assets, and so forth
+ * to be referenced within the external template. It should be noted that such access is quite a bit less efficient than
+ * putting such expansions inside a refrenced Block, but this should not be a big concern outside of some kind of
+ * tight rendering loop.
  * 
  * @since 1.1
  * @see DynamicTemplate
@@ -53,9 +59,9 @@ public class Dynamic
 
     private final DynamicDelegate delegate = new DynamicDelegate()
     {
-        public Object getExpressionRoot()
+        public ComponentResources getComponentResources()
         {
-            return resources.getContainer();
+            return resources;
         }
 
         public Block getBlock(String name)

@@ -21,7 +21,7 @@ import org.apache.tapestry5.internal.util.URLChangeTracker;
 import org.apache.tapestry5.ioc.Resource;
 import org.apache.tapestry5.ioc.internal.util.CollectionFactory;
 import org.apache.tapestry5.ioc.services.ClasspathURLConverter;
-import org.apache.tapestry5.services.PropertyConduitSource;
+import org.apache.tapestry5.services.BindingSource;
 import org.apache.tapestry5.services.UpdateListener;
 
 import com.howardlewisship.tapx.core.dynamic.DynamicTemplate;
@@ -33,15 +33,14 @@ public class DynamicTemplateParserImpl implements DynamicTemplateParser, UpdateL
 
     private final PagePool pagePool;
 
-    private final PropertyConduitSource propertyConduitSource;
+    private final BindingSource bindingSource;
 
     private final URLChangeTracker tracker;
 
-    public DynamicTemplateParserImpl(ClasspathURLConverter converter, PagePool pagePool,
-            PropertyConduitSource propertyConduitSource)
+    public DynamicTemplateParserImpl(ClasspathURLConverter converter, PagePool pagePool, BindingSource bindingSource)
     {
         this.pagePool = pagePool;
-        this.propertyConduitSource = propertyConduitSource;
+        this.bindingSource = bindingSource;
 
         tracker = new URLChangeTracker(converter);
     }
@@ -63,7 +62,7 @@ public class DynamicTemplateParserImpl implements DynamicTemplateParser, UpdateL
 
     private DynamicTemplate doParse(Resource resource)
     {
-        return new DynamicTemplateSaxParser(resource, propertyConduitSource).parse();
+        return new DynamicTemplateSaxParser(resource, bindingSource).parse();
     }
 
     public void checkForUpdates()

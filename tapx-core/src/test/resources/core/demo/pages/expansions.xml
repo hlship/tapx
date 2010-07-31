@@ -4,6 +4,8 @@
     em.important { color: red; }
 </style>
 
+  <h2>${message:page-title}</h2>
+
   <p xml:space="preserve">
     The value of the color property is
     <em id="color-value" class="${cssClass}">${color}</em>.

@@ -15,6 +15,7 @@
 package com.howardlewisship.tapx.core.dynamic;
 
 import org.apache.tapestry5.Block;
+import org.apache.tapestry5.ComponentResources;
 
 import com.howardlewisship.tapx.core.components.Dynamic;
 
@@ -27,10 +28,11 @@ import com.howardlewisship.tapx.core.components.Dynamic;
 public interface DynamicDelegate
 {
     /**
-     * Returns the root object used when evaluation property expressions. This will be the
-     * container of the {@link Dynamic} component.
+     * Returns the component resources (i.e., the {@link Dynamic} component), used when creating bindings for expansions
+     * located inside the dynamic template.
      */
-    Object getExpressionRoot();
+
+    ComponentResources getComponentResources();
 
     /**
      * Returns the Block with the given unique name.
