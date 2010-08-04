@@ -238,6 +238,6 @@
   </distributionManagement>
   <properties>
     <cobertura-plugin-version>2.2</cobertura-plugin-version>
-    <tapestry-release-version>5.2.0-SNAPSHOT</tapestry-release-version>
+    <tapestry-release-version>5.2.0</tapestry-release-version>
   </properties>
 </project>
