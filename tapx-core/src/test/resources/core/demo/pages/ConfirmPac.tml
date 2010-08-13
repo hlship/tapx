@@ -1,0 +1,13 @@
+<t:layout xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+
+
+  <p>
+    The current value is:
+    <strong id="current">${pac}</strong>
+  </p>
+
+
+  <t:form t:id="form">
+    <t:submit t:id="increment" t:mixins="tapx/confirm" value="Increment Value"/>
+  </t:form>
+</t:layout>

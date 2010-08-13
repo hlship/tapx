@@ -39,7 +39,8 @@ Tapestry.Initializer.tapxConfirm = function(spec) {
 			afterLoad : function() {
 				$(noId).observe("click",
 						Modalbox.hide.bindAsEventListener(Modalbox));
-				$(yesId).observe("click", function() {
+				$(yesId).observe("click", function(event) {
+					event.stop();
 					Modalbox.hide();
 					proceed.defer();
 				});
@@ -78,6 +79,7 @@ Tapestry.Initializer.tapxConfirm = function(spec) {
 					interceptClickEvent = false;
 
 					element.click();
+					return;
 				}
 
 				/*

@@ -11,6 +11,10 @@
       <t:pagelink page="ConfirmDemo">Confirm Mixin Demo</t:pagelink>
     </li>
     <li>
+      <t:pagelink page="ConfirmPac" context="1">Confirm Mixin / Page Activation Context Demo
+      </t:pagelink>
+    </li>
+    <li>
       <t:pagelink page="SetEditorDemo">SetEditor Demo</t:pagelink>
     </li>
     <li>
