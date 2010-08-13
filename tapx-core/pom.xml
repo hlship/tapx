@@ -38,8 +38,7 @@
     <dependency>
       <groupId>org.codehaus.groovy</groupId>
       <artifactId>groovy-all</artifactId>
-      <!-- 1.7.0 seems to match what the Eclipse Groovy plugin uses -->
-      <version>1.7.0</version>
+      <version>${groovy-version}</version>
       <scope>test</scope>
     </dependency>
 
@@ -47,10 +46,27 @@
   </dependencies>
 
   <build>
+    <resources>
+      <resource>
+        <!-- GMaven isn't smart enough to add this automatically. -->
+        <directory>src/test/groovy</directory>
+      </resource>
+      <resource>
+        <!--
+          Once you mention one resource directory, you have to be explicit about all of them,
+          apparently.
+        -->
+        <directory>src/main/resources</directory>
+      </resource>
+    </resources>
     <plugins>
       <plugin>
-        <groupId>org.codehaus.groovy.maven</groupId>
+        <groupId>org.codehaus.gmaven</groupId>
         <artifactId>gmaven-plugin</artifactId>
+        <version>${gmaven-version}</version>
+        <configuration>
+          <providerSelection>${gmaven-provider}</providerSelection>
+        </configuration>
         <executions>
           <execution>
             <goals>
@@ -60,6 +76,24 @@
             </goals>
           </execution>
         </executions>
+        <dependencies>
+          <dependency>
+            <groupId>org.codehaus.gmaven.runtime</groupId>
+            <artifactId>gmaven-runtime-${gmaven-provider}</artifactId>
+            <version>${gmaven-version}</version>
+            <exclusions>
+              <exclusion>
+                <groupId>org.codehaus.groovy</groupId>
+                <artifactId>groovy-all</artifactId>
+              </exclusion>
+            </exclusions>
+          </dependency>
+          <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <version>${groovy-version}</version>
+          </dependency>
+        </dependencies>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
