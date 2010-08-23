@@ -51,7 +51,7 @@ public class IntegrationTests extends SeleniumTestCase
     @Test
     public void bean_editor_override()
     {
-        open(getBaseURL() + "beaneditordemo");
+        open(getBaseURL() + "en/beaneditordemo");
 
         // That's about as far as we take it; this demonstrates that the tapx DateField was used, and
         // that it picked up on the @TimeSignificant annotation.
