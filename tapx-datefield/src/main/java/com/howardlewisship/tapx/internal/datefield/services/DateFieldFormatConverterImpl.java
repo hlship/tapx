@@ -34,7 +34,7 @@ public class DateFieldFormatConverterImpl implements DateFieldFormatConverter
             "MMMM", "B",
             "MMM", "b",
             "MM", "m",
-            "M", "m",
+            "M", "o",
 
             // day
             "dd", "d",
@@ -50,16 +50,16 @@ public class DateFieldFormatConverterImpl implements DateFieldFormatConverter
             "E", "a",
             
             // hour (0-23)            
-            "HH", "k",
+            "HH", "H",
             "H", "k",
             
             // hour (1-12)            
-            "hh", "l",
+            "hh", "I",
             "h", "l",
             
             // minute            
             "mm", "M",
-            "m", "M"
+            "m", "O"
     };
 
 
