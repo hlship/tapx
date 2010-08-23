@@ -1758,6 +1758,8 @@ Date.prototype.print = function (str) {
 	s["%m"] = (m < 9) ? ("0" + (1+m)) : (1+m); // month, range 01 to 12
 	s["%M"] = (min < 10) ? ("0" + min) : min; // minute, range 00 to 59
 	s["%n"] = "\n";		// a newline character
+	s["%o"] = (1+m); // month, range 1 to 12
+	s["%O"] = min; // minute, range 0 to 59
 	s["%p"] = pm ? "PM" : "AM";
 	s["%P"] = pm ? "pm" : "am";
 	// FIXME: %r : the time in am/pm notation %I:%M:%S %p
