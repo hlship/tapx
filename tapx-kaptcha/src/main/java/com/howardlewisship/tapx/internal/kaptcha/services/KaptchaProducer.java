@@ -12,20 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package core.demo.pages;
+package com.howardlewisship.tapx.internal.kaptcha.services;
 
-import org.apache.tapestry5.PersistenceConstants;
-import org.apache.tapestry5.annotations.Persist;
-import org.apache.tapestry5.annotations.Property;
+import com.google.code.kaptcha.Producer;
+import com.howardlewisship.tapx.core.CoreSymbols;
 
-public class KaptchaDemo
+/**
+ * Extension of the {@link Producer} interface, adding property for getting the Kaptcha image
+ * width and height (used when rendering the &lt;img&gt; element).
+ * <p>
+ * In {@linkplain CoreSymbols#TEST_MODE test mode}, the {@link Producer#createText()} method always returns the fixed
+ * string "i8cookies".
+ */
+public interface KaptchaProducer extends Producer
 {
-    @Property
-    @Persist(PersistenceConstants.FLASH)
-    private String message;
+    int getWidth();
 
-    void onSuccessFromForm()
-    {
-        message = "Kpatcha passed.";
-    }
+    int getHeight();
 }

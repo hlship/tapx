@@ -36,6 +36,7 @@
   <modules>
     <module>tapx-core</module>
     <module>tapx-datefield</module>
+    <module>tapx-kaptcha</module>
     <module>tapx-templating</module>
     <module>tapx-plainmessage</module>
     <module>tapx-prototype</module>

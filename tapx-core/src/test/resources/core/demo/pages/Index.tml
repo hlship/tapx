@@ -5,9 +5,6 @@
 
   <ul>
     <li>
-      <t:pagelink page="kaptchaDemo">Kaptcha Demo</t:pagelink>
-    </li>
-    <li>
       <t:pagelink page="ConfirmDemo">Confirm Mixin Demo</t:pagelink>
     </li>
     <li>
