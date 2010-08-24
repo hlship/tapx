@@ -81,10 +81,7 @@ public class DateFieldFormatConverterImplTest extends Assert
     {
         DateFormat format = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, Locale.ENGLISH);
 
-        // Note that DateField manipulates the Java "yy" format into "yyyy" before passing into the converter.
-        // But this works because of an additional (and otherwise unnecessary) mapping from "yy".
-
-        assertEquals(converter.convertToClient(format), "%o/%e/%Y %l:%M %p");
+        assertEquals(converter.convertToClient(format), "%o/%e/%y %l:%M %p");
     }
 
     @Test
@@ -92,10 +89,7 @@ public class DateFieldFormatConverterImplTest extends Assert
     {
         DateFormat format = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, Locale.GERMAN);
 
-        // Note that DateField manipulates the Java "yy" format into "yyyy" before passing into the converter.
-        // But this works because of an additional (and otherwise unnecessary) mapping from "yy".
-        
-        assertEquals(converter.convertToClient(format), "%d.%m.%Y %H:%M");
+        assertEquals(converter.convertToClient(format), "%d.%m.%y %H:%M");
     }
 
     @Test
