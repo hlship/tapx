@@ -63,12 +63,17 @@ public class DateField extends AbstractField
     @Parameter(defaultPrefix = BindingConstants.LITERAL)
     private String showAtElement;
 
-
     /**
      * How to align the calendar pop-up to the element
      */
     @Parameter(defaultPrefix = BindingConstants.LITERAL)
     private String align;
+
+    /**
+     * If true, the pop-up closes when a date is selected
+     */
+    @Parameter(defaultPrefix = BindingConstants.LITERAL)
+    private boolean singleClick = true;
 
     /**
      * The value parameter of a DateField must be a {@link java.util.Date}.
@@ -256,7 +261,7 @@ public class DateField extends AbstractField
 
         JSONObject spec = new JSONObject("clientId", clientId, "clientDateFormat", formatConverter
                 .convertToClient(format), "showAtElement", showAtElement, "align", align)
-                .put("time", time);
+                .put("time", time).put("singleClick", singleClick);
 
         javascriptSupport.addInitializerCall("tapxDateField", spec);
     }
