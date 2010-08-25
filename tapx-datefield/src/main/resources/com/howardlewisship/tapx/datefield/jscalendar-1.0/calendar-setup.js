@@ -32,6 +32,7 @@
  *   inputField    | the ID of an input field to store the date
  *   displayArea   | the ID of a DIV or other element to show the date
  *   button        | ID of a button or other element that will trigger the calendar
+ *   showAtElement | ID of an element to align the calendar to
  *   eventName     | event that will trigger the calendar, without the "on" prefix (default: "click")
  *   ifFormat      | date format that will be stored in the input field
  *   daFormat      | the date format that will be used to display the date in displayArea
@@ -65,6 +66,7 @@ Calendar.setup = function (params) {
 	param_default("inputField",      null);
 	param_default("displayArea",     null);
 	param_default("button",          null);
+	param_default("showAtElement",   null);
 	param_default("eventName",       "click");
 	param_default("ifFormat",        "%Y/%m/%d");
 	param_default("daFormat",        "%Y/%m/%d");
@@ -92,7 +94,7 @@ Calendar.setup = function (params) {
 	param_default("showOthers",      false);
 	param_default("multiple",        null);
 
-	var tmp = ["inputField", "displayArea", "button"];
+	var tmp = ["inputField", "displayArea", "button", "showAtElement"];
 	for (var i in tmp) {
 		if (typeof params[tmp[i]] == "string") {
 			params[tmp[i]] = document.getElementById(params[tmp[i]]);
@@ -193,7 +195,7 @@ Calendar.setup = function (params) {
 			cal.create();
 		cal.refresh();
 		if (!params.position)
-			cal.showAtElement(params.button || params.displayArea || params.inputField, params.align);
+			cal.showAtElement(params.showAtElement || params.button || params.displayArea || params.inputField, params.align);
 		else
 			cal.showAt(params.position[0], params.position[1]);
 		return false;
