@@ -133,4 +133,8 @@ public class ResponseRenderedStream extends ContentStreamImpl implements Respons
     {
         return Collections.emptyList();
     }
+
+    public void disableCompression()
+    {
+    }
 }
