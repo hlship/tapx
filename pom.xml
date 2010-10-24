@@ -238,7 +238,7 @@
   </distributionManagement>
   <properties>
     <cobertura-plugin-version>2.2</cobertura-plugin-version>
-    <tapestry-release-version>5.2.2-SNAPSHOT</tapestry-release-version>
+    <tapestry-release-version>5.2.2</tapestry-release-version>
     <!-- Groovy-Eclipse 2.0.2 uses Groovy 1.7.3, which isn't far off -->
     <groovy-version>1.7.4</groovy-version>
     <gmaven-version>1.2</gmaven-version>
