@@ -5,8 +5,5 @@
     <packages>
       <package name="core.itest"/>
     </packages>
-    <classes>
-      <class name="org.apache.tapestry5.test.SeleniumLauncher"/>
-    </classes>
   </test>
 </suite>

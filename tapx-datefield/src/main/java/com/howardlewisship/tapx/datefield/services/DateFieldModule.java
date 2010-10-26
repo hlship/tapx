@@ -21,6 +21,7 @@ import org.apache.tapestry5.ioc.Resource;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.Value;
 import org.apache.tapestry5.services.BeanBlockContribution;
+import org.apache.tapestry5.services.EditBlockContribution;
 import org.apache.tapestry5.services.LibraryMapping;
 import org.apache.tapestry5.services.javascript.JavaScriptStack;
 
@@ -49,7 +50,7 @@ public class DateFieldModule
 
     public static void contributeBeanBlockOverrideSource(Configuration<BeanBlockContribution> configuration)
     {
-        configuration.add(new BeanBlockContribution("date", "tapx/DateFieldEditBlocks", "date", true));
+        configuration.add(new EditBlockContribution("date", "tapx/DateFieldEditBlocks", "date"));
     }
 
     public static void contributeJavaScriptStackSource(MappedConfiguration<String, JavaScriptStack> configuration)

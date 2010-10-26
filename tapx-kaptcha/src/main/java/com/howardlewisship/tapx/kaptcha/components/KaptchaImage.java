@@ -70,7 +70,7 @@ public class KaptchaImage
 
         writer.element("img",
 
-        "src", link.toAbsoluteURI(),
+        "src", link.toURI(),
 
         "width", producer.getWidth(),
 
