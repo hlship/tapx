@@ -4,9 +4,7 @@ repositories {
 }
 
 dependencies {
-    compile "org.apache.tapestry:tapestry-core:5.2.2"
     compile "com.google.code.kaptcha:kaptcha:2.3"
-    testCompile "org.apache.tapestry:tapestry-test:5.2.2"
 }
 
 jar {
