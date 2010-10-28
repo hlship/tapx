@@ -7,8 +7,7 @@
 
       <t:form t:id="select">
         <t:label for="demo">Select demo:</t:label>
-        <t:select t:id="demo" blankoption="never"/>
-        <input type="submit" value="Change Demo"/>
+        <t:select t:id="demo" model="demoModel" onchange="this.form.submit();" blankoption="never"/>
       </t:form>
 
       <x:processing script="prop:script" width="demo.width" height="demo.height"/>

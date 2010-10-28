@@ -16,11 +16,13 @@ package demo.pages
 
 import org.apache.tapestry5.Asset 
 import org.apache.tapestry5.ComponentResources 
+import org.apache.tapestry5.SelectModel 
 import org.apache.tapestry5.annotations.Import;
 import org.apache.tapestry5.annotations.PageActivationContext 
 import org.apache.tapestry5.annotations.Property 
 import org.apache.tapestry5.ioc.annotations.Inject 
 import org.apache.tapestry5.services.AssetSource 
+import org.apache.tapestry5.services.SelectModelFactory 
 
 @Import(stylesheet="style.css")
 class Index
@@ -54,7 +56,15 @@ class Index
     @Inject
     private Locale locale;
     
+    @Inject
+    private SelectModelFactory selectModelFactory;
+    
     Asset getScript() {
         return assetSource.getAsset(resources.baseResource, demo.path, locale);
+    }
+    
+    SelectModel getDemoModel()
+    {
+        return selectModelFactory.create(Demo.values().toList(), "title");
     }
 }
