@@ -1,0 +1,16 @@
+repositories {
+    // For the Kaptcha library
+    mavenRepo urls: "http://tapestry.formos.com/maven-repository/"
+}
+
+dependencies {
+    compile "org.apache.tapestry:tapestry-core:5.2.2"
+    compile "com.google.code.kaptcha:kaptcha:2.3"
+    testCompile "org.apache.tapestry:tapestry-test:5.2.2"
+}
+
+jar {
+    manifest {
+        attributes 'Tapestry-Module-Classes': 'com.howardlewisship.tapx.core.services.CoreModule'
+    }
+}

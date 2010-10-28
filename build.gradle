@@ -1,0 +1,31 @@
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'groovy' // mostly for testing
+    apply plugin: 'eclipse'
+    
+    sourceCompatibility = '1.5'
+    targetCompatibility = '1.5'
+    
+    version = '1.0.0-SNAPSHOT'
+    
+    repositories {
+        mavenCentral()
+        
+        // Temporary while the Tapestry 5.2.2 vote continues:
+        mavenRepo urls: "https://repository.apache.org/content/repositories/orgapachetapestry-003"
+        
+        // All things JBoss/Javassist/Hibernate
+        mavenRepo urls: "https://repository.jboss.org/nexus/content/repositories/releases/"        
+    }
+    
+    dependencies {
+        groovy "org.codehaus.groovy:groovy-all:1.7.4"
+    }
+    
+    test {
+        useTestNG()
+        
+        options.suites("src/test/conf/testng.xml")
+    }
+}
