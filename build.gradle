@@ -3,6 +3,7 @@ subprojects {
     apply plugin: 'java'
     apply plugin: 'groovy' // mostly for testing
     apply plugin: 'eclipse'
+    apply plugin: 'maven'
     
     sourceCompatibility = '1.5'
     targetCompatibility = '1.5'
