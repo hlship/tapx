@@ -2,13 +2,21 @@
   xmlns:x="tapestry-library:tapx">
   <title>Processing Demo</title>
   <body>
-    <div class="content">
 
-      <div class="container">
+    <div class="container">
 
-        <x:processing script="basic.psj" width="200" height="200"/>
+      <t:form t:id="select">
+        <t:label for="demo">Select demo:</t:label>
+        <t:select t:id="demo" blankoption="never"/>
+        <input type="submit" value="Change Demo"/>
+      </t:form>
 
-      </div>
+      <x:processing script="prop:script" width="demo.width" height="demo.height"/>
+
+  <h2>${demo.title}</h2>
+
+
+
     </div>
 
   </body>

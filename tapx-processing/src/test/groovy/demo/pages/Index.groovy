@@ -14,9 +14,47 @@
 
 package demo.pages
 
+import org.apache.tapestry5.Asset 
+import org.apache.tapestry5.ComponentResources 
 import org.apache.tapestry5.annotations.Import;
+import org.apache.tapestry5.annotations.PageActivationContext 
+import org.apache.tapestry5.annotations.Property 
+import org.apache.tapestry5.ioc.annotations.Inject 
+import org.apache.tapestry5.services.AssetSource 
 
 @Import(stylesheet="style.css")
 class Index
 {
+    enum Demo {
+        BASIC(200, 200, "basic.psj", "Circle follows mouse"),
+        MOLTEN(600, 150, "molten.psj", "Molten Bar Chart")
+        
+        final int width, height;
+        
+        final String path, title;
+        
+        private Demo(width, height, path, title) {
+            this.width = width;
+            this.height = height;
+            this.path = path;
+            this.title = title;
+        }
+    }
+    
+    @Property
+    @PageActivationContext
+    private Demo demo = Demo.BASIC;
+    
+    @Inject
+    private AssetSource assetSource;
+    
+    @Inject
+    private ComponentResources resources;
+    
+    @Inject
+    private Locale locale;
+    
+    Asset getScript() {
+        return assetSource.getAsset(resources.baseResource, demo.path, locale);
+    }
 }

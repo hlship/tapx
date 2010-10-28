@@ -1,11 +1,12 @@
 BODY {
-
   background-color: silver;
-  text-align: center;1
 }
 
 DIV.container
 {
+   float: left;
+   overflow: visible;
+   width: 800px;
    background-color: white;
    border-top: 1px solid black;
    border-left: 1px solid black;
@@ -16,8 +17,4 @@ DIV.container
 
 DIV.content CANVAS
 {
-   border-top: 1px solid black;
-   border-left: 1px solid black;
-   border-right: 2px solid grey;
-   border-bottom: 2px solid grey;
 }
