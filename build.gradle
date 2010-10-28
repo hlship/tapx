@@ -25,6 +25,7 @@ subprojects {
     dependencies {
         compile "org.apache.tapestry:tapestry-core:5.2.2"        
         testCompile "org.apache.tapestry:tapestry-test:5.2.2"        
+        testCompile "org.easymock:easymock:3.0"
         groovy "org.codehaus.groovy:groovy-all:1.7.4"
     }
     

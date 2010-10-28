@@ -1,1 +1,1 @@
-include "tapx-core", "tapx-datefield" // , "tapx-plainmessage", "tapx-prototype", "tapx-templating"
+include "tapx-core", "tapx-datefield", "tapx-plainmessage", "tapx-templating"

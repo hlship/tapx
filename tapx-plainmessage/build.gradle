@@ -1,0 +1,5 @@
+jar {
+    manifest {
+        attributes 'Tapestry-Module-Classes': 'com.howardlewisship.tapx.plainmessage.services.PlainMessageModule'
+    }
+}
