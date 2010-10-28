@@ -1,1 +1,1 @@
-include "tapx-core", "tapx-datefield", "tapx-plainmessage", "tapx-templating"
+include "tapx-core", "tapx-datefield", "tapx-plainmessage", "tapx-templating", "tapx-yui"
