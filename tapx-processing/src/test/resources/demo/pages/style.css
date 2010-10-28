@@ -7,6 +7,7 @@ DIV.container
    float: left;
    overflow: visible;
    width: 800px;
+   height: auto;
    background-color: white;
    border-top: 1px solid black;
    border-left: 1px solid black;

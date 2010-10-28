@@ -17,54 +17,72 @@ package demo.pages
 import org.apache.tapestry5.Asset 
 import org.apache.tapestry5.ComponentResources 
 import org.apache.tapestry5.SelectModel 
+import org.apache.tapestry5.annotations.Cached 
+import org.apache.tapestry5.annotations.Environmental 
 import org.apache.tapestry5.annotations.Import;
 import org.apache.tapestry5.annotations.PageActivationContext 
 import org.apache.tapestry5.annotations.Property 
 import org.apache.tapestry5.ioc.annotations.Inject 
 import org.apache.tapestry5.services.AssetSource 
 import org.apache.tapestry5.services.SelectModelFactory 
+import org.apache.tapestry5.services.javascript.JavaScriptSupport 
 
-@Import(stylesheet="style.css")
-class Index
-{
+@Import(stylesheet=["style.css", "context:sh/css/shCore.css",
+"context:sh/css/shThemeDefault.css"
+],
+library=["context:sh/js/shCore.js", "context:sh/js/shBrushJScript.js"
+])
+class Index {
     enum Demo {
         BASIC(200, 200, "basic.psj", "Circle follows mouse"),
         MOLTEN(600, 150, "molten.psj", "Molten Bar Chart")
         
-        final int width, height;
+        final int width, height
         
-        final String path, title;
+        final String path, title
         
         private Demo(width, height, path, title) {
-            this.width = width;
-            this.height = height;
-            this.path = path;
-            this.title = title;
+            this.width = width
+            this.height = height
+            this.path = path
+            this.title = title
         }
     }
     
     @Property
     @PageActivationContext
-    private Demo demo = Demo.BASIC;
+    private Demo demo = Demo.BASIC
     
     @Inject
-    private AssetSource assetSource;
+    private AssetSource assetSource
     
     @Inject
-    private ComponentResources resources;
+    private ComponentResources resources
     
     @Inject
-    private Locale locale;
+    private Locale locale
     
     @Inject
-    private SelectModelFactory selectModelFactory;
+    private SelectModelFactory selectModelFactory
     
+    @Environmental
+    private JavaScriptSupport jsSupport
+    
+    @Cached
     Asset getScript() {
-        return assetSource.getAsset(resources.baseResource, demo.path, locale);
+        return assetSource.getAsset(resources.baseResource, demo.path, locale)
     }
     
-    SelectModel getDemoModel()
+    SelectModel getDemoModel() {
+        return selectModelFactory.create(Demo.values().toList(), "title")
+    }
+    
+    def afterRender() {
+        jsSupport.addScript "SyntaxHighlighter.all();"
+    }
+    
+    def getScriptContent()
     {
-        return selectModelFactory.create(Demo.values().toList(), "title");
+        return script.resource.openStream().getText()
     }
 }
