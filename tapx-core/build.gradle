@@ -1,8 +1,3 @@
-repositories {
-    // For the Kaptcha library
-    mavenRepo urls: "http://tapestry.formos.com/maven-repository/"
-}
-
 dependencies {
     compile "com.google.code.kaptcha:kaptcha:2.3"
 }

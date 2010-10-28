@@ -16,7 +16,10 @@ subprojects {
         mavenRepo urls: "https://repository.apache.org/content/repositories/orgapachetapestry-003"
         
         // All things JBoss/Javassist/Hibernate
-        mavenRepo urls: "https://repository.jboss.org/nexus/content/repositories/releases/"        
+        mavenRepo urls: "https://repository.jboss.org/nexus/content/repositories/releases/"
+        
+        // For the Kaptcha library
+        mavenRepo urls: "http://tapestry.formos.com/maven-repository/"    
     }
     
     dependencies {
