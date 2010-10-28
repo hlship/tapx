@@ -15,7 +15,10 @@
 package com.howardlewisship.tapx.processing.services;
 
 import org.apache.tapestry5.ioc.Configuration;
+import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.annotations.Contribute;
+import org.apache.tapestry5.ioc.services.FactoryDefaults;
+import org.apache.tapestry5.ioc.services.SymbolProvider;
 import org.apache.tapestry5.services.ComponentClassResolver;
 import org.apache.tapestry5.services.LibraryMapping;
 
@@ -25,5 +28,12 @@ public class ProcessingModule
     public static void extendTapxLibraryMapping(Configuration<LibraryMapping> configuration)
     {
         configuration.add(new LibraryMapping("tapx", "com.howardlewisship.tapx.processing"));
+    }
+
+    @Contribute(SymbolProvider.class)
+    @FactoryDefaults
+    public static void defineProcessingLibraryLocation(MappedConfiguration<String, String> configuration)
+    {
+        configuration.add("tapx.processing", "classpath:com/howardlewisship/tapx/processing/processing-0.9.7.js");
     }
 }

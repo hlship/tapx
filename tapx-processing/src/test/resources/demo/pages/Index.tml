@@ -1,0 +1,15 @@
+<html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter"
+  xmlns:x="tapestry-library:tapx">
+  <title>Processing Demo</title>
+  <body>
+    <div class="content">
+
+      <div class="container">
+
+        <x:processing script="basic.psj" width="200" height="200"/>
+
+      </div>
+    </div>
+
+  </body>
+</html>
