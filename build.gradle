@@ -4,6 +4,7 @@ subprojects {
     apply plugin: 'groovy' // mostly for testing
     apply plugin: 'eclipse'
     apply plugin: 'maven'
+    apply plugin: 'project-report'
     
     sourceCompatibility = '1.5'
     targetCompatibility = '1.5'
