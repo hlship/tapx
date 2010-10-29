@@ -1,3 +1,4 @@
+description = "Collection of add-ons for Tapestry 5"
 
 subprojects {
     apply plugin: 'java'
@@ -10,6 +11,8 @@ subprojects {
     targetCompatibility = '1.5'
     
     version = '1.0.0-SNAPSHOT'
+
+    group = "com.howardlewisship"
     
     repositories {
         mavenCentral()

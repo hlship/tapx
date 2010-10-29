@@ -1,3 +1,5 @@
+description = "Improved JavaScript date/time selection control"
+
 dependencies {
     compile project(':tapx-core')
 }

@@ -1,3 +1,5 @@
+description = "Packages YUI 2.7 and provides easy declarative access to the scripts"
+
 dependencies {
     compile project(":tapx-core")
 }
