@@ -64,7 +64,7 @@ void mousePressed() {
   mdtx = tx;
   mdty = ty;
   
-  bg = 250;
+  bg = 0;
 }
 
 void mouseReleased() {

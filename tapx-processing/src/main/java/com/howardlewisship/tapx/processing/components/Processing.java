@@ -1,4 +1,4 @@
-// Copyright 2010 [ORG]
+// Copyright 2010 Howard M. Lewis Ship
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,17 +26,24 @@ import org.apache.tapestry5.annotations.SupportsInformalParameters;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 
+/**
+ * Creates a &lt;canvas&gt; element set up to load a Processing.js
+ * sketch file.
+ */
 @SupportsInformalParameters
 @Import(library = "${tapx.processing}")
 public class Processing implements ClientElement
 {
+    /**
+     * The Processing.js sketch to be loaded into the canvas.
+     */
     @Parameter(required = true, allowNull = false, defaultPrefix = BindingConstants.ASSET)
-    private Asset script;
+    private Asset sketch;
 
-    @Parameter(value = "500")
+    @Parameter(value = "250")
     private int width;
 
-    @Parameter(value = "500")
+    @Parameter(value = "250")
     private int height;
 
     @Inject
@@ -59,7 +66,7 @@ public class Processing implements ClientElement
 
     boolean beginRender(MarkupWriter writer)
     {
-        writer.element("canvas", "id", clientId, "datasrc", script.toClientURL(), "width", width, "height", height);
+        writer.element("canvas", "id", clientId, "datasrc", sketch.toClientURL(), "width", width, "height", height);
 
         resources.renderInformalParameters(writer);
 

@@ -70,7 +70,7 @@ class Index {
     private JavaScriptSupport jsSupport
     
     @Cached
-    Asset getScript() {
+    Asset getSketch() {
         return assetSource.getAsset(resources.baseResource, demo.path, locale)
     }
     
@@ -82,8 +82,8 @@ class Index {
         jsSupport.addScript "SyntaxHighlighter.all();"
     }
     
-    def getScriptContent()
+    def getSketchContent()
     {
-        return script.resource.openStream().getText()
+        return sketch.resource.openStream().getText()
     }
 }

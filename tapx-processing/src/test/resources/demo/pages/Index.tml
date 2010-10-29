@@ -10,11 +10,11 @@
         <t:select t:id="demo" model="demoModel" onchange="this.form.submit();" blankoption="never"/>
       </t:form>
 
-      <x:processing script="prop:script" width="demo.width" height="demo.height"/>
+      <x:processing sketch="prop:sketch" width="demo.width" height="demo.height"/>
 
   <h2>${demo.title}</h2>
 
-<pre class="brush:js;">${scriptContent}</pre>
+<pre class="brush:js;">${sketchContent}</pre>
 
 
     </div>
