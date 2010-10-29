@@ -1,0 +1,72 @@
+void setup()
+{
+  size(500, 500);
+  noStroke();
+  frameRate(24);
+}
+
+int boxsize = 20;
+int spacing = boxsize + 10;
+int boxcount = ceil(width / spacing) + 1;
+int halo = 8;
+
+int tx = 0, ty = 0;
+
+int angleRange = 200;
+int angle = 0;
+
+void draw()
+{
+  
+  background(120);
+    
+  rectMode(CENTER);
+            
+  translate(tx + (spacing >> 1), ty + (spacing >> 1));
+
+  for (x = -1; x < boxcount; x++) {
+  
+    int shade = 255;
+  
+    for (y = -1; y < boxcount; y++) {
+    
+      pushMatrix();
+
+      translate(x * spacing, y * spacing);
+      rotate(TWO_PI * (angle / angleRange)); 
+  
+      for (i = 0; i < halo; i+= 3) {
+        fill(255, 100 + 10 * i);
+        rect(0, 0, boxsize + (halo - i), boxsize + (halo - i));
+      }
+            
+      fill(shade);
+      rect(0, 0, boxsize, boxsize);
+  
+      popMatrix();
+      
+      shade -= 10;
+    }
+  }
+  
+  angle = (angle + 1) % angleRange;     
+}
+
+int mdx, mdy, mdtx, mdty;
+
+void mousePressed() {
+  mdx = mouseX;
+  mdy = mouseY;
+  
+  mdtx = tx;
+  mdty = ty;
+}
+
+void mouseDragged() {
+  
+  int deltax = mouseX - mdx;
+  int deltay = mouseY - mdy;
+  
+  tx = (mdtx + deltax) % spacing;
+  ty = (mdty + deltay) % spacing;
+}  

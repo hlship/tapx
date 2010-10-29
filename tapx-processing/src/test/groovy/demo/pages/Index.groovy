@@ -36,7 +36,7 @@ class Index {
     enum Demo {
         BASIC(200, 200, "basic.psj", "Circle follows mouse"),
         MOLTEN(580, 150, "molten.psj", "Molten Bar Chart"),
-        HEXES(500, 500, "hexes.psj", "Flowing Hexagons")
+        BOXES(500, 500, "boxes.psj", "Rotating Boxes")
         
         final int width, height
         
