@@ -1,0 +1,14 @@
+
+void setup() {
+  size(500, 500);
+  background(0);
+  noStroke();
+  rectMode(CENTER);
+}
+
+void draw() {
+
+  fill(100);
+  rect(100, 120, 50, 50);
+
+}

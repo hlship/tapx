@@ -35,7 +35,8 @@ library=["context:sh/js/shCore.js", "context:sh/js/shBrushJScript.js"
 class Index {
     enum Demo {
         BASIC(200, 200, "basic.psj", "Circle follows mouse"),
-        MOLTEN(600, 150, "molten.psj", "Molten Bar Chart")
+        MOLTEN(580, 150, "molten.psj", "Molten Bar Chart"),
+        HEXES(500, 500, "hexes.psj", "Flowing Hexagons")
         
         final int width, height
         
