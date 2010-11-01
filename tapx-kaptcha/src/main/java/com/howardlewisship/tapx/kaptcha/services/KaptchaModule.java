@@ -17,7 +17,7 @@ public class KaptchaModule {
     }
 
     public static void contributeComponentClassResolver(Configuration<LibraryMapping> configuration) {
-        configuration.add(new LibraryMapping("tapx", "com.howardlewisship.tapx.datefield"));
+        configuration.add(new LibraryMapping("tapx", "com.howardlewisship.tapx.kaptcha"));
     }
 
     public static void contributeComponentMessagesSource(OrderedConfiguration<Resource> configuration,
