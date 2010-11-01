@@ -1,0 +1,40 @@
+description = "Collection of add-ons for Tapestry 5"
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'groovy' // mostly for testing
+    apply plugin: 'eclipse'
+    apply plugin: 'maven'
+    apply plugin: 'project-report'
+    
+    sourceCompatibility = '1.5'
+    targetCompatibility = '1.5'
+    
+    version = '1.1-SNAPSHOT'
+
+    group = 'com.howardlewisship'
+    
+    repositories {
+        mavenCentral()
+        
+        // Temporary while the Tapestry 5.2.2 vote continues:
+        mavenRepo urls: "https://repository.apache.org/content/repositories/orgapachetapestry-003"
+        
+        // All things JBoss/Javassist/Hibernate
+        mavenRepo urls: "https://repository.jboss.org/nexus/content/repositories/releases/"
+
+    }
+    
+    dependencies {
+        compile "org.apache.tapestry:tapestry-core:5.2.2"        
+        testCompile "org.apache.tapestry:tapestry-test:5.2.2"        
+        testCompile "org.easymock:easymock:3.0"
+        groovy "org.codehaus.groovy:groovy-all:1.7.4"
+    }
+    
+    test {
+        useTestNG()
+        
+        options.suites("src/test/conf/testng.xml")
+    }
+}

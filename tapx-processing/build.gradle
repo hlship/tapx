@@ -1,0 +1,7 @@
+description = "Thin wrapper around Processing.js"
+
+jar {
+    manifest {
+        attributes 'Tapestry-Module-Classes': 'com.howardlewisship.tapx.processing.services.ProcessingModule'
+    }
+}

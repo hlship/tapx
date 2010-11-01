@@ -1,5 +1,8 @@
+*~
 test-output
 bin
+build
+.gradle
 .classpath
 .project
 .settings

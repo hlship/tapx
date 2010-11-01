@@ -1,0 +1,11 @@
+description = "Transforms Tapestry into an off-line e-mail generator"
+
+dependencies {
+    compile "javax.mail:mail:1.4"
+}
+
+jar {
+    manifest {
+        attributes 'Tapestry-Module-Classes': 'com.howardlewisship.tapx.templating.services.TemplateModule'
+    }
+}

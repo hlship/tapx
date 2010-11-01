@@ -1,0 +1,11 @@
+description = "Packages YUI 2.7 and provides easy declarative access to the scripts"
+
+dependencies {
+    compile project(":tapx-core")
+}
+
+jar {
+    manifest {
+        attributes 'Tapestry-Module-Classes': 'com.howardlewisship.tapx.yui.services.YuiModule'
+    }
+}

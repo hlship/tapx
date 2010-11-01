@@ -1,0 +1,7 @@
+description = "Adds plainmessage: binding prefix"
+
+jar {
+    manifest {
+        attributes 'Tapestry-Module-Classes': 'com.howardlewisship.tapx.plainmessage.services.PlainMessageModule'
+    }
+}

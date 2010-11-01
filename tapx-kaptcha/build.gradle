@@ -1,0 +1,15 @@
+description = "Kaptcha component"
+
+dependencies {
+    compile project(':tapx-core')
+}
+
+repositories {
+    mavenRepo urls: "http://tapestry.formos.com/maven-repository/"
+}
+
+jar {
+    manifest {
+        attributes 'Tapestry-Module-Classes': 'com.howardlewisship.tapx.kaptcha.services.KaptchaModule'
+    }
+}

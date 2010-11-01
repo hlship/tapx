@@ -1,0 +1,11 @@
+description = "Improved JavaScript date/time selection control"
+
+dependencies {
+    compile project(':tapx-core')
+}
+
+jar {
+    manifest {
+        attributes 'Tapestry-Module-Classes': 'com.howardlewisship.tapx.datefield.services.DateFieldModule'
+    }
+}

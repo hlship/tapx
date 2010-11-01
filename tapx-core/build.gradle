@@ -1,0 +1,11 @@
+description = "Common general components"
+
+dependencies {
+    compile "com.google.code.kaptcha:kaptcha:2.3"
+}
+
+jar {
+    manifest {
+        attributes 'Tapestry-Module-Classes': 'com.howardlewisship.tapx.core.services.CoreModule'
+    }
+}
