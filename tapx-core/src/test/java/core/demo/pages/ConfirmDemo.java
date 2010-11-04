@@ -43,4 +43,9 @@ public class ConfirmDemo
     {
         message = "update via form submit";
     }
+
+    void onActionFromLink3()
+    {
+        message = "update from link3";
+    }
 }

@@ -57,37 +57,43 @@ Tapestry.Initializer.tapxConfirm = function(spec) {
 	 */
 	element.stopObserving("click");
 
+	function doAction() {
+		if ($T(element).hasAction) {
+			element.fire(Tapestry.ACTION_EVENT, event);
+			return;
+		}
+
+		/*
+		 * Is it a submit element (i.e., it has a click() method)? Try that
+		 * next.
+		 */
+
+		if (element.click) {
+			interceptClickEvent = false;
+
+			element.click();
+			return;
+		}
+
+		/*
+		 * Not a zone update, so just do a full page refresh to the indicated
+		 * URL.
+		 */
+		window.location = element.href;
+	}
+
 	element.observe("click", function(event) {
 
 		if (interceptClickEvent) {
 
 			event.stop();
 
-			runModalDialog(function() {
+			if ($(element).hasClassName('tx-disable-confirm')) {
+				doAction();
+				return;
+			}
 
-				if ($T(element).hasAction) {
-					element.fire(Tapestry.ACTION_EVENT, event);
-					return;
-				}
-
-				/*
-				 * A submit element (i.e., it has a click() method)? Try that
-				 * next.
-				 */
-
-				if (element.click) {
-					interceptClickEvent = false;
-
-					element.click();
-					return;
-				}
-
-				/*
-				 * Not a zone updater, so just do a full page refresh to the
-				 * indicated URL.
-				 */
-				window.location = element.href;
-			});
+			runModalDialog(doAction);
 		}
 	});
 

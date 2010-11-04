@@ -32,6 +32,10 @@ import org.apache.tapestry5.services.javascript.JavaScriptSupport;
  * message to the user. This mixin may be attached to a link or a submit button. It will work correctly with
  * ordinary links such as {@link PageLink} or {@link EventLink}, and will operate correctly when
  * the link is being used as a {@link Zone} trigger.
+ * <p>
+ * If the element has the CSS class "tx-disable-confirm" at the time the link is clicked (or form submitted), then the
+ * modal dialog will NOT run. Often, client-side JavaScript will add or remove this class to enable or disable the
+ * confirmation behavior.
  */
 @Import(library =
 { "${tapestry.scriptaculous}/builder.js", "modalbox.js", "confirm.js" }, stylesheet = "modalbox.css")
