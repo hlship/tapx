@@ -95,6 +95,10 @@ Tapestry.Initializer.tapxConfirm = function(spec) {
 
 			runModalDialog(doAction);
 		}
+		else
+		{
+			interceptClickEvent = true;
+		}
 	});
 
 };
