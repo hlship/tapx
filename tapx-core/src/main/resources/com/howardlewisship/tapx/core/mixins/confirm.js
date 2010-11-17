@@ -1,52 +1,47 @@
+Tapx.runModalDialog = function(title, message, proceed) {
+	var div = new Element('div', {
+		className : 'mb-confirm'
+	}).update(new Element('p').update(message));
+
+	/*
+	 * Have to assign ids and reconnect at after load, because ModalBox copies
+	 * DOM elements, rather than move them.
+	 */
+	var baseId = "mb-" + new Date().getTime();
+	var yesId = baseId + "-yes";
+	var noId = baseId + "-no";
+
+	var yesButton = new Element('button', {
+		className : 'mb-yes-button',
+		id : yesId
+	}).update('Yes');
+
+	var noButton = new Element('button', {
+		className : 'mb-no-button',
+		id : noId
+	}).update('No');
+
+	div.insert(yesButton).insert(noButton);
+
+	Modalbox.show(div, {
+		title : title,
+		afterLoad : function() {
+			$(noId).observe("click", function(event) {
+				Modalbox.hide();
+			});
+			$(yesId).observe("click", function(event) {
+				event.stop();
+				Modalbox.hide();
+				proceed.defer();
+			});
+		}
+	});
+};
+
 Tapestry.Initializer.tapxConfirm = function(spec) {
 
 	var element = $(spec.clientId);
 	var type = element.type;
-
-	/*
-	 * This function is executed with "early" priority, so it gets to add its
-	 * own "click" handlers before others. Function that runs the dialog, and
-	 * invokes the proceed button if the user clicks "Yes" Otherwise, the (if
-	 * "No" or the modal dialog is closed), no further processing occurs.
-	 */
-	var runModalDialog = function(proceed) {
-		var div = new Element('div', {
-			className : 'mb-confirm'
-		}).update(new Element('p').update(spec.message));
-
-		/*
-		 * Have to assign ids and reconnect at after load, because ModalBox
-		 * copies DOM elements, rather than moves them.
-		 */
-		var baseId = "mb-" + new Date().getTime();
-		var yesId = baseId + "-yes";
-		var noId = baseId + "-no";
-
-		var yesButton = new Element('button', {
-			className : 'mb-yes-button',
-			id : yesId
-		}).update('Yes');
-
-		var noButton = new Element('button', {
-			className : 'mb-no-button',
-			id : noId
-		}).update('No');
-
-		div.insert(yesButton).insert(noButton);
-
-		Modalbox.show(div, {
-			title : spec.title,
-			afterLoad : function() {
-				$(noId).observe("click",
-						Modalbox.hide.bindAsEventListener(Modalbox));
-				$(yesId).observe("click", function(event) {
-					event.stop();
-					Modalbox.hide();
-					proceed.defer();
-				});
-			}
-		});
-	};
 
 	var interceptClickEvent = true;
 
@@ -93,10 +88,8 @@ Tapestry.Initializer.tapxConfirm = function(spec) {
 				return;
 			}
 
-			runModalDialog(doAction);
-		}
-		else
-		{
+			Tapx.runModalDialog(spec.title, spec.message, doAction);
+		} else {
 			interceptClickEvent = true;
 		}
 	});

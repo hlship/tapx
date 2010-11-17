@@ -21,18 +21,22 @@ import org.apache.tapestry5.ioc.OrderedConfiguration;
 import org.apache.tapestry5.ioc.Resource;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.Autobuild;
+import org.apache.tapestry5.ioc.annotations.Contribute;
 import org.apache.tapestry5.ioc.annotations.Local;
 import org.apache.tapestry5.ioc.annotations.Value;
 import org.apache.tapestry5.ioc.services.Coercion;
 import org.apache.tapestry5.ioc.services.CoercionTuple;
 import org.apache.tapestry5.services.LibraryMapping;
 import org.apache.tapestry5.services.UpdateListenerHub;
+import org.apache.tapestry5.services.javascript.JavaScriptStack;
+import org.apache.tapestry5.services.javascript.JavaScriptStackSource;
 
 import com.howardlewisship.tapx.core.CoreSymbols;
 import com.howardlewisship.tapx.core.dynamic.DynamicTemplate;
 import com.howardlewisship.tapx.core.dynamic.DynamicTemplateParser;
 import com.howardlewisship.tapx.core.internal.dynamic.DynamicTemplateParserImpl;
 import com.howardlewisship.tapx.core.internal.services.KaptchaProducerImpl;
+import com.howardlewisship.tapx.core.internal.services.TapxCoreStack;
 
 public class CoreModule
 {
@@ -56,6 +60,12 @@ public class CoreModule
             Resource coreCatalog)
     {
         configuration.add("TapxCore", coreCatalog, "before:AppCatalog");
+    }
+
+    @Contribute(JavaScriptStackSource.class)
+    public static void provideTapxCoreStack(MappedConfiguration<String, JavaScriptStack> configuration)
+    {
+        configuration.addInstance("tapx-core", TapxCoreStack.class);
     }
 
     /**

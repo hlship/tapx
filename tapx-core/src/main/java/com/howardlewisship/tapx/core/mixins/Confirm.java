@@ -14,18 +14,24 @@
 
 package com.howardlewisship.tapx.core.mixins;
 
+import org.apache.tapestry5.Asset;
 import org.apache.tapestry5.BindingConstants;
 import org.apache.tapestry5.ClientElement;
 import org.apache.tapestry5.annotations.Environmental;
 import org.apache.tapestry5.annotations.Import;
 import org.apache.tapestry5.annotations.InjectContainer;
 import org.apache.tapestry5.annotations.Parameter;
+import org.apache.tapestry5.annotations.Path;
 import org.apache.tapestry5.corelib.components.EventLink;
 import org.apache.tapestry5.corelib.components.PageLink;
 import org.apache.tapestry5.corelib.components.Zone;
+import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.ioc.annotations.Symbol;
 import org.apache.tapestry5.json.JSONObject;
 import org.apache.tapestry5.services.javascript.InitializationPriority;
 import org.apache.tapestry5.services.javascript.JavaScriptSupport;
+
+import com.howardlewisship.tapx.core.CoreSymbols;
 
 /**
  * Uses <a href="http://github.com/okonet/modalbox/tree/release1.6.1">ModalBox 1.6.1</a> to present a confirmation
@@ -36,8 +42,12 @@ import org.apache.tapestry5.services.javascript.JavaScriptSupport;
  * If the element has the CSS class "tx-disable-confirm" at the time the link is clicked (or form submitted), then the
  * modal dialog will NOT run. Often, client-side JavaScript will add or remove this class to enable or disable the
  * confirmation behavior.
+ * <p>
+ * Because of problems using Selenium with the Confirm mixin, the {@linkplain CoreSymbols#TEST_MODE
+ * test mode} behavior is changed: the Modalbox dialog is replaced with a simple JavaScript
+ * <code>window.confirm()</code>.
  */
-@Import(library =
+@Import(stack = "tapx-core", library =
 { "${tapestry.scriptaculous}/builder.js", "modalbox.js", "confirm.js" }, stylesheet = "modalbox.css")
 public class Confirm
 {
@@ -53,8 +63,19 @@ public class Confirm
     @Environmental
     private JavaScriptSupport javascriptSupport;
 
+    @Inject
+    @Path("confirm-testmode.js")
+    private Asset testModeLibrary;
+
+    @Inject
+    @Symbol(CoreSymbols.TEST_MODE)
+    private boolean testMode;
+
     void afterRender()
     {
+        if (testMode)
+            javascriptSupport.importJavaScriptLibrary(testModeLibrary);
+
         JSONObject spec = new JSONObject("clientId", container.getClientId(), "message", message, "title", title);
 
         // Late, to overwrite other event handlers
