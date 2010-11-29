@@ -11,6 +11,10 @@
         message="Custom message?">zone update link</t:actionlink>
     </li>
     <li>
+      <t:actionlink class="tx-disable-confirm" t:id="link3" t:mixins="tapx/confirm">confirm disabled
+      </t:actionlink>
+    </li>
+    <li>
       <t:form t:id="form">
         <t:submit value="Form Submit" t:mixins="tapx/confirm"/>
       </t:form>
