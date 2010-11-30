@@ -24,10 +24,10 @@ import com.howardlewisship.tapx.core.services.CoreModule;
 @SubModule(CoreModule.class)
 public class AppModule
 {
-    public static void contributeApplicationDefaults(MappedConfiguration<String, String> configuration)
+    public static void contributeApplicationDefaults(
+            MappedConfiguration<String, String> configuration)
     {
         configuration.add(CoreSymbols.TEST_MODE, "true");
         configuration.add(SymbolConstants.PRODUCTION_MODE, "false");
-
     }
 }

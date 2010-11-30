@@ -1,0 +1,12 @@
+<t:layout xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:tx="tapestry-library:tapx">
+
+
+  <h1>tapx-kaptcha Demos</h1>
+
+  <ul>
+    <li>
+      <t:pagelink page="kaptchaDemo">Kaptcha Demo</t:pagelink>
+    </li>   
+  </ul>
+
+</t:layout>

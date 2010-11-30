@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.howardlewisship.tapx.core.internal.services;
+package com.howardlewisship.tapx.kaptcha.internal.services;
 
 import java.awt.image.BufferedImage;
 import java.util.Map;
@@ -23,7 +23,7 @@ import org.apache.tapestry5.ioc.annotations.Symbol;
 import com.google.code.kaptcha.impl.DefaultKaptcha;
 import com.google.code.kaptcha.util.Config;
 import com.howardlewisship.tapx.core.CoreSymbols;
-import com.howardlewisship.tapx.core.services.KaptchaProducer;
+import com.howardlewisship.tapx.kaptcha.services.KaptchaProducer;
 
 public class KaptchaProducerImpl implements KaptchaProducer
 {

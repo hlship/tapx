@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.howardlewisship.tapx.core.components;
+package com.howardlewisship.tapx.kaptcha.components;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -28,15 +28,15 @@ import org.apache.tapestry5.annotations.SupportsInformalParameters;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Response;
 
-import com.howardlewisship.tapx.core.services.KaptchaProducer;
+import com.howardlewisship.tapx.kaptcha.services.KaptchaProducer;
 
 /**
  * Part of a Captcha based authentication scheme; a KaptchaImage generates a new
  * text image whenever it <em>renders</em> and can provide the previously
  * rendred text subsequently (it is stored persistently in the session).
  * <p>
- * The component renders an &lt;img&gt; tag, including width and height attributes. Other attributes come from informal
- * parameters.
+ * The component renders an &lt;img&gt; tag, including width and height attributes. Other attributes
+ * come from informal parameters.
  */
 @SupportsInformalParameters
 public class KaptchaImage

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.howardlewisship.tapx.core.components;
+package com.howardlewisship.tapx.kaptcha.components;
 
 import org.apache.tapestry5.BindingConstants;
 import org.apache.tapestry5.ComponentResources;
@@ -77,6 +77,7 @@ public class KaptchaField extends AbstractField
         validationTracker.recordError(this, messages.get("tapx-incorrect-captcha"));
     }
 
+    @SuppressWarnings("rawtypes")
     @BeginRender
     boolean begin(MarkupWriter writer)
     {
@@ -93,7 +94,8 @@ public class KaptchaField extends AbstractField
 
         resources.renderInformalParameters(writer);
 
-        FieldValidator fieldValidator = fieldValidatorSource.createValidator(this, "required", null);
+        FieldValidator fieldValidator = fieldValidatorSource
+                .createValidator(this, "required", null);
 
         fieldValidator.render(writer);
 

@@ -1,0 +1,9 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="tapx-kaptcha">
+  <test name="Integration Tests">
+    <parameter name="tapestry.web-app-folder" value="src/test/webapp"/>
+    <packages>
+      <package name="kaptcha.itest"/>
+    </packages>
+  </test>
+</suite>
