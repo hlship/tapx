@@ -8,6 +8,9 @@
     <li>
       <t:pagelink page="beaneditordemo">BeanEditor Demo</t:pagelink>
     </li>
+    <li>
+      <t:pagelink page="timezonetrackerdemo">TimeZoneTracker Demo</t:pagelink>
+    </li>
   </ul>
 
 </t:layout>

@@ -1,0 +1,6 @@
+<t:layout xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+  xmlns:tx="tapestry-library:tapx" xmlns:p="tapestry:parameter">
+
+  <tx:timezonetracker/>
+
+</t:layout>

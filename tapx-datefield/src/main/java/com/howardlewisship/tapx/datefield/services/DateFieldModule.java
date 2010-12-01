@@ -26,6 +26,7 @@ import org.apache.tapestry5.services.LibraryMapping;
 import org.apache.tapestry5.services.javascript.JavaScriptStack;
 
 import com.howardlewisship.tapx.datefield.DateFieldSymbols;
+import com.howardlewisship.tapx.internal.datefield.services.ClientTimeZoneTrackerImpl;
 import com.howardlewisship.tapx.internal.datefield.services.DateFieldFormatConverterImpl;
 
 public class DateFieldModule
@@ -33,6 +34,7 @@ public class DateFieldModule
     public static void bind(ServiceBinder binder)
     {
         binder.bind(DateFieldFormatConverter.class, DateFieldFormatConverterImpl.class);
+        binder.bind(ClientTimeZoneTracker.class, ClientTimeZoneTrackerImpl.class);
     }
 
     public static void contributeFactoryDefaults(MappedConfiguration<String, String> configuration)
@@ -48,17 +50,20 @@ public class DateFieldModule
         configuration.add(new LibraryMapping("tapx", "com.howardlewisship.tapx.datefield"));
     }
 
-    public static void contributeBeanBlockOverrideSource(Configuration<BeanBlockContribution> configuration)
+    public static void contributeBeanBlockOverrideSource(
+            Configuration<BeanBlockContribution> configuration)
     {
         configuration.add(new EditBlockContribution("date", "tapx/DateFieldEditBlocks", "date"));
     }
 
-    public static void contributeJavaScriptStackSource(MappedConfiguration<String, JavaScriptStack> configuration)
+    public static void contributeJavaScriptStackSource(
+            MappedConfiguration<String, JavaScriptStack> configuration)
     {
         configuration.addInstance("tapx-datefield", DateFieldStack.class);
     }
 
-    public static void contributeComponentMessagesSource(OrderedConfiguration<Resource> configuration,
+    public static void contributeComponentMessagesSource(
+            OrderedConfiguration<Resource> configuration,
             @Value("com/howardlewisship/tapx/datefield/tapx-datefield.properties")
             Resource catalog)
     {
