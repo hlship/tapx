@@ -12,7 +12,6 @@ public interface ClientTimeZoneTracker
      * 
      * @return true if specific client time zone has been identified
      */
-
     boolean isClientTimeZoneIdentified();
 
     /**
@@ -22,4 +21,13 @@ public interface ClientTimeZoneTracker
      * @return effective TimeZone
      */
     TimeZone getClientTimeZone();
+
+    /**
+     * Invoked when the client time zone is identified; this will update the persistent storage
+     * (by default, a cookie) used to track a particular client's time zone as necessary
+     * 
+     * @param timeZone
+     *            identified time zone
+     */
+    void setClientTimeZone(TimeZone timeZone);
 }

@@ -3,4 +3,16 @@
 
   <tx:timezonetracker/>
 
+  <dl>
+    <dt>Identified</dt>
+    <dd id="identified">${identified}</dd>
+    <dt>Time Zone ID</dt>
+    <dd id="tz">
+      ${timeZone.id}
+    </dd>
+    <dt>Time Zone Data</dt>
+    <dd>
+      <t:beandisplay object="timezone"/>
+    </dd>
+  </dl>
 </t:layout>

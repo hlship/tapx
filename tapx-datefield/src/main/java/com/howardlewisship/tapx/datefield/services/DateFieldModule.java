@@ -14,12 +14,18 @@
 
 package com.howardlewisship.tapx.datefield.services;
 
+import java.util.List;
+
 import org.apache.tapestry5.ioc.Configuration;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.OrderedConfiguration;
 import org.apache.tapestry5.ioc.Resource;
 import org.apache.tapestry5.ioc.ServiceBinder;
+import org.apache.tapestry5.ioc.annotations.Contribute;
+import org.apache.tapestry5.ioc.annotations.Marker;
+import org.apache.tapestry5.ioc.annotations.Primary;
 import org.apache.tapestry5.ioc.annotations.Value;
+import org.apache.tapestry5.ioc.services.ChainBuilder;
 import org.apache.tapestry5.services.BeanBlockContribution;
 import org.apache.tapestry5.services.EditBlockContribution;
 import org.apache.tapestry5.services.LibraryMapping;
@@ -28,6 +34,7 @@ import org.apache.tapestry5.services.javascript.JavaScriptStack;
 import com.howardlewisship.tapx.datefield.DateFieldSymbols;
 import com.howardlewisship.tapx.internal.datefield.services.ClientTimeZoneTrackerImpl;
 import com.howardlewisship.tapx.internal.datefield.services.DateFieldFormatConverterImpl;
+import com.howardlewisship.tapx.internal.datefield.services.SystemTimeZoneAnalyzer;
 
 public class DateFieldModule
 {
@@ -68,5 +75,27 @@ public class DateFieldModule
             Resource catalog)
     {
         configuration.add("TapxDateField", catalog, "before:AppCatalog");
+    }
+
+    @Marker(Primary.class)
+    public static ClientTimeZoneAnalyzer build(List<ClientTimeZoneAnalyzer> configuration,
+            ChainBuilder builder)
+    {
+        return builder.build(ClientTimeZoneAnalyzer.class, configuration);
+    }
+
+    /**
+     * Provides the default set of {@link ClientTimeZoneAnalyzer}s:
+     * <dl>
+     * <dt>System</dt>
+     * <dd>Fallback, ordered last, the returns the System's default time zone
+     * </dl>
+     */
+    @Contribute(ClientTimeZoneAnalyzer.class)
+    @Primary
+    public static void setupDefaultAnalyzers(
+            OrderedConfiguration<ClientTimeZoneAnalyzer> configuration)
+    {
+        configuration.add("System", new SystemTimeZoneAnalyzer(), "after:*");
     }
 }

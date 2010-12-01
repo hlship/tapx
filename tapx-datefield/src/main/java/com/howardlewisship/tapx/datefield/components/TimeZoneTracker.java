@@ -1,13 +1,17 @@
 package com.howardlewisship.tapx.datefield.components;
 
+import java.util.TimeZone;
+
 import org.apache.tapestry5.ComponentResources;
 import org.apache.tapestry5.Link;
 import org.apache.tapestry5.annotations.Import;
 import org.apache.tapestry5.annotations.Log;
 import org.apache.tapestry5.annotations.RequestParameter;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.ioc.annotations.Primary;
 import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 
+import com.howardlewisship.tapx.datefield.services.ClientTimeZoneAnalyzer;
 import com.howardlewisship.tapx.datefield.services.ClientTimeZoneTracker;
 
 /**
@@ -23,6 +27,10 @@ public class TimeZoneTracker
     private ClientTimeZoneTracker tracker;
 
     @Inject
+    @Primary
+    private ClientTimeZoneAnalyzer timeZoneAnalyzer;
+
+    @Inject
     private JavaScriptSupport jsSupport;
 
     @Inject
@@ -36,17 +44,22 @@ public class TimeZoneTracker
     @Import(library = "time-zone-tracker.js")
     void beginRender()
     {
-        Link link = resources.createEventLink("dataReceived");
+        Link link = resources.createEventLink("identifyTimeZone");
 
         jsSupport.addInitializerCall("identifyClientTimeZone", link.toURI());
     }
 
     @Log
-    void onDataReceived(@RequestParameter("offsetMinutes")
+    boolean onIdentifyTimeZone(@RequestParameter("offsetMinutes")
     int offsetMinutes, @RequestParameter("dateString")
     String dateString, @RequestParameter("epochMillis")
     long epochMillis)
     {
+        TimeZone timeZone = timeZoneAnalyzer
+                .extractTimeZone(dateString, offsetMinutes, epochMillis);
 
+        tracker.setClientTimeZone(timeZone);
+
+        return true; // stop the event
     }
 }
