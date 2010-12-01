@@ -16,13 +16,8 @@ public interface ClientTimeZoneAnalyzer
     /**
      * Return the identified TimeZone, or null if not identifiable from provided data.
      * 
-     * @param dateString
-     *            the result of the JS Date()'s toString()
-     * @param offsetMinutes
-     *            the JS Date()'s getTimezoneOffset() (offset in minutes from GMT)
-     * @param epochMillis
-     *            The JS Date()'s getTime() (milliseconds since the epoch GMT)
-     * @return a TimeZone, or null
+     * @param data
+     *            data extracted from the client, including optional geolocation data
      */
-    TimeZone extractTimeZone(String dateString, int offsetMinutes, long epochMillis);
+    TimeZone extractTimeZone(ClientTimeZoneData data);
 }

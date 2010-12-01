@@ -34,6 +34,8 @@ import org.apache.tapestry5.services.javascript.JavaScriptStack;
 import com.howardlewisship.tapx.datefield.DateFieldSymbols;
 import com.howardlewisship.tapx.internal.datefield.services.ClientTimeZoneTrackerImpl;
 import com.howardlewisship.tapx.internal.datefield.services.DateFieldFormatConverterImpl;
+import com.howardlewisship.tapx.internal.datefield.services.GeonameTimeZoneResolver;
+import com.howardlewisship.tapx.internal.datefield.services.LatLongTimeZoneAnalyzer;
 import com.howardlewisship.tapx.internal.datefield.services.SystemTimeZoneAnalyzer;
 
 public class DateFieldModule
@@ -42,6 +44,7 @@ public class DateFieldModule
     {
         binder.bind(DateFieldFormatConverter.class, DateFieldFormatConverterImpl.class);
         binder.bind(ClientTimeZoneTracker.class, ClientTimeZoneTrackerImpl.class);
+        binder.bind(LatLongToTimeZoneResolver.class, GeonameTimeZoneResolver.class);
     }
 
     public static void contributeFactoryDefaults(MappedConfiguration<String, String> configuration)
@@ -87,6 +90,8 @@ public class DateFieldModule
     /**
      * Provides the default set of {@link ClientTimeZoneAnalyzer}s:
      * <dl>
+     * <dt>LatLong</dt>
+     * <dd>Uses {@link LatLongToTimeZoneResolver}, if latitude and longitude are available
      * <dt>System</dt>
      * <dd>Fallback, ordered last, the returns the System's default time zone
      * </dl>
@@ -96,6 +101,7 @@ public class DateFieldModule
     public static void setupDefaultAnalyzers(
             OrderedConfiguration<ClientTimeZoneAnalyzer> configuration)
     {
+        configuration.addInstance("LatLong", LatLongTimeZoneAnalyzer.class);
         configuration.add("System", new SystemTimeZoneAnalyzer(), "after:*");
     }
 }

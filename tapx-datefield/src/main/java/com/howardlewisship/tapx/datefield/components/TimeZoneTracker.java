@@ -9,9 +9,12 @@ import org.apache.tapestry5.annotations.Log;
 import org.apache.tapestry5.annotations.RequestParameter;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.annotations.Primary;
+import org.apache.tapestry5.ioc.internal.util.InternalUtils;
+import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 
 import com.howardlewisship.tapx.datefield.services.ClientTimeZoneAnalyzer;
+import com.howardlewisship.tapx.datefield.services.ClientTimeZoneData;
 import com.howardlewisship.tapx.datefield.services.ClientTimeZoneTracker;
 
 /**
@@ -36,6 +39,9 @@ public class TimeZoneTracker
     @Inject
     private ComponentResources resources;
 
+    @Inject
+    private Request request;
+
     boolean setupRender()
     {
         return !tracker.isClientTimeZoneIdentified();
@@ -55,11 +61,18 @@ public class TimeZoneTracker
     String dateString, @RequestParameter("epochMillis")
     long epochMillis)
     {
-        TimeZone timeZone = timeZoneAnalyzer
-                .extractTimeZone(dateString, offsetMinutes, epochMillis);
+        TimeZone timeZone = timeZoneAnalyzer.extractTimeZone(new ClientTimeZoneData(dateString,
+                offsetMinutes, epochMillis, getDouble("latitude"), getDouble("longitude")));
 
         tracker.setClientTimeZone(timeZone);
 
         return true; // stop the event
+    }
+
+    private Double getDouble(String name)
+    {
+        String value = request.getParameter(name);
+
+        return InternalUtils.isBlank(value) ? null : new Double(value);
     }
 }
