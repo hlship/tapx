@@ -14,5 +14,11 @@
     <dd>
       <t:beandisplay object="timezone"/>
     </dd>
+    <dt>Current Server Time</dt>
+    <dd>${currentTime}</dd>
   </dl>
+
+
+  <t:grid source="timeZones" include="id,displayName,rawOffset"/>
+
 </t:layout>
