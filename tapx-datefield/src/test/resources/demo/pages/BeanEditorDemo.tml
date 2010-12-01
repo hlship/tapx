@@ -1,0 +1,7 @@
+<t:layout xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+  xmlns:p="tapestry:parameter">
+  <p>Show that date fields are now handled with the proper tapx
+    DatePicker.</p>
+
+  <t:beaneditform t:id="form" object="bean"/>
+</t:layout>
