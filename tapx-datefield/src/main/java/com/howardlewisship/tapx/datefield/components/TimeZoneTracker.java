@@ -19,10 +19,18 @@ import com.howardlewisship.tapx.datefield.services.ClientTimeZoneTracker;
 
 /**
  * Determines if {@linkplain ClientTimeZoneTracker#isClientTimeZoneIdentified() the client has
- * identified the time zone} and, if not, adds JavaScript to the page to sent the time zone
- * information to the server.
+ * identified the time zone} and, if not, adds JavaScript to the page to send the time zone
+ * information to the server. The client will ask for access to geolocation data available on the
+ * client (this works in Firefox and Chrome) and will report the client's latitude and longitude.
+ * If geolocation data is not available, other date information is used to determine the best
+ * matching TimeZone.
+ * <p>
+ * TODO: Seems like collecting this information is just part of a larger cycle of determining
+ * exactly what's running on the client ... imagine if we knew exactly what browser was there and
+ * could customize to that!
  * 
  * @see ClientTimeZoneTracker
+ * @see ClientTimeZoneAnalyzer
  */
 public class TimeZoneTracker
 {
@@ -47,6 +55,10 @@ public class TimeZoneTracker
         return !tracker.isClientTimeZoneIdentified();
     }
 
+    /**
+     * TODO: Perhaps we should also render a floating <div> that will explain to the user that
+     * geolocation data is being requested to determine the time zone.
+     */
     @Import(library = "time-zone-tracker.js")
     void beginRender()
     {
