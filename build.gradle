@@ -18,15 +18,17 @@ subprojects {
     
     repositories {
         mavenCentral()
-
+               
         // All things JBoss/Javassist/Hibernate
         mavenRepo urls: "https://repository.jboss.org/nexus/content/repositories/releases/"
-
+        
+        // For the Kaptcha library
+        mavenRepo urls: "http://tapestry.formos.com/maven-repository/"    
     }
     
     dependencies {
-        compile "org.apache.tapestry:tapestry-core:$tapestryVersion"
-        testCompile "org.apache.tapestry:tapestry-test:$tapestryVersion"
+        compile "org.apache.tapestry:tapestry-core:$tapestryVersion"        
+        testCompile "org.apache.tapestry:tapestry-test:$tapestryVersion"        
         testCompile "org.easymock:easymock:3.0"
         groovy "org.codehaus.groovy:groovy-all:1.7.4"
     }
@@ -36,7 +38,7 @@ subprojects {
         
         options.suites("src/test/conf/testng.xml")
     }
-
+    
     task sourcesJar(type: Jar, dependsOn:classes) {
        classifier = 'sources'
        from sourceSets.main.allSource
@@ -44,5 +46,5 @@ subprojects {
 
     artifacts {
        archives sourcesJar
-    }
+    }    
 }
