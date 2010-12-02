@@ -25,9 +25,12 @@ import com.howardlewisship.tapx.datefield.services.ClientTimeZoneTracker;
  * If geolocation data is not available, other date information is used to determine the best
  * matching TimeZone.
  * <p>
+ * Typically, this component is placed into the application's <em>Layout</em> component (a common
+ * component that defines the global layout of the application).
+ * <p>
  * TODO: Seems like collecting this information is just part of a larger cycle of determining
- * exactly what's running on the client ... imagine if we knew exactly what browser was there and
- * could customize to that!
+ * exactly what's running on the client ... imagine if we knew exactly what browser was out there,
+ * and what features it supported, and could customize to that!
  * 
  * @see ClientTimeZoneTracker
  * @see ClientTimeZoneAnalyzer
