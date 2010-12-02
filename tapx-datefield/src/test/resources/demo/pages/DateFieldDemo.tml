@@ -1,0 +1,31 @@
+<t:layout xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+  xmlns:tx="tapestry-library:tapx" xmlns:p="tapestry:parameter">
+  <t:form>
+    <tx:datefield t:id="date" time="time"/>
+
+    <br/>
+    <t:label for="localeName"/>
+    <t:select t:id="localeName" model="supportedLocales"/>
+
+    <br/>
+    <t:checkbox t:id="time" label="Show Time"/>
+    <t:label for="time"/>
+
+    <br/>
+    <input type="submit"/>
+  </t:form>
+
+
+  <hr/>
+
+  <p>
+    Entered date:
+    <span id="outputdate">
+      <t:output format="dateFormat" value="date"/>
+    </span>
+  </p>
+
+  <p>
+    <t:actionlink t:id="setup">setup</t:actionlink>
+  </p>
+</t:layout>

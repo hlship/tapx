@@ -14,25 +14,38 @@
 
 package com.howardlewisship.tapx.datefield.services;
 
+import java.util.List;
+
 import org.apache.tapestry5.ioc.Configuration;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.OrderedConfiguration;
 import org.apache.tapestry5.ioc.Resource;
 import org.apache.tapestry5.ioc.ServiceBinder;
+import org.apache.tapestry5.ioc.annotations.Contribute;
+import org.apache.tapestry5.ioc.annotations.Marker;
+import org.apache.tapestry5.ioc.annotations.Primary;
 import org.apache.tapestry5.ioc.annotations.Value;
+import org.apache.tapestry5.ioc.services.ChainBuilder;
 import org.apache.tapestry5.services.BeanBlockContribution;
 import org.apache.tapestry5.services.EditBlockContribution;
 import org.apache.tapestry5.services.LibraryMapping;
 import org.apache.tapestry5.services.javascript.JavaScriptStack;
 
 import com.howardlewisship.tapx.datefield.DateFieldSymbols;
+import com.howardlewisship.tapx.internal.datefield.services.BestGuessTimeZoneAnalyzer;
+import com.howardlewisship.tapx.internal.datefield.services.ClientTimeZoneTrackerImpl;
 import com.howardlewisship.tapx.internal.datefield.services.DateFieldFormatConverterImpl;
+import com.howardlewisship.tapx.internal.datefield.services.GeonameTimeZoneResolver;
+import com.howardlewisship.tapx.internal.datefield.services.LatLongTimeZoneAnalyzer;
+import com.howardlewisship.tapx.internal.datefield.services.SystemTimeZoneAnalyzer;
 
 public class DateFieldModule
 {
     public static void bind(ServiceBinder binder)
     {
         binder.bind(DateFieldFormatConverter.class, DateFieldFormatConverterImpl.class);
+        binder.bind(ClientTimeZoneTracker.class, ClientTimeZoneTrackerImpl.class);
+        binder.bind(LatLongToTimeZoneResolver.class, GeonameTimeZoneResolver.class);
     }
 
     public static void contributeFactoryDefaults(MappedConfiguration<String, String> configuration)
@@ -48,20 +61,52 @@ public class DateFieldModule
         configuration.add(new LibraryMapping("tapx", "com.howardlewisship.tapx.datefield"));
     }
 
-    public static void contributeBeanBlockOverrideSource(Configuration<BeanBlockContribution> configuration)
+    public static void contributeBeanBlockOverrideSource(
+            Configuration<BeanBlockContribution> configuration)
     {
         configuration.add(new EditBlockContribution("date", "tapx/DateFieldEditBlocks", "date"));
     }
 
-    public static void contributeJavaScriptStackSource(MappedConfiguration<String, JavaScriptStack> configuration)
+    public static void contributeJavaScriptStackSource(
+            MappedConfiguration<String, JavaScriptStack> configuration)
     {
         configuration.addInstance("tapx-datefield", DateFieldStack.class);
     }
 
-    public static void contributeComponentMessagesSource(OrderedConfiguration<Resource> configuration,
+    public static void contributeComponentMessagesSource(
+            OrderedConfiguration<Resource> configuration,
             @Value("com/howardlewisship/tapx/datefield/tapx-datefield.properties")
             Resource catalog)
     {
         configuration.add("TapxDateField", catalog, "before:AppCatalog");
+    }
+
+    @Marker(Primary.class)
+    public static ClientTimeZoneAnalyzer build(List<ClientTimeZoneAnalyzer> configuration,
+            ChainBuilder builder)
+    {
+        return builder.build(ClientTimeZoneAnalyzer.class, configuration);
+    }
+
+    /**
+     * Provides the default set of {@link ClientTimeZoneAnalyzer}s:
+     * <dl>
+     * <dt>LatLong</dt>
+     * <dd>Uses {@link LatLongToTimeZoneResolver}, if latitude and longitude are available
+     * <dt>BestGuess</dt>
+     * <dd>Finds <em>some</em> TimeZone that has the correct offset (remember that multiple
+     * TimeZones often share an offset); ordered after LatLong
+     * <dt>System</dt>
+     * <dd>Fallback, ordered last, the returns the System's default time zone
+     * </dl>
+     */
+    @Contribute(ClientTimeZoneAnalyzer.class)
+    @Primary
+    public static void setupDefaultAnalyzers(
+            OrderedConfiguration<ClientTimeZoneAnalyzer> configuration)
+    {
+        configuration.addInstance("LatLong", LatLongTimeZoneAnalyzer.class);
+        configuration.add("BestGuess", new BestGuessTimeZoneAnalyzer(), "after:LatLong");
+        configuration.add("System", new SystemTimeZoneAnalyzer(), "after:*");
     }
 }

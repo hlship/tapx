@@ -77,6 +77,7 @@ public class KaptchaField extends AbstractField
         validationTracker.recordError(this, messages.get("tapx-incorrect-captcha"));
     }
 
+    @SuppressWarnings("rawtypes")
     @BeginRender
     boolean begin(MarkupWriter writer)
     {
@@ -93,7 +94,8 @@ public class KaptchaField extends AbstractField
 
         resources.renderInformalParameters(writer);
 
-        FieldValidator fieldValidator = fieldValidatorSource.createValidator(this, "required", null);
+        FieldValidator fieldValidator = fieldValidatorSource
+                .createValidator(this, "required", null);
 
         fieldValidator.render(writer);
 

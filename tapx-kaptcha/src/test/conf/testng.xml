@@ -1,9 +1,8 @@
-<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="tapx-kaptcha" annotations="1.5" verbose="2">
+<suite name="tapx-kaptcha">
   <test name="Integration Tests">
     <parameter name="tapestry.web-app-folder" value="src/test/webapp"/>
-    <classes>
-      <class name="org.apache.tapestry5.test.SeleniumLauncher"/>
-    </classes>
+    <packages>
+      <package name="kaptcha.itest"/>
+    </packages>
   </test>
 </suite>

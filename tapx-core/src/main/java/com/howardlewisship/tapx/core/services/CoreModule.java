@@ -39,7 +39,6 @@ import com.howardlewisship.tapx.core.internal.services.TapxCoreStack;
 public class CoreModule
 {
 
-
     public static void contributeFactoryDefaults(MappedConfiguration<String, String> configuration)
     {
         configuration.add(CoreSymbols.TEST_MODE, "false");
@@ -50,7 +49,8 @@ public class CoreModule
         configuration.add(new LibraryMapping("tapx", "com.howardlewisship.tapx.core"));
     }
 
-    public static void contributeComponentMessagesSource(OrderedConfiguration<Resource> configuration,
+    public static void contributeComponentMessagesSource(
+            OrderedConfiguration<Resource> configuration,
             @Value("classpath:com/howardlewisship/tapx/core/tapx-core.properties")
             Resource coreCatalog)
     {
@@ -58,7 +58,8 @@ public class CoreModule
     }
 
     @Contribute(JavaScriptStackSource.class)
-    public static void provideTapxCoreStack(MappedConfiguration<String, JavaScriptStack> configuration)
+    public static void provideTapxCoreStack(
+            MappedConfiguration<String, JavaScriptStack> configuration)
     {
         configuration.addInstance("tapx-core", TapxCoreStack.class);
     }
@@ -84,13 +85,14 @@ public class CoreModule
                     }
                 }));
 
-        configuration.add(CoercionTuple.create(Asset.class, Resource.class, new Coercion<Asset, Resource>()
-        {
-            public Resource coerce(Asset input)
-            {
-                return input.getResource();
-            }
-        }));
+        configuration.add(CoercionTuple.create(Asset.class, Resource.class,
+                new Coercion<Asset, Resource>()
+                {
+                    public Resource coerce(Asset input)
+                    {
+                        return input.getResource();
+                    }
+                }));
     }
 
     public static DynamicTemplateParser buildDynamicTemplateParser(@Autobuild

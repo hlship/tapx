@@ -12,22 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package core.demo.services;
+package com.howardlewisship.tapx.kaptcha.services;
 
-import org.apache.tapestry5.SymbolConstants;
-import org.apache.tapestry5.ioc.MappedConfiguration;
-import org.apache.tapestry5.ioc.annotations.SubModule;
-
+import com.google.code.kaptcha.Producer;
 import com.howardlewisship.tapx.core.CoreSymbols;
-import com.howardlewisship.tapx.core.services.CoreModule;
 
-@SubModule(CoreModule.class)
-public class AppModule
+/**
+ * Extension of the {@link Producer} interface, adding property for getting the Kaptcha image
+ * width and height (used when rendering the &lt;img&gt; element).
+ * <p>
+ * In {@linkplain CoreSymbols#TEST_MODE test mode}, the {@link Producer#createText()} method always returns the fixed
+ * string "i8cookies".
+ */
+public interface KaptchaProducer extends Producer
 {
-    public static void contributeApplicationDefaults(
-            MappedConfiguration<String, String> configuration)
-    {
-        configuration.add(CoreSymbols.TEST_MODE, "true");
-        configuration.add(SymbolConstants.PRODUCTION_MODE, "false");
-    }
+    int getWidth();
+
+    int getHeight();
 }
