@@ -32,6 +32,7 @@ import org.apache.tapestry5.services.LibraryMapping;
 import org.apache.tapestry5.services.javascript.JavaScriptStack;
 
 import com.howardlewisship.tapx.datefield.DateFieldSymbols;
+import com.howardlewisship.tapx.internal.datefield.services.BestGuessTimeZoneAnalyzer;
 import com.howardlewisship.tapx.internal.datefield.services.ClientTimeZoneTrackerImpl;
 import com.howardlewisship.tapx.internal.datefield.services.DateFieldFormatConverterImpl;
 import com.howardlewisship.tapx.internal.datefield.services.GeonameTimeZoneResolver;
@@ -92,6 +93,9 @@ public class DateFieldModule
      * <dl>
      * <dt>LatLong</dt>
      * <dd>Uses {@link LatLongToTimeZoneResolver}, if latitude and longitude are available
+     * <dt>BestGuess</dt>
+     * <dd>Finds <em>some</em> TimeZone that has the correct offset (remember that multiple
+     * TimeZones often share an offset); ordered after LatLong
      * <dt>System</dt>
      * <dd>Fallback, ordered last, the returns the System's default time zone
      * </dl>
@@ -102,6 +106,7 @@ public class DateFieldModule
             OrderedConfiguration<ClientTimeZoneAnalyzer> configuration)
     {
         configuration.addInstance("LatLong", LatLongTimeZoneAnalyzer.class);
+        configuration.add("BestGuess", new BestGuessTimeZoneAnalyzer(), "after:LatLong");
         configuration.add("System", new SystemTimeZoneAnalyzer(), "after:*");
     }
 }
