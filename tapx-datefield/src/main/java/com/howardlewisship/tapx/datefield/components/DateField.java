@@ -51,8 +51,8 @@ import com.howardlewisship.tapx.datefield.services.DateFieldFormatConverter;
 /**
  * A replacement for Tapestry's built-in DateField, built around the <a
  * href="http://www.dynarch.com/projects/calendar/old/">Dynarch
- * JSCalendar Widget</a>. This is a highly functional calendar, but is distributed as LGPL and so can't be built
- * directly into Tapestry.
+ * JSCalendar Widget</a>. This is a highly functional calendar, but is distributed as LGPL and so
+ * can't be built directly into Tapestry.
  */
 @Import(stack = "tapx-datefield")
 public class DateField extends AbstractField
@@ -64,17 +64,18 @@ public class DateField extends AbstractField
     private Date value;
 
     /**
-     * The format used to format <em>and parse</em> dates. This is typically specified as a string which is coerced to a
-     * DateFormat. You should be aware that using a date format with a two digit year is problematic: Java (not
-     * Tapestry) may get confused about the century. The default is either the localized short date format or (if the
-     * time parameter is true), the localized short date time format.
+     * The format used to format <em>and parse</em> dates. This is typically specified as a string
+     * which is coerced to a DateFormat. You should be aware that using a date format with a two
+     * digit year is problematic: Java (not Tapestry) may get confused about the century. The
+     * default is either the localized short date format or (if the time parameter is true), the
+     * localized short date time format.
      */
     @Parameter(required = true, allowNull = false, defaultPrefix = BindingConstants.LITERAL)
     private DateFormat format;
 
     /**
-     * If true, then the calendar will include time selection as well as date selection. This is normally false, unless
-     * the property has the {@link TimeSignificant} annotation.
+     * If true, then the calendar will include time selection as well as date selection. This is
+     * normally false, unless the property has the {@link TimeSignificant} annotation.
      * 
      * @since 1.1
      */
@@ -82,16 +83,16 @@ public class DateField extends AbstractField
     private boolean time;
 
     /**
-     * If true, then the text field will be hidden, and only the icon for the date picker will be visible. The default
-     * is false.
+     * If true, then the text field will be hidden, and only the icon for the date picker will be
+     * visible. The default is false.
      */
     @Parameter
     private boolean hideTextField;
 
     /**
-     * Object will will provide access to annotations (such as {@link TimeSignificant}). This is only used
-     * when configuring DateField to work within the {@link BeanEditor}. Normally, annotations come from
-     * the property bound the value parameter.
+     * Object that will provide access to annotations (such as {@link TimeSignificant}). This is
+     * only used when configuring DateField to work within the {@link BeanEditor}. Normally,
+     * annotations come from the property bound the value parameter.
      * 
      * @since 1.1
      */
@@ -99,8 +100,8 @@ public class DateField extends AbstractField
     private AnnotationProvider annotationProvider;
 
     /**
-     * The object that will perform input validation (which occurs after translation). The translate binding prefix is
-     * generally used to provide this object in a declarative fashion.
+     * The object that will perform input validation (which occurs after translation). The translate
+     * binding prefix is generally used to provide this object in a declarative fashion.
      */
     @Parameter(defaultPrefix = BindingConstants.VALIDATE)
     private FieldValidator<Object> validate;
@@ -178,8 +179,9 @@ public class DateField extends AbstractField
 
             public Object get()
             {
-                DateFormat shortDateFormat = time ? DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT,
-                        locale) : DateFormat.getDateInstance(DateFormat.SHORT, locale);
+                DateFormat shortDateFormat = time ? DateFormat.getDateTimeInstance(
+                        DateFormat.SHORT, DateFormat.SHORT, locale) : DateFormat.getDateInstance(
+                        DateFormat.SHORT, locale);
 
                 if (shortDateFormat instanceof SimpleDateFormat)
                 {
@@ -241,8 +243,8 @@ public class DateField extends AbstractField
         "alt", "[Show]");
         writer.end(); // img
 
-        JSONObject spec = new JSONObject("clientId", clientId, "clientDateFormat", formatConverter
-                .convertToClient(format)).put("time", time);
+        JSONObject spec = new JSONObject("clientId", clientId, "clientDateFormat",
+                formatConverter.convertToClient(format)).put("time", time);
 
         javascriptSupport.addInitializerCall("tapxDateField", spec);
     }
