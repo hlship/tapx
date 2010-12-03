@@ -53,7 +53,11 @@ public class DateFieldFormatConverterImplTest extends Assert
         return new Object[][]
         {
         { "dd/MM/yyyy", "%d/%m/%Y" },
-        { "MMM dd, yyyy", "%b %d, %Y" } };
+        { "MMM dd, yyyy", "%b %d, %Y" },
+        { "HH:mm", "%H:%M" },
+        { "hh:m", "%I:%O" },
+        { "h:m", "%l:%O" },
+        { "d/M", "%e/%o" } };
     }
 
     @Test(dataProvider = "format_conversion_data")
@@ -80,7 +84,7 @@ public class DateFieldFormatConverterImplTest extends Assert
         // Note that DateField manipulates the Java "yy" format into "yyyy" before passing into the converter.
         // But this works because of an additional (and otherwise unnecessary) mapping from "yy".
         
-        assertEquals(converter.convertToClient(format), "%m/%e/%Y %l:%M %p");
+        assertEquals(converter.convertToClient(format), "%o/%e/%Y %l:%M %p");
     }
 
     @Test
