@@ -5,7 +5,6 @@ import java.util.TimeZone;
 import org.apache.tapestry5.ComponentResources;
 import org.apache.tapestry5.Link;
 import org.apache.tapestry5.annotations.Import;
-import org.apache.tapestry5.annotations.Log;
 import org.apache.tapestry5.annotations.RequestParameter;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.annotations.Primary;
@@ -70,7 +69,6 @@ public class TimeZoneTracker
         jsSupport.addInitializerCall("identifyClientTimeZone", link.toURI());
     }
 
-    @Log
     boolean onIdentifyTimeZone(@RequestParameter("offsetMinutes")
     int offsetMinutes, @RequestParameter("dateString")
     String dateString, @RequestParameter("epochMillis")
