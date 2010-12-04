@@ -1,7 +1,11 @@
 <t:layout xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
   xmlns:tx="tapestry-library:tapx" xmlns:p="tapestry:parameter">
+
+  <tx:timezoneidentifier/>
+
   <t:form>
-    <tx:datefield t:id="date" time="time"/>
+    <tx:datefield t:id="date" time="time"
+      timezone="prop:timezonevisibility"/>
 
     <br/>
     <t:label for="localeName"/>
@@ -12,18 +16,27 @@
     <t:label for="time"/>
 
     <br/>
+    <t:label for="timeZoneVisibility"/>
+    <t:select t:id="timeZoneVisibility" blankOption="never"/>
+
+    <br/>
     <input type="submit"/>
   </t:form>
 
 
   <hr/>
 
-  <p>
-    Entered date:
-    <span id="outputdate">
+  <dl>
+    <dt>
+      Entered date</dt>
+    <dd id="outputdate">
       <t:output format="dateFormat" value="date"/>
-    </span>
-  </p>
+    </dd>
+    <dt>Raw date</dt>
+    <dd id="rawdate">${date}</dd>
+    <dt>Client Time Zone</dt>
+    <dd id="clienttz">${tracker.clientTimeZone.id}</dd>
+  </dl>
 
   <p>
     <t:actionlink t:id="setup">setup</t:actionlink>

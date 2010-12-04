@@ -2,11 +2,11 @@ package com.howardlewisship.tapx.datefield.services;
 
 import java.util.TimeZone;
 
-import com.howardlewisship.tapx.datefield.components.TimeZoneTracker;
+import com.howardlewisship.tapx.datefield.components.TimeZoneIdentifier;
 
 /**
  * Tracks the {@link TimeZone} identified for the client for the current request. This information
- * is obtained via the {@link TimeZoneTracker} component, and is ultimately stored as an HTTP
+ * is obtained via the {@link TimeZoneIdentifier} component, and is ultimately stored as an HTTP
  * Cookie.
  */
 public interface ClientTimeZoneTracker

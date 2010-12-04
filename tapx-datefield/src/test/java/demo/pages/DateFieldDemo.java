@@ -13,6 +13,9 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.annotations.Symbol;
 import org.apache.tapestry5.services.PersistentLocale;
 
+import com.howardlewisship.tapx.datefield.TimeZoneVisibility;
+import com.howardlewisship.tapx.datefield.services.ClientTimeZoneTracker;
+
 public class DateFieldDemo
 {
     @Property
@@ -33,6 +36,23 @@ public class DateFieldDemo
     @Inject
     @Symbol(SymbolConstants.SUPPORTED_LOCALES)
     private String supportedLocales;
+
+    @Property
+    @Inject
+    private ClientTimeZoneTracker tracker;
+
+    @Persist
+    private TimeZoneVisibility timeZoneVisibility;
+
+    public TimeZoneVisibility getTimeZoneVisibility()
+    {
+        return timeZoneVisibility == null ? TimeZoneVisibility.NONE : timeZoneVisibility;
+    }
+
+    public void setTimeZoneVisibility(TimeZoneVisibility timeZoneVisibility)
+    {
+        this.timeZoneVisibility = timeZoneVisibility;
+    }
 
     public DateFormat getDateFormat()
     {

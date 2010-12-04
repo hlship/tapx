@@ -85,8 +85,12 @@ public class ClientTimeZoneTrackerImpl implements ClientTimeZoneTracker
     {
         assert timeZone != null;
 
-        this.timeZone = timeZone;
         identified = true;
+
+        if (timeZone == this.timeZone)
+            return;
+
+        this.timeZone = timeZone;
 
         cookies.writeCookieValue(COOKIE_NAME, timeZone.getID());
 

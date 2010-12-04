@@ -26,12 +26,15 @@ import org.apache.tapestry5.ioc.annotations.Marker;
 import org.apache.tapestry5.ioc.annotations.Primary;
 import org.apache.tapestry5.ioc.annotations.Value;
 import org.apache.tapestry5.ioc.services.ChainBuilder;
+import org.apache.tapestry5.ioc.services.CoercionTuple;
 import org.apache.tapestry5.services.BeanBlockContribution;
 import org.apache.tapestry5.services.EditBlockContribution;
 import org.apache.tapestry5.services.LibraryMapping;
 import org.apache.tapestry5.services.javascript.JavaScriptStack;
+import org.apache.tapestry5.util.StringToEnumCoercion;
 
 import com.howardlewisship.tapx.datefield.DateFieldSymbols;
+import com.howardlewisship.tapx.datefield.TimeZoneVisibility;
 import com.howardlewisship.tapx.internal.datefield.services.BestGuessTimeZoneAnalyzer;
 import com.howardlewisship.tapx.internal.datefield.services.ClientTimeZoneTrackerImpl;
 import com.howardlewisship.tapx.internal.datefield.services.DateFieldFormatConverterImpl;
@@ -86,6 +89,20 @@ public class DateFieldModule
             ChainBuilder builder)
     {
         return builder.build(ClientTimeZoneAnalyzer.class, configuration);
+    }
+
+    /**
+     * Contributes conversions:
+     * <ul>
+     * <li>String --&gt; {@link TimeZoneVisibility}</li>
+     * </ul>
+     */
+    @SuppressWarnings("rawtypes")
+    public static void contributeTypeCoercer(Configuration<CoercionTuple> configuration)
+    {
+        configuration.add(CoercionTuple.create(String.class, TimeZoneVisibility.class,
+                StringToEnumCoercion.create(TimeZoneVisibility.class)));
+
     }
 
     /**
