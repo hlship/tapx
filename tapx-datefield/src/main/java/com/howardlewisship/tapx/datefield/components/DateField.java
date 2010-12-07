@@ -334,16 +334,6 @@ public class DateField extends AbstractField
         }
     }
 
-    private String toKey(String timeZoneID)
-    {
-        return toKey(TimeZone.getTimeZone(timeZoneID));
-    }
-
-    private String toKey(TimeZone timeZone)
-    {
-        return timeZone.getDisplayName(locale) + ":" + timeZone.getRawOffset();
-    }
-
     private String formatCurrentValue()
     {
         if (value == null)
