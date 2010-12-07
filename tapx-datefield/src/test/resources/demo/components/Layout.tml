@@ -1,4 +1,5 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+  xmlns:p="tapestry:parameter">
   <head>
     <title>${componentResources.pageName}</title>
   </head>
@@ -16,6 +17,9 @@
       ] |
       [
       <t:pagelink page="${componentResources.pageName}">refresh</t:pagelink>
+      ] |
+      [
+      <t:eventlink t:id="reset">reset session</t:eventlink>
       ]
     </p>
 
