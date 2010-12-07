@@ -28,7 +28,7 @@ public class DateFieldFormatConverterImpl implements DateFieldFormatConverter
 
             // year
             "yyyy", "Y",
-            "yy", "Y",
+            "yy", "y",
 
             // month
             "MMMM", "B",
