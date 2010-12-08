@@ -10,7 +10,12 @@ Tapestry.Initializer.identifyClientTimeZone = function(url) {
 		}, extra || {});
 
 		Tapestry.ajaxRequest(url, {
-			parameters : params
+			parameters : params,
+			onSuccess : function(reply) {
+				var response = reply.responseJSON;
+
+				document.fire("tapx:time-zone-identified", response);
+			}
 		});
 	}
 

@@ -9,6 +9,7 @@ import org.apache.tapestry5.annotations.RequestParameter;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.annotations.Primary;
 import org.apache.tapestry5.ioc.internal.util.InternalUtils;
+import org.apache.tapestry5.json.JSONObject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 
@@ -19,13 +20,17 @@ import com.howardlewisship.tapx.datefield.services.ClientTimeZoneTracker;
 /**
  * Determines if {@linkplain ClientTimeZoneTracker#isClientTimeZoneIdentified() the client has
  * identified the time zone} and, if not, adds JavaScript to the page to send the time zone
- * information to the server. The JavaScript will ask for access to geolocation data available on the
+ * information to the server. The JavaScript will ask for access to geolocation data available on
+ * the
  * client (this works in Firefox and Chrome) and will report the client's latitude and longitude.
  * If geolocation data is not available, other date information is used to determine the best
  * matching TimeZone.
  * <p>
  * Typically, this component is placed into the application's <em>Layout</em> component (a common
  * component that defines the global layout of the application).
+ * <p>
+ * After the time zone is identified, an event, "tapx:time-zone-identified" is triggered on the
+ * document object. The memo of the event is a JSON object with key "timeZoneId".
  * <p>
  * TODO: Seems like collecting this information is just part of a larger cycle of determining
  * exactly what's running on the client ... imagine if we knew exactly what browser was out there,
@@ -69,7 +74,7 @@ public class TimeZoneIdentifier
         jsSupport.addInitializerCall("identifyClientTimeZone", link.toURI());
     }
 
-    boolean onIdentifyTimeZone(@RequestParameter("offsetMinutes")
+    Object onIdentifyTimeZone(@RequestParameter("offsetMinutes")
     int offsetMinutes, @RequestParameter("dateString")
     String dateString, @RequestParameter("epochMillis")
     long epochMillis)
@@ -79,7 +84,9 @@ public class TimeZoneIdentifier
 
         tracker.setClientTimeZone(timeZone);
 
-        return true; // stop the event
+        JSONObject response = new JSONObject("timeZoneId", timeZone.getID());
+
+        return response;
     }
 
     private Double getDouble(String name)
