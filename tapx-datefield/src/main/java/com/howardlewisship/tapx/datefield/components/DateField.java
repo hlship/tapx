@@ -18,6 +18,7 @@ import java.lang.annotation.Annotation;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.Locale;
@@ -48,6 +49,7 @@ import org.apache.tapestry5.json.JSONObject;
 import org.apache.tapestry5.services.ComponentDefaultProvider;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.javascript.JavaScriptSupport;
+import org.slf4j.Logger;
 
 import com.howardlewisship.tapx.datefield.TimeSignificant;
 import com.howardlewisship.tapx.datefield.TimeZoneVisibility;
@@ -158,6 +160,9 @@ public class DateField extends AbstractField
 
     @Inject
     private DateFieldFormatConverter formatConverter;
+
+    @Inject
+    private Logger logger;
 
     /**
      * Computes a default value for the "validate" parameter using
@@ -359,8 +364,28 @@ public class DateField extends AbstractField
         {
             if (InternalUtils.isNonBlank(value))
             {
-                format.setTimeZone(timeZoneTracker.getClientTimeZone());
-                parsedValue = format.parse(value);
+                // Regardless of the timeZone set on the DateFormat, the value is parsed in
+                // the current default TimeZone. Use the calendar to adjust it out.
+
+                Date inDefaultTimeZone = format.parse(value);
+
+                logger.debug(String.format("Parsed '%s' to %s", value, inDefaultTimeZone));
+
+                Calendar c = Calendar.getInstance(locale);
+                c.setTime(inDefaultTimeZone);
+
+                TimeZone clientZone = timeZoneTracker.getClientTimeZone();
+                TimeZone defaultZone = TimeZone.getDefault();
+                long now = System.currentTimeMillis();
+                int offset = defaultZone.getOffset(now) - clientZone.getOffset(now);
+
+                c.add(Calendar.MILLISECOND, offset);
+
+                parsedValue = c.getTime();
+
+                logger.debug(String.format("Final date: %s in time zone %s", parsedValue,
+                        c.getTimeZone()));
+
             }
         }
         catch (ParseException ex)
