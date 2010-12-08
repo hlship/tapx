@@ -10,7 +10,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 
 import com.howardlewisship.tapx.datefield.services.ClientTimeZoneTracker;
 
-public class TimeZoneTrackerDemo
+public class TimeZoneIdentifierDemo
 {
     @Inject
     private ClientTimeZoneTracker tracker;
