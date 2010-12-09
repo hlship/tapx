@@ -49,7 +49,6 @@ import org.apache.tapestry5.json.JSONObject;
 import org.apache.tapestry5.services.ComponentDefaultProvider;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.javascript.JavaScriptSupport;
-import org.slf4j.Logger;
 
 import com.howardlewisship.tapx.datefield.TimeSignificant;
 import com.howardlewisship.tapx.datefield.TimeZoneVisibility;
@@ -160,9 +159,6 @@ public class DateField extends AbstractField
 
     @Inject
     private DateFieldFormatConverter formatConverter;
-
-    @Inject
-    private Logger logger;
 
     /**
      * Computes a default value for the "validate" parameter using
@@ -376,8 +372,6 @@ public class DateField extends AbstractField
 
                 Date inDefaultTimeZone = format.parse(value);
 
-                logger.debug(String.format("Parsed '%s' to %s", value, inDefaultTimeZone));
-
                 Calendar c = Calendar.getInstance(locale);
                 c.setTime(inDefaultTimeZone);
 
@@ -389,10 +383,6 @@ public class DateField extends AbstractField
                 c.add(Calendar.MILLISECOND, offset);
 
                 parsedValue = c.getTime();
-
-                logger.debug(String.format("Final date: %s in time zone %s", parsedValue,
-                        c.getTimeZone()));
-
             }
         }
         catch (ParseException ex)
