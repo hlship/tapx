@@ -304,7 +304,12 @@ public class DateField extends AbstractField
 
     private void writeTimeZone(MarkupWriter writer)
     {
+        if (timeZone == TimeZoneVisibility.NONE)
+            return;
+
         TimeZone tz = timeZoneTracker.getClientTimeZone();
+
+        writer.element("span", "class", "tx-datefield-timezone");
 
         switch (timeZone)
         {
@@ -337,6 +342,8 @@ public class DateField extends AbstractField
             default:
                 break;
         }
+
+        writer.end();
     }
 
     private String formatCurrentValue()

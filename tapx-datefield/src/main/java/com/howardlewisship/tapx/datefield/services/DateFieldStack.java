@@ -55,12 +55,17 @@ public class DateFieldStack implements JavaScriptStack
         this.threadLocale = threadLocale;
         this.assetSource = assetSource;
 
-        stylesheets = CollectionFactory.newList(new StylesheetLink(skinAsset(skin, theme)));
+        Asset componentStylesheet = assetSource
+                .getExpandedAsset("com/howardlewisship/tapx/datefield/tapx-datefield.css");
+
+        stylesheets = CollectionFactory.newList(new StylesheetLink(skinAsset(skin, theme)),
+                new StylesheetLink(componentStylesheet));
     }
 
     private Asset skinAsset(String skin, String theme)
     {
-        String path = theme.equals("") ? "skins/" + skin + "/theme.css" : "calendar-" + theme + ".css";
+        String path = theme.equals("") ? "skins/" + skin + "/theme.css" : "calendar-" + theme
+                + ".css";
 
         return assetSource.getExpandedAsset("${tapx.jscalendar.path}/" + path);
     }
@@ -87,7 +92,8 @@ public class DateFieldStack implements JavaScriptStack
 
         String supported = SUPPORTED_LANGUAGES.contains(language) ? language : "en";
 
-        return toAssets("${tapx.jscalendar.path}/calendar.js", "${tapx.jscalendar.path}/calendar-setup.js",
+        return toAssets("${tapx.jscalendar.path}/calendar.js",
+                "${tapx.jscalendar.path}/calendar-setup.js",
                 "${tapx.jscalendar.path}/lang/calendar-" + supported + ".js",
                 "com/howardlewisship/tapx/datefield/tapx-datefield.js");
     }
