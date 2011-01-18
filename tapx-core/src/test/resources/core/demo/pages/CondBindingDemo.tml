@@ -1,0 +1,28 @@
+<t:layout xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+
+  <p>
+    Test mode is
+    <span id="test-mode">
+      <t:if test="cond:test-mode">
+        ON
+        <p:else>
+          OFF
+</p:else>
+      </t:if>
+    </span>
+  </p>
+
+  <p>
+    Inverted always false is
+    <span id="inv-alwaysfalse">
+      <t:if test="cond:!always-false">
+        ON
+        <p:else>
+          OFF
+</p:else>
+      </t:if>
+    </span>
+  </p>
+
+
+</t:layout>

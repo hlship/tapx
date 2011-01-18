@@ -23,6 +23,9 @@
     <li>
       <t:pagelink page="InvalidExpressionInDynamicTemplate">Invalid expression in a dynamic template</t:pagelink>
     </li>
+    <li>
+      <t:pagelink page="CondBindingDemo">CondBindingPrefix Demo</t:pagelink>
+    </li>
   </ul>
 
 </t:layout>

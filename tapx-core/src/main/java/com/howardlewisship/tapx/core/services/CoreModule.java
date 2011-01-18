@@ -1,4 +1,4 @@
-// Copyright 2010 Howard M. Lewis Ship
+// Copyright 2010, 2011 Howard M. Lewis Ship
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,16 +15,21 @@
 package com.howardlewisship.tapx.core.services;
 
 import org.apache.tapestry5.Asset;
+import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.ioc.Configuration;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.OrderedConfiguration;
 import org.apache.tapestry5.ioc.Resource;
+import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.Autobuild;
 import org.apache.tapestry5.ioc.annotations.Contribute;
 import org.apache.tapestry5.ioc.annotations.Local;
+import org.apache.tapestry5.ioc.annotations.Symbol;
 import org.apache.tapestry5.ioc.annotations.Value;
 import org.apache.tapestry5.ioc.services.Coercion;
 import org.apache.tapestry5.ioc.services.CoercionTuple;
+import org.apache.tapestry5.services.BindingFactory;
+import org.apache.tapestry5.services.BindingSource;
 import org.apache.tapestry5.services.LibraryMapping;
 import org.apache.tapestry5.services.UpdateListenerHub;
 import org.apache.tapestry5.services.javascript.JavaScriptStack;
@@ -34,10 +39,18 @@ import com.howardlewisship.tapx.core.CoreSymbols;
 import com.howardlewisship.tapx.core.dynamic.DynamicTemplate;
 import com.howardlewisship.tapx.core.dynamic.DynamicTemplateParser;
 import com.howardlewisship.tapx.core.internal.dynamic.DynamicTemplateParserImpl;
+import com.howardlewisship.tapx.core.internal.services.CondBindingFactory;
+import com.howardlewisship.tapx.core.internal.services.ConditionSourceImpl;
 import com.howardlewisship.tapx.core.internal.services.TapxCoreStack;
 
 public class CoreModule
 {
+
+    public static void bind(ServiceBinder binder)
+    {
+        binder.bind(ConditionSource.class, ConditionSourceImpl.class);
+        binder.bind(BindingFactory.class, CondBindingFactory.class).withId("CondBindingFactory");
+    }
 
     public static void contributeFactoryDefaults(MappedConfiguration<String, String> configuration)
     {
@@ -49,8 +62,7 @@ public class CoreModule
         configuration.add(new LibraryMapping("tapx", "com.howardlewisship.tapx.core"));
     }
 
-    public static void contributeComponentMessagesSource(
-            OrderedConfiguration<Resource> configuration,
+    public static void contributeComponentMessagesSource(OrderedConfiguration<Resource> configuration,
             @Value("classpath:com/howardlewisship/tapx/core/tapx-core.properties")
             Resource coreCatalog)
     {
@@ -58,8 +70,7 @@ public class CoreModule
     }
 
     @Contribute(JavaScriptStackSource.class)
-    public static void provideTapxCoreStack(
-            MappedConfiguration<String, JavaScriptStack> configuration)
+    public static void provideTapxCoreStack(MappedConfiguration<String, JavaScriptStack> configuration)
     {
         configuration.addInstance("tapx-core", TapxCoreStack.class);
     }
@@ -85,14 +96,13 @@ public class CoreModule
                     }
                 }));
 
-        configuration.add(CoercionTuple.create(Asset.class, Resource.class,
-                new Coercion<Asset, Resource>()
-                {
-                    public Resource coerce(Asset input)
-                    {
-                        return input.getResource();
-                    }
-                }));
+        configuration.add(CoercionTuple.create(Asset.class, Resource.class, new Coercion<Asset, Resource>()
+        {
+            public Resource coerce(Asset input)
+            {
+                return input.getResource();
+            }
+        }));
     }
 
     public static DynamicTemplateParser buildDynamicTemplateParser(@Autobuild
@@ -101,5 +111,31 @@ public class CoreModule
         updateListenerHub.addUpdateListener(service);
 
         return service;
+    }
+
+    @Contribute(BindingSource.class)
+    public static void setupCondBindingPrefix(MappedConfiguration<String, BindingFactory> configuration, @Local
+    BindingFactory condBindingFactory)
+    {
+        configuration.add("cond", condBindingFactory);
+    }
+
+    /**
+     * Adds two default conditions to be used with {@link ConditionSource} (and the "cond:" binding prefix):
+     * <dl>
+     * <dt>production-mode</dt>
+     * <dd>Driven by symbol {@link SymbolConstants#PRODUCTION_MODE}</dd>
+     * <dt>test-mode</dt>
+     * <dd>Driven by symbol {@link CoreSymbols#TEST_MODE}</dd>
+     * </dl>
+     */
+    @Contribute(ConditionSource.class)
+    public static void basicConditions(MappedConfiguration<String, Condition> configuration,
+            @Symbol(SymbolConstants.PRODUCTION_MODE)
+            boolean productionMode, @Symbol(CoreSymbols.TEST_MODE)
+            boolean testMode)
+    {
+        configuration.add("production-mode", new FixedCondition(productionMode));
+        configuration.add("test-mode", new FixedCondition(testMode));
     }
 }

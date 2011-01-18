@@ -1,4 +1,4 @@
-// Copyright 2010 Howard M. Lewis Ship
+// Copyright 2010, 2011 Howard M. Lewis Ship
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,18 +16,34 @@ package core.demo.services;
 
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.ioc.MappedConfiguration;
+import org.apache.tapestry5.ioc.annotations.Contribute;
 import org.apache.tapestry5.ioc.annotations.SubModule;
 
 import com.howardlewisship.tapx.core.CoreSymbols;
+import com.howardlewisship.tapx.core.services.Condition;
+import com.howardlewisship.tapx.core.services.ConditionSource;
 import com.howardlewisship.tapx.core.services.CoreModule;
 
 @SubModule(CoreModule.class)
 public class AppModule
 {
-    public static void contributeApplicationDefaults(
-            MappedConfiguration<String, String> configuration)
+    public static void contributeApplicationDefaults(MappedConfiguration<String, String> configuration)
     {
         configuration.add(CoreSymbols.TEST_MODE, "true");
         configuration.add(SymbolConstants.PRODUCTION_MODE, "false");
+    }
+
+    @Contribute(ConditionSource.class)
+    public static void testConditions(MappedConfiguration<String, Condition> configuration)
+    {
+        configuration.add("always-false", new Condition()
+        {
+
+            @Override
+            public boolean isConditionTrue()
+            {
+                return false;
+            }
+        });
     }
 }
