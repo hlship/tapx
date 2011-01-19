@@ -1,13 +1,13 @@
 Tapx: Tapestry 5 Extensions by Howard Lewis Ship
 ====
 
-The Tapx modules are a set of extensions to the (http://tapestry.apache.org "Apache Tapestry Web Framework") that provide new capabilities that are not yet available in the main framework.
+The Tapx modules are a set of extensions to the [Apache Tapestry Web Framework](http://tapestry.apache.org]) that provide new capabilities that are not yet available in the main framework.
 
 In some cases, a module exists here for licensing reasons, as it may integrate with an existing library that is not compatible with the Apache Software License.
 
 In other cases, a module represents new functionality that is being refined before moved into Tapestry proper; alternately, it may represent code that is not of sufficient general interest to be part of framework, proper.
 
-Currently, snapshots of the modules are available via the Maven repository at http://howardlewisship.com/snapshot-repository.
+Currently, snapshots of the modules are available via the Maven repository at [http://howardlewisship.com/snapshot-repository](http://howardlewisship.com/snapshot-repository).
 
 Improved documentation is coming (we're in the middle of a transition from Maven to Gradle as the build and packaging tool).
 
@@ -18,7 +18,7 @@ This module provides the following features:
 
 * "cond:" binding prefix
 * Support for TEST_MODE symbol
-* Silk 1.3 icon set (from http://www.famfamfam.com/lab/icons/silk/)
+* Silk 1.3 icon set from [FamFamFam])(http://www.famfamfam.com/lab/icons/silk/)
 * Components:
   * SetEditor
   * DynamicTemplate
@@ -57,7 +57,7 @@ entities are replaced with the corresponding characters.
 tapx-processing
 ---------------
 
-Bundles [ProcessingJS 0.9.7](http://processingjs.org/) as a component.
+Bundles [Processing.js 0.9.7](http://processingjs.org/) as a component.
 
 * Components:
   * Processing
