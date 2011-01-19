@@ -44,14 +44,11 @@ import org.apache.tapestry5.services.javascript.JavaScriptSupport;
  * When the form is submitted, the component will obtain the current Set and clear it (if non-null). If the current Set
  * is null, a new {@link HashSet} instance is created. The empty Set is populated with the values in the submission.
  */
-@Import(library={"../tapx.js", "seteditor.js"}, stylesheet="seteditor.css" )
+@Import(stack = "tapx-core")
 public class SetEditor
 {
     @Parameter(required = true, autoconnect = true)
     private Set<String> set;
-
-    @Parameter(value = "delete.gif", defaultPrefix = BindingConstants.ASSET)
-    private Asset deleteIcon;
 
     @Property
     @Parameter(defaultPrefix = BindingConstants.LITERAL, value = "block:defaultFieldLabel")
@@ -102,7 +99,7 @@ public class SetEditor
     {
         String name = formSupport.allocateControlName(fieldId);
 
-        JSONObject spec = new JSONObject("id", fieldId, "name", name, "deleteIcon", deleteIcon.toClientURL());
+        JSONObject spec = new JSONObject("id", fieldId, "name", name);
 
         JSONArray values = new JSONArray();
 

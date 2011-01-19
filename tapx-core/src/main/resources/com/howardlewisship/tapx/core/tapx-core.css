@@ -1,0 +1,61 @@
+DIV.tx-fieldcolumn {
+  float: left;
+}
+
+DIV.tx-valuescolumn {
+  float: left;
+  margin-left: 15px;
+}
+
+DIV.tx-valuescolumn UL {
+  list-style-type: none;
+  margin-left: 0px; 
+  padding-left: 1em;
+  text-indent: -1em;   
+}
+
+DIV.tx-valuescolumn UL LI {
+  clear: both;
+}
+
+DIV.tx-seteditor LABEL {
+  font-weight: bold;
+}
+
+SPAN.tx-seteditor-delete {
+  width: 16px;
+  height: 16px;
+  margin-left: 2px;
+  float: right;
+  background-image: url(silk/delete.png);
+  display: inline-block;
+  cursor: hand;
+}
+
+
+DIV.tx-tree-container
+{
+  border: 1px solid black;
+  padding: 2px;
+}
+
+DIV.tx-tree-container UL
+{
+  margin-left: 16px;
+  -webkit-padding-start: 8px;
+  margin: none;
+}
+
+DIV.tx-tree-container LI
+{
+    list-style-type: image;
+    list-style-image: url(../silk/bullet_toggle_plus.png);
+    text-indent: 0px;
+}
+
+DIV.tx-tree-container LI.tx-tree-collapsed
+{
+    list-style-image: url(../silk/bullet_toggle_minus.png);
+}
+
+

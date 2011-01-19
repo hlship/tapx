@@ -36,20 +36,26 @@ import org.apache.tapestry5.services.javascript.JavaScriptStack;
 import org.apache.tapestry5.services.javascript.JavaScriptStackSource;
 
 import com.howardlewisship.tapx.core.CoreSymbols;
+import com.howardlewisship.tapx.core.StackExtension;
+import com.howardlewisship.tapx.core.StackExtensionType;
+import com.howardlewisship.tapx.core.TapxCore;
 import com.howardlewisship.tapx.core.dynamic.DynamicTemplate;
 import com.howardlewisship.tapx.core.dynamic.DynamicTemplateParser;
 import com.howardlewisship.tapx.core.internal.dynamic.DynamicTemplateParserImpl;
 import com.howardlewisship.tapx.core.internal.services.CondBindingFactory;
 import com.howardlewisship.tapx.core.internal.services.ConditionSourceImpl;
-import com.howardlewisship.tapx.core.internal.services.TapxCoreStack;
 
 public class CoreModule
 {
+    private static final String PATH = "classpath:com/howardlewisship/tapx/core";
 
+    @SuppressWarnings("unchecked")
     public static void bind(ServiceBinder binder)
     {
         binder.bind(ConditionSource.class, ConditionSourceImpl.class);
         binder.bind(BindingFactory.class, CondBindingFactory.class).withId("CondBindingFactory");
+        binder.bind(JavaScriptStack.class, ExtensibleJavaScriptStack.class).withId("TapxCoreJavaScriptStack")
+                .withMarker(TapxCore.class);
     }
 
     public static void contributeFactoryDefaults(MappedConfiguration<String, String> configuration)
@@ -62,17 +68,18 @@ public class CoreModule
         configuration.add(new LibraryMapping("tapx", "com.howardlewisship.tapx.core"));
     }
 
-    public static void contributeComponentMessagesSource(OrderedConfiguration<Resource> configuration,
-            @Value("classpath:com/howardlewisship/tapx/core/tapx-core.properties")
-            Resource coreCatalog)
+    public static void contributeComponentMessagesSource(OrderedConfiguration<Resource> configuration, @Value(PATH
+            + "/tapx-core.properties")
+    Resource coreCatalog)
     {
         configuration.add("TapxCore", coreCatalog, "before:AppCatalog");
     }
 
     @Contribute(JavaScriptStackSource.class)
-    public static void provideTapxCoreStack(MappedConfiguration<String, JavaScriptStack> configuration)
+    public static void provideTapxCoreStack(MappedConfiguration<String, JavaScriptStack> configuration, @TapxCore
+    JavaScriptStack tapxCoreStack)
     {
-        configuration.addInstance("tapx-core", TapxCoreStack.class);
+        configuration.add("tapx-core", tapxCoreStack);
     }
 
     /**
@@ -137,5 +144,28 @@ public class CoreModule
     {
         configuration.add("production-mode", new FixedCondition(productionMode));
         configuration.add("test-mode", new FixedCondition(testMode));
+    }
+
+    /**
+     * Makes two contributions:
+     * <dl>
+     * <dt>CoreJS</dt>
+     * <dd>Core JavaScript library</dd>
+     * <dt>CoreCSS</dt>
+     * <dd>Core Stylesheet</dd>
+     * </dl>
+     * <p>
+     * If contributin additional values, you will typically want them expressly ordered <em>after</em> these
+     * contributions.
+     * 
+     * @param configuration
+     */
+    @Contribute(JavaScriptStack.class)
+    @TapxCore
+    public static void basicCoreStackElements(OrderedConfiguration<StackExtension> configuration)
+    {
+        configuration.add("CoreJS", new StackExtension(StackExtensionType.LIBRARY, PATH + "/tapx.js"));
+        configuration.add("CoreCSS", new StackExtension(StackExtensionType.STYLESHEET, PATH + "/tapx-core.css"));
+
     }
 }
