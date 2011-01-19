@@ -18,7 +18,7 @@ This module provides the following features:
 
 * "cond:" binding prefix
 * Support for TEST_MODE symbol
-* Silk 1.3 icon set from [FamFamFam])(http://www.famfamfam.com/lab/icons/silk/)
+* Silk 1.3 icon set from [FamFamFam](http://www.famfamfam.com/lab/icons/silk/)
 * Components:
   * SetEditor
   * DynamicTemplate
