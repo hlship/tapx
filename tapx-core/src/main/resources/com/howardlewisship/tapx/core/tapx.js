@@ -29,18 +29,44 @@ Tapx = {
 	},
 
 	Tree : {
-		animateRevealChildren : function(element) {
-			$(element).addClassName("tx-tree-expanded");
+
+		/** Approximate time per pixel for the hide and reveal animations. */
+		ANIMATION_RATE : .005,
+
+		MAX_ANIMATION_DURATION : .5,
+
+		TOGGLE_TYPE : 'blind',
+
+		QUEUE_NAME : 'tx-tree-updates',
+
+		doAnimate : function(element) {
 			var div = $(element).up('li').down("div.tx-children");
 
-			new Effect.SlideDown(div);
+			var dim = div.getDimensions();
+
+			var duration = Math.min(div.getDimensions().height
+					* Tapx.Tree.ANIMATION_RATE,
+					Tapx.Tree.MAX_ANIMATION_DURATION)
+
+			new Effect.toggle(div, Tapx.Tree.TOGGLE_TYPE, {
+				duration : duration,
+				queue : {
+					position : 'end',
+					scope : Tapx.Tree.QUEUE_NAME
+				}
+			});
+		},
+
+		animateRevealChildren : function(element) {
+			$(element).addClassName("tx-tree-expanded");
+
+			Tapx.Tree.doAnimate(element);
 		},
 
 		animateHideChildren : function(element) {
 			$(element).removeClassName("tx-tree-expanded");
-			var div = $(element).up('li').down("div.tx-children");
 
-			new Effect.SlideUp(div);
+			Tapx.Tree.doAnimate(element);
 		}
 	}
 };
@@ -108,11 +134,12 @@ Tapestry.Initializer.tapxTreeNode = function(spec) {
 		// Remove the Ajax load indicator
 		$(spec.clientId).update("");
 		$(spec.clientId).removeClassName("tx-empty-node");
-		
+
 		var response = reply.responseJSON;
 
 		Tapestry.loadScriptsInReply(response, function() {
-			var outerDiv = $(spec.clientId).up('li').down("div.tx-children");
+			var outerDiv = $(spec.clientId).up('li').down("div.tx-children")
+					.hide();
 
 			// Wrap the content inside a <div> to ensure
 			// animations work correctly.
