@@ -29,7 +29,7 @@ SPAN.tx-seteditor-delete {
   float: right;
   background-image: url(silk/delete.png);
   display: inline-block;
-  cursor: hand;
+  cursor: pointer;
 }
 
 
@@ -41,21 +41,24 @@ DIV.tx-tree-container
 
 DIV.tx-tree-container UL
 {
-  margin-left: 16px;
   -webkit-padding-start: 8px;
-  margin: none;
+  margin-left: 16px;
 }
+
 
 DIV.tx-tree-container LI
 {
-    list-style-type: image;
-    list-style-image: url(../silk/bullet_toggle_plus.png);
-    text-indent: 0px;
+    list-style-image: url(silk/bullet_toggle_minus.png);
+    cursor: pointer;
 }
 
-DIV.tx-tree-container LI.tx-tree-collapsed
+LI.tx-tree-expanded
 {
-    list-style-image: url(../silk/bullet_toggle_minus.png);
+    list-style-image: url(silk/bullet_toggle_plus.png);
 }
 
-
+LI.tx-leaf-node, LI.tx-empty-node
+{
+  list-style-type: none !important;
+  list-style-image: none !important;
+}
