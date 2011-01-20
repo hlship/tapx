@@ -3,15 +3,23 @@ package com.howardlewisship.tapx.core.components;
 import java.util.List;
 
 import org.apache.tapestry5.Block;
+import org.apache.tapestry5.ComponentResources;
+import org.apache.tapestry5.MarkupWriter;
+import org.apache.tapestry5.Renderable;
+import org.apache.tapestry5.annotations.Environmental;
 import org.apache.tapestry5.annotations.Import;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.dom.Element;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.json.JSONObject;
+import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 
 import com.howardlewisship.tapx.core.TreeModel;
 import com.howardlewisship.tapx.core.TreeNode;
 
-@SuppressWarnings("rawtypes")
+@SuppressWarnings(
+{ "rawtypes", "unchecked", "unused" })
 @Import(stack = "tapx-core")
 public class Tree
 {
@@ -40,23 +48,64 @@ public class Tree
     @Property
     private List<TreeNode> nodes;
 
+    @Property
+    private int nodeIndex;
+
+    @Environmental
+    private JavaScriptSupport jss;
+
+    @Inject
+    private ComponentResources resources;
+
+    @Property
+    private final Renderable renderButton = new Renderable()
+    {
+        @Override
+        public void render(MarkupWriter writer)
+        {
+            // The outer span provides the visual structure (the dashes). Since we can't rely on CSS3,
+            // we mark the last one explicitly.
+
+            writer.element("span", "class", "tx-structure" + (nodeIndex == nodes.size() - 1 ? " tx-last" : ""));
+
+            Element e = writer.element("span", "class", "tx-tree-icon");
+
+            if (node.isLeaf())
+                e.addClassName("tx-leaf-node");
+            else if (!node.getHasChildren())
+                e.addClassName("tx-empty-node");
+
+            if (!node.isLeaf() && node.getHasChildren())
+            {
+                String clientId = jss.allocateClientId(resources);
+
+                e.attribute("id", clientId);
+
+                JSONObject spec = new JSONObject("clientId", clientId, "expandURL", resources.createEventLink("expand",
+                        node.getId()).toString());
+
+                jss.addInitializerCall("tapxTreeNode", spec);
+            }
+
+            writer.end();
+            writer.end();
+        }
+    };
+
     void setupRender()
     {
         nodes = model.getRootNodes();
     }
 
-    public String getStyleClassForNode()
+    Object onExpand(String nodeId)
     {
-        if (node.isLeaf())
-            return "tx-leaf-node";
+        TreeNode container = model.getById(nodeId);
 
-        // This is the initial render and children, if they exist, will not be shown.
+        nodes = container.getChildren();
 
-        if (!node.getHasChildren())
-            return "tx-empty-node";
+        // The children block contains what needs to be rendered. This will end up as a JSON response, as with a Zone
+        // component.
 
-        // Default: has children, but collapsed.
-
-        return null;
+        return children;
     }
 }

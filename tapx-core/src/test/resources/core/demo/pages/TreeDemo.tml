@@ -1,43 +1,5 @@
 <t:layout xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter" xmlns:tx="tapestry-library:tapx">
 
-  <h1>Tree Demo</h1>
-
   <tx:tree model="fileSystemTreeModel"/>
-
-  <t:remove>
-    <div class="tx-tree-container">
-      <ul>
-        <li class="tx-tree-collapsed">
-          <span class="tx-tree-label">Parent Node 1</span>
-          <span class="tx-tree-children">
-          </span>
-        </li>
-        <li>
-          <span class="tx-tree-label">Parent Node 2</span>
-          <span class="tx-tree-children">
-            <ul>
-              <li>
-                <span class="tx-tree-label">Child Node 2.1</span>
-                <span class="tx-tree-children">
-                </span>
-              </li>
-              <li>
-                <span class="tx-tree-label">Child Node 2.2</span>
-                <span class="tx-tree-children">
-                </span>
-              </li>
-            </ul>
-          </span>
-        </li>
-        <li class="tx-tree-collapsed">
-          <span class="tx-tree-label">Parent Node 3</span>
-          <span class="tx-tree-children">
-          </span>
-        </li>
-      </ul>
-
-    </div>
-
-  </t:remove>
 
 </t:layout>

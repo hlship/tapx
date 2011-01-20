@@ -26,6 +26,22 @@ Tapx = {
 			listItemElement.insert(deleteElement);
 			listElement.insert(listItemElement);
 		}
+	},
+
+	Tree : {
+		animateRevealChildren : function(element) {
+			$(element).addClassName("tx-tree-expanded");
+			var div = $(element).up('li').down("div.tx-children");
+
+			new Effect.SlideDown(div);
+		},
+
+		animateHideChildren : function(element) {
+			$(element).removeClassName("tx-tree-expanded");
+			var div = $(element).up('li').down("div.tx-children");
+
+			new Effect.SlideUp(div);
+		}
 	}
 };
 
@@ -81,3 +97,69 @@ Tapestry.Initializer.tapxSetEditor = function(spec) {
 		textField.value = "";
 	});
 };
+
+Tapestry.Initializer.tapxTreeNode = function(spec) {
+
+	var loaded = false;
+	var expanded = false;
+	var loading = false;
+
+	function successHandler(reply) {
+		// Remove the Ajax load indicator
+		$(spec.clientId).update("");
+		$(spec.clientId).removeClassName("tx-empty-node");
+		
+		var response = reply.responseJSON;
+
+		Tapestry.loadScriptsInReply(response, function() {
+			var outerDiv = $(spec.clientId).up('li').down("div.tx-children");
+
+			// Wrap the content inside a <div> to ensure
+			// animations work correctly.
+
+			outerDiv.update("<div>" + response.content + "</div>");
+
+			Tapx.Tree.animateRevealChildren(spec.clientId);
+
+			loading = false;
+			loaded = true;
+			expanded = true;
+		});
+
+	}
+
+	function doLoad() {
+		if (loading)
+			return;
+
+		loading = true;
+
+		$(spec.clientId).addClassName("tx-empty-node");
+		$(spec.clientId).update("<span class='tx-ajax-wait'/>");
+
+		Tapestry.ajaxRequest(spec.expandURL, successHandler);
+	}
+
+	$(spec.clientId).observe(
+			"click",
+			function(event) {
+				event.stop();
+
+				if (!loaded) {
+
+					doLoad();
+
+					return;
+				}
+
+				// Children have been loaded, just a matter of toggling between
+				// showing or hiding the children.
+
+				var f = expanded ? Tapx.Tree.animateHideChildren
+						: Tapx.Tree.animateRevealChildren;
+
+				f.call(null, spec.clientId);
+
+				expanded = !expanded;
+			});
+}
