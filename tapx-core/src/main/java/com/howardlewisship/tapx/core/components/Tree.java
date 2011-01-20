@@ -45,7 +45,7 @@ public class Tree
         nodes = model.getRootNodes();
     }
 
-    public String getNodeClass()
+    public String getStyleClassForNode()
     {
         if (node.isLeaf())
             return "tx-leaf-node";
