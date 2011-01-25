@@ -29,6 +29,9 @@
     <li>
       <t:pagelink page="treedemo">Tree Component Demo</t:pagelink>
     </li>
+    <li>
+      <t:pagelink page="silkimagedemo">SilkImage Component Demo</t:pagelink>
+    </li>
   </ul>
 
 </t:layout>

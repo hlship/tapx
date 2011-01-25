@@ -1,0 +1,20 @@
+<t:layout xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter" xmlns:tx="tapestry-library:tapx">
+
+  <dl>
+    <dt>Add</dt>
+    <dd>
+      <tx:silkimage t:id="add"/>
+    </dd>
+    <dt>Webcam</dt>
+    <dd>
+      <t:loop source="1..10">
+        <tx:silkimage t:id="camera" name="webcam"/>
+        [id = ${camera.clientId}]
+        <br/>
+      </t:loop>
+    </dd>
+  </dl>
+
+
+
+</t:layout>
