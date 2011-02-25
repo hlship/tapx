@@ -1,0 +1,18 @@
+<t:layout xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter" xmlns:x="tapestry-library:tapx">
+
+  <p>
+    Time at initial render:
+    <span id="initial-render-time">${now}</span>
+  </p>
+
+  <x:expando title="Server Time">
+
+    <p>
+      Time at expansion:
+      <span id="expand-render-time">${now}</span>
+    </p>
+  </x:expando>
+
+
+
+</t:layout>

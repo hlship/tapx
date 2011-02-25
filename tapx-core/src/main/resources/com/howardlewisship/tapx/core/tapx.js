@@ -190,3 +190,32 @@ Tapestry.Initializer.tapxTreeNode = function(spec) {
 				expanded = !expanded;
 			});
 }
+
+Tapestry.Initializer.tapxExpando = function(spec) {
+
+	var loaded = false;
+
+	function zone() {
+		return Tapestry.findZoneManagerForZone(spec.zoneId);
+	}
+
+	function expand(event) {
+		$(spec.clientId).removeClassName("tx-collapsed").addClassName(
+				"tx-expanded");
+		$(spec.clientId).down("div.tx-content").show();
+
+		if (!loaded) {
+			loaded = true;
+			zone().updateFromURL(spec.contentURL);
+		}
+	}
+
+	function collapse(event) {
+		$(spec.clientId).removeClassName("tx-expanded").addClassName(
+				"tx-collapsed");
+		$(spec.clientId).down("div.tx-content").hide();
+	}
+
+	$(spec.clientId).down(".tx-expand").observe("click", expand);
+	$(spec.clientId).down(".tx-collapse").observe("click", collapse);
+};

@@ -32,6 +32,9 @@
     <li>
       <t:pagelink page="silkimagedemo">SilkImage Component Demo</t:pagelink>
     </li>
+    <li>
+      <t:pagelink page="expandoDemo">Expando Component Demo</t:pagelink>
+    </li>
   </ul>
 
 </t:layout>

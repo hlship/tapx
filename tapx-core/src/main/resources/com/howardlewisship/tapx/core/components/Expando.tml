@@ -1,0 +1,14 @@
+<div class="tx-expando tx-collapsed" id="${clientId}" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+  xmlns:p="tapestry:parameter">
+
+  <div class="tx-titlebar">
+    <span class="tx-expand" title="${message:tapx-expand-label}"/>
+    <span class="tx-collapse" title="${message:tapx-collapse-label}"/>
+    <span class="tx-title">
+      <t:delegate to="title"/>
+    </span>
+  </div>
+  <div class="tx-content">
+    <t:zone t:id="content"/>
+  </div>
+</div>    
