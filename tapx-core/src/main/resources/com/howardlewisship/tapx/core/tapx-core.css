@@ -82,7 +82,7 @@ SPAN.tx-tree-icon {
 
 SPAN.tx-leaf-node {
   cursor: none;
-  background-position: -64px 0px;
+  background-position: -32px -16px;
 }
 
 SPAN.tx-empty-node {
