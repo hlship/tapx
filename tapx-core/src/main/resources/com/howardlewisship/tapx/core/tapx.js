@@ -125,8 +125,8 @@ Tapestry.Initializer.tapxSetEditor = function(spec) {
 
 Tapestry.Initializer.tapxTreeNode = function(spec) {
 
-	var loaded = false;
-	var expanded = false;
+	var loaded = spec.expanded;
+	var expanded = spec.expanded;
 	var loading = false;
 
 	function successHandler(reply) {

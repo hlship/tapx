@@ -1,26 +1,9 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 
   <div class="${containerClass}">
-    <t:delegate to="block:children"/>
+    <t:delegate to="renderRootNodes"/>
   </div>
-
-  <t:remove>
-    This block is rendered for the root nodes, then re-rendered inside an Ajax call as each non-leaf node is
-    first expanded.
-</t:remove>
-  <t:block t:id="children">
-    <ul>
-      <li class="${itemClass}" t:id="loop" t:type="loop" source="nodes" value="node" index="nodeIndex">
-        <t:delegate to="renderButton"/>
-        <span class="tx-tree-label">
-          <t:delegate to="label"/>
-        </span>
-        <t:trigger event="generateClientHandler"/>
-      </li>
-
-    </ul>
-  </t:block>
-
+  
   <t:block id="defaultRenderTreeNodeLabel">
     ${node.label}
   </t:block>

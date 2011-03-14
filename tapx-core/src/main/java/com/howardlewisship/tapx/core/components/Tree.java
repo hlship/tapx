@@ -16,8 +16,6 @@ package com.howardlewisship.tapx.core.components;
 
 import java.util.List;
 
-import javax.swing.tree.TreeSelectionModel;
-
 import org.apache.tapestry5.BindingConstants;
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.ComponentResources;
@@ -30,8 +28,13 @@ import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.dom.Element;
+import org.apache.tapestry5.func.F;
+import org.apache.tapestry5.func.Flow;
+import org.apache.tapestry5.func.Worker;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.json.JSONObject;
+import org.apache.tapestry5.runtime.RenderCommand;
+import org.apache.tapestry5.runtime.RenderQueue;
 import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 
 import com.howardlewisship.tapx.core.DefaultTreeExpansionModel;
@@ -84,18 +87,13 @@ public class Tree
     @Parameter
     private Object value;
 
+    /**
+     * A renderable (usually a {@link Block}) that can render the label for a tree node.
+     * This will be invoked after the {@link #value} parameter has been updated.
+     */
     @Property
     @Parameter(value = "block:defaultRenderTreeNodeLabel")
-    private Block label;
-
-    @Inject
-    private Block children;
-
-    @Property
-    private List<TreeNode> nodes;
-
-    @Property
-    private int nodeIndex;
+    private RenderCommand label;
 
     @Environmental
     private JavaScriptSupport jss;
@@ -106,59 +104,138 @@ public class Tree
     @Persist
     private TreeExpansionModel defaultTreeExpansionModel;
 
-    @Property
-    private final Renderable renderButton = new Renderable()
+    private static RenderCommand RENDER_CLOSE_TAG = new RenderCommand()
     {
-        @Override
-        public void render(MarkupWriter writer)
+        public void render(MarkupWriter writer, RenderQueue queue)
         {
-            value = node.getValue();
-
-            Element e = writer.element("span", "class", "tx-tree-icon");
-
-            if (node.isLeaf())
-                e.addClassName("tx-leaf-node");
-            else if (!node.getHasChildren())
-                e.addClassName("tx-empty-node");
-
-            if (!node.isLeaf() && node.getHasChildren())
-            {
-                String clientId = jss.allocateClientId(resources);
-
-                e.attribute("id", clientId);
-
-                Link expandChildren = resources.createEventLink("expandChildren", node.getId());
-                Link markExpanded = resources.createEventLink("markExpanded", node.getId());
-                Link markCollapsed = resources.createEventLink("markCollapsed", node.getId());
-
-                JSONObject spec = new JSONObject("clientId", clientId,
-
-                "expandChildrenURL", expandChildren.toString(),
-
-                "markExpandedURL", markExpanded.toString(),
-
-                "markCollapsedURL", markCollapsed.toString());
-
-                jss.addInitializerCall("tapxTreeNode", spec);
-            }
-
             writer.end();
-        }
+        };
     };
+
+    private static RenderCommand RENDER_LABEL_SPAN = new RenderCommand()
+    {
+        public void render(MarkupWriter writer, RenderQueue queue)
+        {
+            writer.element("span", "class", "tx-tree-label");
+        };
+    };
+
+    /**
+     * Renders a single node (which may be the last within its containing node).
+     * This is a mix of immediate rendering, and queuing up various Blocks and Render commands
+     * to do the rest. May recursively render child nodes of the active node.
+     * 
+     * @param node
+     *            to render
+     * @param isLast
+     *            if true, add "tx-last" attribute to the LI element
+     * @return command to render the node
+     */
+    private RenderCommand toRenderCommand(final TreeNode node, final boolean isLast)
+    {
+        return new RenderCommand()
+        {
+            @Override
+            public void render(MarkupWriter writer, RenderQueue queue)
+            {
+                // Inform the component's container about what value is being rendered
+                // (this may be necessary to generate the correct label for the node).
+                Tree.this.node = node;
+
+                value = node.getValue();
+
+                writer.element("li");
+
+                if (isLast)
+                    writer.attributes("class", "tx-last");
+
+                Element e = writer.element("span", "class", "tx-tree-icon");
+
+                if (node.isLeaf())
+                    e.addClassName("tx-leaf-node");
+                else if (!node.getHasChildren())
+                    e.addClassName("tx-empty-node");
+
+                boolean expanded = expansionModel.isExpanded(node);
+
+                if (!node.isLeaf() && node.getHasChildren())
+                {
+                    String clientId = jss.allocateClientId(resources);
+
+                    e.attribute("id", clientId);
+
+                    Link expandChildren = resources.createEventLink("expandChildren", node.getId());
+                    Link markExpanded = resources.createEventLink("markExpanded", node.getId());
+                    Link markCollapsed = resources.createEventLink("markCollapsed", node.getId());
+
+                    JSONObject spec = new JSONObject("clientId", clientId,
+
+                    "expandChildrenURL", expandChildren.toString(),
+
+                    "markExpandedURL", markExpanded.toString(),
+
+                    "markCollapsedURL", markCollapsed.toString());
+
+                    if (expanded)
+                        spec.put("expanded", true);
+
+                    jss.addInitializerCall("tapxTreeNode", spec);
+                }
+
+                writer.end(); // span.tx-tree-icon
+
+                // From here on in, we're pushing things onto the queue. Remember that
+                // execution order is reversed from order commands are pushed.
+
+                queue.push(RENDER_CLOSE_TAG); // li
+
+                if (expanded)
+                {
+                    queue.push(new RenderNodes(node.getChildren()));
+                }
+
+                queue.push(RENDER_CLOSE_TAG);
+                queue.push(label);
+                queue.push(RENDER_LABEL_SPAN);
+
+            }
+        };
+    }
+
+    /** Renders an &lt;ul&gt; element and renders each node recusively inside the element. */
+    private class RenderNodes implements RenderCommand
+    {
+        private final Flow<TreeNode> nodes;
+
+        public RenderNodes(List<TreeNode> nodes)
+        {
+            assert !nodes.isEmpty();
+
+            this.nodes = F.flow(nodes).reverse();
+        }
+
+        @Override
+        public void render(MarkupWriter writer, final RenderQueue queue)
+        {
+            writer.element("ul");
+            queue.push(RENDER_CLOSE_TAG);
+
+            queue.push(toRenderCommand(nodes.first(), true));
+
+            nodes.rest().each(new Worker<TreeNode>()
+            {
+                @Override
+                public void work(TreeNode element)
+                {
+                    queue.push(toRenderCommand(element, false));
+                }
+            });
+        }
+    }
 
     public String getContainerClass()
     {
         return className == null ? "tx-tree-container" : "tx-tree-container " + className;
-    }
-
-    public String getItemClass()
-    {
-        return nodeIndex == nodes.size() - 1 ? "tx-last" : null;
-    }
-
-    void setupRender()
-    {
-        nodes = model.getRootNodes();
     }
 
     Object onExpandChildren(String nodeId)
@@ -167,12 +244,7 @@ public class Tree
 
         expansionModel.markExpanded(container);
 
-        nodes = container.getChildren();
-
-        // The children block contains what needs to be rendered. This will end up as a JSON response, as with a Zone
-        // component.
-
-        return children;
+        return new RenderNodes(container.getChildren());
     }
 
     Object onMarkExpanded(String nodeId)
@@ -195,5 +267,16 @@ public class Tree
             defaultTreeExpansionModel = new DefaultTreeExpansionModel();
 
         return defaultTreeExpansionModel;
+    }
+
+    public Object getRenderRootNodes()
+    {
+        return new RenderNodes(model.getRootNodes());
+    }
+
+    /** Clears the tree's {@link TreeExpansionModel}. */
+    public void clearExpansions()
+    {
+        expansionModel.clear();
     }
 }
