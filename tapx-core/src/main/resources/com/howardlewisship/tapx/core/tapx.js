@@ -40,19 +40,18 @@ Tapx = {
 		QUEUE_NAME : 'tx-tree-updates',
 
 		doAnimate : function(element) {
-			var div = $(element).up('li').down("div.tx-children");
+			var sublist = $(element).up('li').down("ul");
 
-			var dim = div.getDimensions();
+			var dim = sublist.getDimensions();
 
-			var duration = Math.min(div.getDimensions().height
-					* Tapx.Tree.ANIMATION_RATE,
-					Tapx.Tree.MAX_ANIMATION_DURATION)
+			var duration = Math.min(dim.height * this.ANIMATION_RATE,
+					this.MAX_ANIMATION_DURATION)
 
-			new Effect.toggle(div, Tapx.Tree.TOGGLE_TYPE, {
+			new Effect.toggle(sublist, this.TOGGLE_TYPE, {
 				duration : duration,
 				queue : {
 					position : 'end',
-					scope : Tapx.Tree.QUEUE_NAME
+					scope : this.QUEUE_NAME
 				}
 			});
 		},
@@ -60,13 +59,13 @@ Tapx = {
 		animateRevealChildren : function(element) {
 			$(element).addClassName("tx-tree-expanded");
 
-			Tapx.Tree.doAnimate(element);
+			this.doAnimate(element);
 		},
 
 		animateHideChildren : function(element) {
 			$(element).removeClassName("tx-tree-expanded");
 
-			Tapx.Tree.doAnimate(element);
+			this.doAnimate(element);
 		}
 	}
 };
@@ -138,13 +137,15 @@ Tapestry.Initializer.tapxTreeNode = function(spec) {
 		var response = reply.responseJSON;
 
 		Tapestry.loadScriptsInReply(response, function() {
-			var outerDiv = $(spec.clientId).up('li').down("div.tx-children")
-					.hide();
+			var element = $(spec.clientId).up("li");
+			var label = element.down("span.tx-tree-label");
 
-			// Wrap the content inside a <div> to ensure
-			// animations work correctly.
+			label.insert({
+				after : response.content
+			});
 
-			outerDiv.update("<div>" + response.content + "</div>");
+			// Hide the new sublist so that we can animate revealing it.
+			element.down("ul").hide();
 
 			Tapx.Tree.animateRevealChildren(spec.clientId);
 
@@ -185,7 +186,7 @@ Tapestry.Initializer.tapxTreeNode = function(spec) {
 				var f = expanded ? Tapx.Tree.animateHideChildren
 						: Tapx.Tree.animateRevealChildren;
 
-				f.call(null, spec.clientId);
+				f.call(Tapx.Tree, spec.clientId);
 
 				expanded = !expanded;
 			});

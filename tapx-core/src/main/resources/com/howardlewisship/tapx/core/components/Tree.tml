@@ -10,13 +10,11 @@
 </t:remove>
   <t:block t:id="children">
     <ul>
-      <li t:id="loop" t:type="loop" source="nodes" value="node" index="nodeIndex">
+      <li class="${itemClass}" t:id="loop" t:type="loop" source="nodes" value="node" index="nodeIndex">
         <t:delegate to="renderButton"/>
         <span class="tx-tree-label">
           <t:delegate to="label"/>
         </span>
-        <t:remove>This div is located by class on the client, will receive the content from the Ajax update.</t:remove>
-        <div class="tx-children"/>
         <t:trigger event="generateClientHandler"/>
       </li>
 

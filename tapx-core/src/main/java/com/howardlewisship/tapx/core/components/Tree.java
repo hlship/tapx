@@ -96,10 +96,7 @@ public class Tree
         {
             value = node.getValue();
 
-            // The outer span provides the visual structure (the dashes). Since we can't rely on CSS3,
-            // we mark the last one explicitly.
-
-            writer.element("span", "class", "tx-structure" + (nodeIndex == nodes.size() - 1 ? " tx-last" : ""));
+            writer.element("span", "class", "tx-structure");
 
             Element e = writer.element("span", "class", "tx-tree-icon");
 
@@ -128,6 +125,11 @@ public class Tree
     public String getContainerClass()
     {
         return className == null ? "tx-tree-container" : "tx-tree-container " + className;
+    }
+
+    public String getItemClass()
+    {
+        return nodeIndex == nodes.size() - 1 ? "tx-last" : null;
     }
 
     void setupRender()
