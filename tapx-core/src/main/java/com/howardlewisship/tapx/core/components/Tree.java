@@ -96,8 +96,6 @@ public class Tree
         {
             value = node.getValue();
 
-            writer.element("span", "class", "tx-structure");
-
             Element e = writer.element("span", "class", "tx-tree-icon");
 
             if (node.isLeaf())
@@ -117,7 +115,6 @@ public class Tree
                 jss.addInitializerCall("tapxTreeNode", spec);
             }
 
-            writer.end();
             writer.end();
         }
     };

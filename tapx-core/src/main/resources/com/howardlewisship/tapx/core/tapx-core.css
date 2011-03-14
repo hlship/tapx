@@ -48,9 +48,16 @@ DIV.tx-tree-container UL
   padding: 0; 
 }
 
+DIV.tx-tree-container UL UL
+{
+  /* Line up the nested list's vertical bar under the element's folder icon. */
+  margin: 0 0 0 24px;
+}
+
+
 DIV.tx-tree-container LI {
   margin: 0;
-  padding: 0 12px 0 28px;
+  padding: 0 12px 0 16px;
   background-image: url(tree-branch.png);
   background-repeat: no-repeat;
   line-height: 1.5;
@@ -62,13 +69,6 @@ DIV.tx-tree-container LI.tx-last
     background-image: url(tree-branchend.png);    
 }
 
-SPAN.tx-structure {
-  display: inline-block;
-  width: 32px;
-  height: 16px;
-  background: url(tree-sprites.png) -96px -16px;
-}
-
 /* Assume its a collapsed, but expandable, tree node. Later CSS rules overwrite this. */
 
 SPAN.tx-tree-icon {
@@ -76,7 +76,8 @@ SPAN.tx-tree-icon {
   width: 32px;
   height: 16px;
   cursor: pointer;
-  background: url(tree-sprites.png) 0px 0px;
+  background-image: url(tree-sprites.png);
+  background-position: 0px 0px;
 }
 
 SPAN.tx-leaf-node {
@@ -97,7 +98,7 @@ SPAN.tx-ajax-wait {
   width: 16px;
   height: 16px;
   display: inline-block;
-  background: url(ajax-load-indicator.gif);
+  background-image: url(ajax-load-indicator.gif);
 }
 
 
