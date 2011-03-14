@@ -16,6 +16,9 @@
       ] |
       [
       <t:pagelink page="${componentResources.pageName}">refresh</t:pagelink>
+      ] |
+      [
+      <t:actionlink t:id="reset">reset state</t:actionlink>
       ]
     </p>
 

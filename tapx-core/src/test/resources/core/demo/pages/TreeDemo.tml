@@ -1,5 +1,12 @@
 <t:layout xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter" xmlns:tx="tapestry-library:tapx">
 
-  <tx:tree model="fileSystemTreeModel"/>
+  <tx:tree t:id="fs" model="fileSystemTreeModel"/>
 
+
+
+  <p>
+    [
+    <t:actionlink t:id="clear">clear expansions</t:actionlink>
+    ]
+  </p>
 </t:layout>

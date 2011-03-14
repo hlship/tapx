@@ -1,10 +1,10 @@
-// Copyright 2010 Howard M. Lewis Ship
+// Copyright 2010, 2011 Howard M. Lewis Ship
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//     http://www.apache.org/licenses/LICENSE-2.0
+// http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,7 +14,16 @@
 
 package core.demo.components;
 
+import org.apache.tapestry5.ComponentResources;
+import org.apache.tapestry5.ioc.annotations.Inject;
+
 public class Layout
 {
+    @Inject
+    private ComponentResources resources;
 
+    void onActionFromReset()
+    {
+        resources.discardPersistentFieldChanges();
+    }
 }
