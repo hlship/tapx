@@ -165,7 +165,7 @@ Tapestry.Initializer.tapxTreeNode = function(spec) {
 		$(spec.clientId).addClassName("tx-empty-node");
 		$(spec.clientId).update("<span class='tx-ajax-wait'/>");
 
-		Tapestry.ajaxRequest(spec.expandURL, successHandler);
+		Tapestry.ajaxRequest(spec.expandChildrenURL, successHandler);
 	}
 
 	$(spec.clientId).observe(
@@ -187,6 +187,11 @@ Tapestry.Initializer.tapxTreeNode = function(spec) {
 						: Tapx.Tree.animateRevealChildren;
 
 				f.call(Tapx.Tree, spec.clientId);
+
+				var url = expanded ? spec.markCollapsedURL
+						: spec.markExpandedURL;
+
+				Tapestry.ajaxRequest(url, {});
 
 				expanded = !expanded;
 			});

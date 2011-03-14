@@ -16,20 +16,26 @@ package com.howardlewisship.tapx.core.components;
 
 import java.util.List;
 
+import javax.swing.tree.TreeSelectionModel;
+
 import org.apache.tapestry5.BindingConstants;
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.ComponentResources;
+import org.apache.tapestry5.Link;
 import org.apache.tapestry5.MarkupWriter;
 import org.apache.tapestry5.Renderable;
 import org.apache.tapestry5.annotations.Environmental;
 import org.apache.tapestry5.annotations.Import;
 import org.apache.tapestry5.annotations.Parameter;
+import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.dom.Element;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.json.JSONObject;
 import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 
+import com.howardlewisship.tapx.core.DefaultTreeExpansionModel;
+import com.howardlewisship.tapx.core.TreeExpansionModel;
 import com.howardlewisship.tapx.core.TreeModel;
 import com.howardlewisship.tapx.core.TreeNode;
 
@@ -62,6 +68,15 @@ public class Tree
     private TreeNode node;
 
     /**
+     * Used to control the Tree's expansion model. By default, a persistent field inside the Tree
+     * component stores a {@link DefaultTreeExpansionModel}. This parameter may be bound when more
+     * control over the implementation of the expansion model, or how it is stored, is
+     * required.
+     */
+    @Parameter(allowNull = false, value = "defaultTreeExpansionModel")
+    private TreeExpansionModel expansionModel;
+
+    /**
      * Optional parameter used to inform the container about the value of the currently rendering TreeNode; this
      * is often preferable to the TreeNode, and like the node parameter, is primarily used when the label parameter
      * it bound.
@@ -88,6 +103,9 @@ public class Tree
     @Inject
     private ComponentResources resources;
 
+    @Persist
+    private TreeExpansionModel defaultTreeExpansionModel;
+
     @Property
     private final Renderable renderButton = new Renderable()
     {
@@ -109,8 +127,17 @@ public class Tree
 
                 e.attribute("id", clientId);
 
-                JSONObject spec = new JSONObject("clientId", clientId, "expandURL", resources.createEventLink("expand",
-                        node.getId()).toString());
+                Link expandChildren = resources.createEventLink("expandChildren", node.getId());
+                Link markExpanded = resources.createEventLink("markExpanded", node.getId());
+                Link markCollapsed = resources.createEventLink("markCollapsed", node.getId());
+
+                JSONObject spec = new JSONObject("clientId", clientId,
+
+                "expandChildrenURL", expandChildren.toString(),
+
+                "markExpandedURL", markExpanded.toString(),
+
+                "markCollapsedURL", markCollapsed.toString());
 
                 jss.addInitializerCall("tapxTreeNode", spec);
             }
@@ -134,9 +161,11 @@ public class Tree
         nodes = model.getRootNodes();
     }
 
-    Object onExpand(String nodeId)
+    Object onExpandChildren(String nodeId)
     {
         TreeNode container = model.getById(nodeId);
+
+        expansionModel.markExpanded(container);
 
         nodes = container.getChildren();
 
@@ -144,5 +173,27 @@ public class Tree
         // component.
 
         return children;
+    }
+
+    Object onMarkExpanded(String nodeId)
+    {
+        expansionModel.markExpanded(model.getById(nodeId));
+
+        return new JSONObject();
+    }
+
+    Object onMarkCollapsed(String nodeId)
+    {
+        expansionModel.markCollapsed(model.getById(nodeId));
+
+        return new JSONObject();
+    }
+
+    public TreeExpansionModel getDefaultTreeExpansionModel()
+    {
+        if (defaultTreeExpansionModel == null)
+            defaultTreeExpansionModel = new DefaultTreeExpansionModel();
+
+        return defaultTreeExpansionModel;
     }
 }
