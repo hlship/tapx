@@ -57,7 +57,7 @@ DIV.tx-tree-container UL UL
 
 DIV.tx-tree-container LI {
   margin: 0;
-  padding: 0 12px 0 16px;
+  padding: 0 0 0 16px;
   background-image: url(tree-branch.png);
   background-repeat: no-repeat;
   line-height: 1.5;
