@@ -40,7 +40,7 @@ public interface TreeNode<T>
      * If true, then this node is a leaf node, which never has children (i.e., a file). If false, the node
      * may have children (i.e., a folder).
      * 
-     * @return true for leaft nodes, false for folder nodes
+     * @return true for leaf nodes, false for folder nodes
      */
     boolean isLeaf();
 
