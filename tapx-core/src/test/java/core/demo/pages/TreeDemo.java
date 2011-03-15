@@ -5,8 +5,8 @@ import java.io.File;
 import org.apache.tapestry5.annotations.InjectComponent;
 
 import com.demo.data.FileSystemTreeModel;
-import com.howardlewisship.tapx.core.TreeModel;
 import com.howardlewisship.tapx.core.components.Tree;
+import com.howardlewisship.tapx.core.tree.TreeModel;
 
 public class TreeDemo
 {

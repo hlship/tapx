@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.howardlewisship.tapx.core;
+package com.howardlewisship.tapx.core.tree;
 
 /**
  * Tracks which nodes of a {@link TreeModel} are currently expanded. The {@linkplain DefaultTreeExpansionModel default

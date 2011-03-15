@@ -20,8 +20,8 @@ import java.util.List;
 import org.apache.tapestry5.ValueEncoder;
 import org.apache.tapestry5.ioc.internal.util.CollectionFactory;
 
-import com.howardlewisship.tapx.core.DefaultTreeModel;
-import com.howardlewisship.tapx.core.TreeModelAdapter;
+import com.howardlewisship.tapx.core.tree.DefaultTreeModel;
+import com.howardlewisship.tapx.core.tree.TreeModelAdapter;
 
 public class FileSystemTreeModel extends DefaultTreeModel<File>
 {

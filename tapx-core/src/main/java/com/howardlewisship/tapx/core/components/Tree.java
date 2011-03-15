@@ -37,10 +37,10 @@ import org.apache.tapestry5.runtime.RenderCommand;
 import org.apache.tapestry5.runtime.RenderQueue;
 import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 
-import com.howardlewisship.tapx.core.DefaultTreeExpansionModel;
-import com.howardlewisship.tapx.core.TreeExpansionModel;
-import com.howardlewisship.tapx.core.TreeModel;
-import com.howardlewisship.tapx.core.TreeNode;
+import com.howardlewisship.tapx.core.tree.DefaultTreeExpansionModel;
+import com.howardlewisship.tapx.core.tree.TreeExpansionModel;
+import com.howardlewisship.tapx.core.tree.TreeModel;
+import com.howardlewisship.tapx.core.tree.TreeNode;
 
 @SuppressWarnings(
 { "rawtypes", "unchecked", "unused" })
