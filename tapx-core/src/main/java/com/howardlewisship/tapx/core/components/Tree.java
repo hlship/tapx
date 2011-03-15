@@ -270,6 +270,16 @@ public class Tree
         return defaultTreeExpansionModel;
     }
 
+    /**
+     * Returns the actual {@link TreeExpansionModel} in use for this Tree component,
+     * as per the expansionModel parameter. This is often, but not always, the same
+     * as {@link #getDefaultTreeExpansionModel()}.
+     */
+    public TreeExpansionModel getExpansionModel()
+    {
+        return expansionModel;
+    }
+
     public Object getRenderRootNodes()
     {
         return new RenderNodes(model.getRootNodes());
