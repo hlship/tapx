@@ -17,7 +17,8 @@ package com.howardlewisship.tapx.core;
 import java.util.List;
 
 /**
- * A node within a {@link TreeModel}.
+ * A node within a {@link TreeModel}. In a {@link DefaultTreeModel}, most of the node's information
+ * comes via the {@link TreeModelAdapter}.
  * 
  * @param <T>
  *            type of node
@@ -41,18 +42,31 @@ public interface TreeNode<T>
      * may have children (i.e., a folder).
      * 
      * @return true for leaf nodes, false for folder nodes
+     * @see TreeModelAdapter#isLeaf(Object)
      */
     boolean isLeaf();
 
-    /** Returns true if this non-leaf node has child nodes. This will not be invoked for leaf nodes. */
+    /**
+     * Returns true if this non-leaf node has child nodes. This will not be invoked for leaf nodes.
+     * 
+     * @see TreeModelAdapter#hasChildren(Object)
+     */
     boolean getHasChildren();
 
-    /** Returns the actual children of this non-leaf node, as additional nodes. */
+    /**
+     * Returns the actual children of this non-leaf node, as additional nodes.
+     * 
+     * @see TreeModelAdapter#getChildren(Object)
+     */
     List<TreeNode<T>> getChildren();
 
     // TODO: Some way to influence the rendered output (i.e., to display different icons based on
     // file type).
 
-    /** Returns a textual label for the node. Not all UIs will make use of the label, but default UIs will. */
+    /**
+     * Returns a textual label for the node. Not all UIs will make use of the label, but default UIs will.
+     * 
+     * @see TreeModelAdapter#getLabel(Object)
+     */
     public String getLabel();
 }

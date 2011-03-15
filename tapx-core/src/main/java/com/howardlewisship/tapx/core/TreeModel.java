@@ -16,10 +16,14 @@ package com.howardlewisship.tapx.core;
 
 import java.util.List;
 
+import org.apache.tapestry5.ValueEncoder;
+
 import com.howardlewisship.tapx.core.components.Tree;
 
 /**
- * A model for tree-oriented data used by the {@link Tree} component.
+ * A model for tree-oriented data used by the {@link Tree} component. The default implemention, {@link DefaultTreeModel}
+ * uses a {@link ValueEncoder} and a {@link TreeModelAdapter} to supply the
+ * underlying information.
  * 
  * @param <T>
  *            type of data in the tree
@@ -40,4 +44,14 @@ public interface TreeModel<T>
      * @see TreeNode#getId()
      */
     TreeNode<T> getById(String id);
+
+    /**
+     * Recursively searches from the root nodes to find the tree node that matches
+     * the provided element.
+     * 
+     * @param element
+     *            to search for
+     * @return matching node, or null if not found
+     */
+    TreeNode<T> find(T element);
 }
