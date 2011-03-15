@@ -32,6 +32,15 @@ subprojects {
     
     configurations {
         deployerJars
+        provided
+    }
+
+    // See http://jira.codehaus.org/browse/GRADLE-784
+    
+    sourceSets {
+      main { 
+        compileClasspath += configurations.provided 
+      }
     }
     
     dependencies {

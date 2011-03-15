@@ -1,8 +1,7 @@
 description = "Common general components"
 
 dependencies {
-  // This should be providedCompile, once Gradle supports it
-  compile "javax.servlet:servlet-api:2.4"      
+  provided "javax.servlet:servlet-api:2.4"      
 }
 
 jar {
