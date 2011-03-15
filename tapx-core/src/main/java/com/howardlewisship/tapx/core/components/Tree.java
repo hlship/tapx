@@ -156,9 +156,10 @@ public class Tree
                 else if (!node.getHasChildren())
                     e.addClassName("tx-empty-node");
 
-                boolean expanded = expansionModel.isExpanded(node);
+                boolean hasChildren = !node.isLeaf() && node.getHasChildren();
+                boolean expanded = hasChildren && expansionModel.isExpanded(node);
 
-                if (!node.isLeaf() && node.getHasChildren())
+                if (hasChildren)
                 {
                     String clientId = jss.allocateClientId(resources);
 
