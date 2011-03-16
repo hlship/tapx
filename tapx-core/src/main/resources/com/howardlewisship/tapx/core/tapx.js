@@ -249,6 +249,48 @@ Tapx.extendInitializer(function() {
 	};
 });
 
+Tapx.extendInitializer(function() {
+
+	function initializer(spec) {
+		var outerDiv = $(spec.clientId);
+		var hidden = new Element("input", {
+			type : "hidden",
+			name : spec.name
+		});
+		outerDiv.insert(hidden);
+
+		var mainDiv = new Element("div", {
+			"class" : "tx-multiselect-columns"
+		});
+
+		outerDiv.insert(mainDiv);
+
+		mainDiv.update("<div class='tx-available'>"
+				+ "<div class='tx-title'>Available:</div>"
+				+ "<div class='tx-values'></div></div>"
+				+ "<div class='tx-controls'></div>"
+				+ "<div class='tx-selected'>"
+				+ "<div class='tx-title'>Selected:</div>"
+				+ "<div class='tx-values'></div></div>");
+
+		var availableDiv = mainDiv.down(".tx-available > .tx-values");
+		var selectedDiv = mainDiv.down(".tx-selected > .tx-values");
+
+		(spec.model || []).each(function(row) {
+
+			var valueId = row[0];
+			var selected = (spec.values || []).include(valueId);
+			var divToUpdate = selected ? selectedDiv : availableDiv;
+
+			divToUpdate.insert("<div class='tx-value'>" + row[1] + "</div>");
+		});
+	}
+
+	return {
+		tapxMultipleSelect : initializer
+	};
+});
+
 Tapestry.Initializer.tapxExpando = function(spec) {
 
 	var loaded = false;
