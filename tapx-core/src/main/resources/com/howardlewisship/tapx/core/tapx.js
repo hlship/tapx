@@ -254,8 +254,7 @@ Tapx.extendInitializer(function() {
 	function setupButton(select, button, callback) {
 		var enabled = false;
 
-		select.observe("change", function(event) {
-
+		function updateButton() {
 			var newEnabled = select.selectedIndex >= 0;
 
 			if (enabled != newEnabled) {
@@ -266,12 +265,69 @@ Tapx.extendInitializer(function() {
 				else
 					button.addClassName("tx-disabled");
 			}
-		});
+		}
+
+		select.observe("change", updateButton);
+		select.observe("tapx:refreshbuttonstate", updateButton);
 
 		button.observe("click", function(event) {
-			if (enabled)
+			if (enabled) {
 				callback();
+			}
 		});
+	}
+
+	function moveOption(option, to) {
+
+		var before = $A(to.options).detect(function(targetOption) {
+			return targetOption.innerHTML > option.innerHTML;
+		});
+
+		if (Prototype.IE) {
+			if (before == null) {
+				to.add(option);
+			} else {
+				to.add(option, before.index);
+			}
+
+			return;
+		}
+
+		to.add(option, before);
+	}
+
+	function moveOptions(movers, to) {
+		movers.each(function(option) {
+			moveOption(option, to);
+		});
+	}
+
+	function deselectAllOptions(select) {
+		$A(select.options).each(function(option) {
+			option.selected = false;
+		});
+	}
+
+	function removeSelectedOptions(select) {
+		var movers = [];
+		var options = select.options;
+
+		for ( var i = select.selectedIndex; i < select.length; i++) {
+			var option = options[i];
+			if (option.selected) {
+				select.remove(i--);
+				movers.push(option);
+			}
+		}
+
+		return movers;
+	}
+
+	function transferOptions(from, to) {
+		deselectAllOptions(to);
+		moveOptions(removeSelectedOptions(from), to);
+		from.fire("tapx:refreshbuttonstate");
+		to.fire("tapx:refreshbuttonstate");
 	}
 
 	function initializer(spec) {
@@ -330,9 +386,12 @@ Tapx.extendInitializer(function() {
 
 		setupButton(availableSelect, mainDiv.down(".tx-select"), function() {
 			Tapestry.debug("select clicked");
+			transferOptions(availableSelect, selectedSelect);
 		});
 		setupButton(selectedSelect, mainDiv.down(".tx-deselect"), function() {
 			Tapestry.debug("deselect clicked");
+			transferOptions(selectedSelect, availableSelect);
+
 		});
 
 	}
