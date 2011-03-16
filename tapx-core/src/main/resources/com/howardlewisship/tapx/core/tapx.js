@@ -251,6 +251,29 @@ Tapx.extendInitializer(function() {
 
 Tapx.extendInitializer(function() {
 
+	function setupButton(select, button, callback) {
+		var enabled = false;
+
+		select.observe("change", function(event) {
+
+			var newEnabled = select.selectedIndex >= 0;
+
+			if (enabled != newEnabled) {
+				enabled = newEnabled;
+
+				if (enabled)
+					button.removeClassName("tx-disabled");
+				else
+					button.addClassName("tx-disabled");
+			}
+		});
+
+		button.observe("click", function(event) {
+			if (enabled)
+				callback();
+		});
+	}
+
 	function initializer(spec) {
 		var outerDiv = $(spec.clientId);
 		var hidden = new Element("input", {
@@ -278,14 +301,40 @@ Tapx.extendInitializer(function() {
 		var availableSelect = mainDiv.down(".tx-available > select");
 		var selectedSelect = mainDiv.down(".tx-selected > select");
 
+		var optionToValue = {};
+		// First array is the list of selected values (for values defined by the
+		// model) Second array is the list of selected labels (for values
+		// added on the client)
+		var hiddenFieldValue = [ [], [] ];
+
 		(spec.model || []).each(function(row) {
 
 			var valueId = row[0];
 			var selected = (spec.values || []).include(valueId);
 			var divToUpdate = selected ? selectedSelect : availableSelect;
 
-			divToUpdate.insert("<option>" + row[1] + "</option>");
+			var option = new Element("option").update(row[1]);
+
+			optionToValue[option] = {
+				clientValue : row[0]
+			};
+
+			if (selected) {
+				hiddenFieldValue[0].push(row[0]);
+			}
+
+			divToUpdate.insert(option);
 		});
+
+		hidden.value = hiddenFieldValue.toJSON();
+
+		setupButton(availableSelect, mainDiv.down(".tx-select"), function() {
+			Tapestry.debug("select clicked");
+		});
+		setupButton(selectedSelect, mainDiv.down(".tx-deselect"), function() {
+			Tapestry.debug("deselect clicked");
+		});
+
 	}
 
 	return {
