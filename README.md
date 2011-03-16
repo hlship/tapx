@@ -21,7 +21,7 @@ This module provides the following features:
 * Silk 1.3 icon set from [FamFamFam](http://www.famfamfam.com/lab/icons/silk/)
 * Components:
   * SetEditor
-  * DynamicTemplate
+  * Dynamic
   * Tree
   * MultipleSelect
 * Mixins:
