@@ -357,12 +357,6 @@ Tapx.extendInitializer(function() {
 		var availableSelect = mainDiv.down(".tx-available > select");
 		var selectedSelect = mainDiv.down(".tx-selected > select");
 
-		var optionToValue = {};
-		// First array is the list of selected values (for values defined by the
-		// model) Second array is the list of selected labels (for values
-		// added on the client)
-		var hiddenFieldValue = [ [], [] ];
-
 		(spec.model || []).each(function(row) {
 
 			var valueId = row[0];
@@ -371,27 +365,43 @@ Tapx.extendInitializer(function() {
 
 			var option = new Element("option").update(row[1]);
 
-			optionToValue[option] = {
-				clientValue : row[0]
+			option.txValue = {
+				clientValue : valueId
 			};
-
-			if (selected) {
-				hiddenFieldValue[0].push(row[0]);
-			}
 
 			divToUpdate.insert(option);
 		});
 
-		hidden.value = hiddenFieldValue.toJSON();
+		function rebuildHiddenFieldValue() {
+			// First array is the list of selected values (for values defined by
+			// the model) Second array is the list of selected labels (for
+			// values added on the client)
+
+			var hiddenFieldValue = [ [], [] ];
+
+			$A(selectedSelect.options).each(function(option) {
+				var value = option.txValue;
+
+				if (value.clientValue) {
+					hiddenFieldValue[0].push(value.clientValue);
+				} else {
+					hiddenFieldValue[1].push(value.label);
+				}
+			});
+
+			hidden.value = hiddenFieldValue.toJSON();
+		}
+
+		rebuildHiddenFieldValue();
 
 		setupButton(availableSelect, mainDiv.down(".tx-select"), function() {
-			Tapestry.debug("select clicked");
 			transferOptions(availableSelect, selectedSelect);
+			rebuildHiddenFieldValue();
+
 		});
 		setupButton(selectedSelect, mainDiv.down(".tx-deselect"), function() {
-			Tapestry.debug("deselect clicked");
 			transferOptions(selectedSelect, availableSelect);
-
+			rebuildHiddenFieldValue();
 		});
 
 	}
