@@ -122,3 +122,51 @@ DIV.tx-expando.tx-expanded SPAN.tx-expand { display: none; }
 
 DIV.tx-expando.tx-collapsed SPAN.tx-collapse { display: none; }
 
+DIV.tx-multiselect SELECT {
+  width: 200px;
+  height: 200px;
+  scroll: vertical;
+}
+
+DIV.tx-multiselect .tx-title {
+  color: white;
+  background: black;
+  width: 200px;
+  font-weight: bold;
+}
+
+DIV.tx-multiselect .tx-available, DIV.tx-multiselect .tx-controls, DIV.tx-multiselect .tx-selected {
+  float: left;
+  margin-left: 5px;
+}
+
+DIV.tx-multiselect .tx-controls {
+  width: 38px;
+  vertical-align: center;
+}
+
+DIV.tx-multiselect .tx-select {
+  background-image: url(../tapestry/corelib/components/select.png);
+}
+
+DIV.tx-multiselect .tx-deselect, DIV.tx-multiselect .tx-select {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  margin-bottom: 3px;  
+}
+
+DIV.tx-multiselect .tx-select {
+  background-image: url(../tapestry/corelib/components/select.png);
+}
+
+DIV.tx-multiselect .tx-deselect {  
+  background-image: url(../tapestry/corelib/components/deselect.png);
+}
+
+DIV.tx-multiselect .tx-disabled {
+  filter: alpha(opacity = 25);  /* IE 7 */
+  opacity: .25; /* FireFox, Chrome, Safari */
+  cursor: default;
+}

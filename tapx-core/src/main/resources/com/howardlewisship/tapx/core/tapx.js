@@ -267,22 +267,24 @@ Tapx.extendInitializer(function() {
 
 		mainDiv.update("<div class='tx-available'>"
 				+ "<div class='tx-title'>Available:</div>"
-				+ "<div class='tx-values'></div></div>"
-				+ "<div class='tx-controls'></div>"
-				+ "<div class='tx-selected'>"
+				+ "<select multiple='multiple'></select></div>"
+				+ "<div class='tx-controls'>"
+				+ "<span class='tx-select tx-disabled' title='Select'></span>"
+				+ "<span class='tx-deselect tx-disabled' title='Deselect'>"
+				+ "</span></div><div class='tx-selected'>"
 				+ "<div class='tx-title'>Selected:</div>"
-				+ "<div class='tx-values'></div></div>");
+				+ "<select multiple='multiple'></select></div>");
 
-		var availableDiv = mainDiv.down(".tx-available > .tx-values");
-		var selectedDiv = mainDiv.down(".tx-selected > .tx-values");
+		var availableSelect = mainDiv.down(".tx-available > select");
+		var selectedSelect = mainDiv.down(".tx-selected > select");
 
 		(spec.model || []).each(function(row) {
 
 			var valueId = row[0];
 			var selected = (spec.values || []).include(valueId);
-			var divToUpdate = selected ? selectedDiv : availableDiv;
+			var divToUpdate = selected ? selectedSelect : availableSelect;
 
-			divToUpdate.insert("<div class='tx-value'>" + row[1] + "</div>");
+			divToUpdate.insert("<option>" + row[1] + "</option>");
 		});
 	}
 
