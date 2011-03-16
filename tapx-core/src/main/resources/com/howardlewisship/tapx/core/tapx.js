@@ -31,7 +31,7 @@ Tapx = {
 		TOGGLE_TYPE : 'blind',
 
 		/**
-		 * Name of Scripactulous effects queue to ensure that animations do not
+		 * Name of Scriptaculous effects queue to ensure that animations do not
 		 * overwrite each other.
 		 */
 		QUEUE_NAME : 'tx-tree-updates'
