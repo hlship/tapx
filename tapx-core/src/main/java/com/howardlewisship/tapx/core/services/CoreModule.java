@@ -147,10 +147,12 @@ public class CoreModule
     }
 
     /**
-     * Makes two contributions:
+     * Makes contributions:
      * <dl>
      * <dt>CoreJS</dt>
      * <dd>Core JavaScript library</dd>
+     * <dt>CoreJS-MultiSelect</dd>
+     * <dd>Support for the MultiSelect component</dd>
      * <dt>CoreCSS</dt>
      * <dd>Core Stylesheet</dd>
      * </dl>
@@ -165,6 +167,8 @@ public class CoreModule
     public static void basicCoreStackElements(OrderedConfiguration<StackExtension> configuration)
     {
         configuration.add("CoreJS", new StackExtension(StackExtensionType.LIBRARY, PATH + "/tapx.js"));
+        configuration.add("CoreJS-MultiSelect", new StackExtension(StackExtensionType.LIBRARY, PATH
+                + "/tapx-multiselect.js"), "after:CoreJS");
         configuration.add("CoreCSS", new StackExtension(StackExtensionType.STYLESHEET, PATH + "/tapx-core.css"));
 
     }
