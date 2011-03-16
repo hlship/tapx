@@ -19,12 +19,25 @@ Tapx = {
 		Object.extend(destination, source);
 	},
 
+	/**
+	 * Tapx.Tree contains configurable constants for controlling how animations
+	 * of the tapx/Tree component operate.
+	 */
 	Tree : {
 
-		/** Approximate time per pixel for the hide and reveal animations. */
+		/**
+		 * Approximate time per pixel for the hide and reveal animations. The
+		 * idea is to have small (few children) and large (many childen)
+		 * animations operate at the same visible rate, even though they will
+		 * take different amounts of time.
+		 */
 		ANIMATION_RATE : .005,
 
-		/** Maximum animation time, in seconds. */
+		/**
+		 * Maximum animation time, in seconds. This is necessary for very large
+		 * animations, otherwise its looks visually odd to see the child tree
+		 * nodes whip down the screen.
+		 */
 		MAX_ANIMATION_DURATION : .5,
 
 		/** Type of Scriptaculous effect to hide/show child nodes. */
