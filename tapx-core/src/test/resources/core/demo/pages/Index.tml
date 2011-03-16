@@ -35,6 +35,9 @@
     <li>
       <t:pagelink page="expandoDemo">Expando Component Demo</t:pagelink>
     </li>
+    <li>
+      <t:pagelink page="multiselectdemo">MultipleSelect Demo</t:pagelink>
+    </li>
   </ul>
 
 </t:layout>

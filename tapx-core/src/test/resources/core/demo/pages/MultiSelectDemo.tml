@@ -1,0 +1,17 @@
+<t:layout xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter" xmlns:tx="tapestry-library:tapx">
+
+  <t:form>
+
+    <tx:multipleselect values="selectedValues" model="model"/>
+
+  </t:form>
+
+  <hr/>
+
+  <p>Selected values:</p>
+
+  <ul>
+    <li t:type="loop" source="selectedValues" value="var:x">${var:x}</li>
+  </ul>
+
+</t:layout>
