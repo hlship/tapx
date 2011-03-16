@@ -19,6 +19,10 @@ Tapx = {
 		Object.extend(destination, source);
 	},
 
+	extendInitializer : function(source) {
+		this.extend(Tapestry.Initializer, source);
+	},
+
 	/**
 	 * Tapx.Tree contains configurable constants for controlling how animations
 	 * of the tapx/Tree component operate.
@@ -51,7 +55,7 @@ Tapx = {
 	}
 };
 
-Tapx.extend(Tapestry.Initializer, function() {
+Tapx.extendInitializer(function() {
 
 	function updateHiddenField(field, state) {
 		field.value = state.values.toJSON();
@@ -137,7 +141,7 @@ Tapx.extend(Tapestry.Initializer, function() {
 	};
 });
 
-Tapx.extend(Tapestry.Initializer, function() {
+Tapx.extendInitializer(function() {
 
 	var cfg = Tapx.Tree;
 
