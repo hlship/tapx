@@ -19,11 +19,14 @@ Tapx.extendInitializer(function() {
 		select.observe("change", updateButton);
 		select.observe("tapx:refreshbuttonstate", updateButton);
 
-		button.observe("click", function(event) {
-			if (enabled) {
+		function callbackIfEnabled() {
+			if (enabled)
 				callback();
-			}
-		});
+		}
+
+		button.observe("click", callbackIfEnabled);
+
+		select.observe("dblclick", callbackIfEnabled);
 	}
 
 	function moveOption(option, to) {
