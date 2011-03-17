@@ -157,7 +157,7 @@ public class CoreModule
      * <dd>Core Stylesheet</dd>
      * </dl>
      * <p>
-     * If contributin additional values, you will typically want them expressly ordered <em>after</em> these
+     * If contributing additional values, you will typically want them expressly ordered <em>after</em> these
      * contributions.
      * 
      * @param configuration
