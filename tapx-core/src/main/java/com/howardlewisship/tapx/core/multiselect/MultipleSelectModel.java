@@ -1,6 +1,6 @@
 package com.howardlewisship.tapx.core.multiselect;
 
-import java.util.List;
+import java.util.Set;
 
 import org.apache.tapestry5.ValueEncoder;
 
@@ -18,7 +18,7 @@ public interface MultipleSelectModel<T> extends ValueEncoder<T>
     /**
      * Returns the values that may be selected by the client, in presentation order (typically, alphabetical order).
      */
-    List<T> getAvailableValues();
+    Set<T> getAvailableValues();
 
     /**
      * Converts an individual value into a label that may be presented to the client.

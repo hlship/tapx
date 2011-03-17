@@ -27,6 +27,9 @@ import org.apache.tapestry5.annotations.Import;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.corelib.base.AbstractField;
 import org.apache.tapestry5.corelib.components.Palette;
+import org.apache.tapestry5.func.F;
+import org.apache.tapestry5.func.Flow;
+import org.apache.tapestry5.func.Mapper;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.json.JSONArray;
 import org.apache.tapestry5.json.JSONObject;
@@ -86,6 +89,34 @@ public class MultipleSelect implements Field
     private ComponentDefaultProvider defaultProvider;
 
     private String clientId, controlName;
+
+    private static class Pair implements Comparable<Pair>
+    {
+        final String label;
+
+        final String clientValue;
+
+        public Pair(String label, String clientValue)
+        {
+            this.label = label;
+            this.clientValue = clientValue;
+        }
+
+        @Override
+        public int compareTo(Pair o)
+        {
+            return this.label.compareTo(o.label);
+        }
+    }
+
+    private final Mapper<Object, Pair> toPair = new Mapper<Object, Pair>()
+    {
+        @Override
+        public Pair map(Object value)
+        {
+            return new Pair(model.toLabel(value), model.toClient(value));
+        }
+    };
 
     public static class ProcessSubmission implements ComponentAction<MultipleSelect>
     {
@@ -167,13 +198,11 @@ public class MultipleSelect implements Field
             spec.append("values", clientValue);
         }
 
-        for (Object value : model.getAvailableValues())
-        {
-            String clientValue = model.toClient(value);
-            String label = model.toLabel(value);
+        Flow<Object> valuesFlow = F.flow(model.getAvailableValues());
 
-            JSONArray row = new JSONArray(clientValue, label);
-            spec.append("model", row);
+        for (Pair pair : valuesFlow.map(toPair).sort())
+        {
+            spec.append("model", new JSONArray(pair.clientValue, pair.label));
         }
 
         jss.addInitializerCall("tapxMultipleSelect", spec);

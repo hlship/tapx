@@ -2,6 +2,7 @@ package com.demo.data;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.tapestry5.func.F;
 import org.apache.tapestry5.ioc.internal.util.CollectionFactory;
@@ -32,9 +33,9 @@ public class StringMultipleSelectModel implements MultipleSelectModel<String>
     }
 
     @Override
-    public List<String> getAvailableValues()
+    public Set<String> getAvailableValues()
     {
-        return F.flow(values).sort().toList();
+        return F.flow(values).toSet();
     }
 
     @Override
