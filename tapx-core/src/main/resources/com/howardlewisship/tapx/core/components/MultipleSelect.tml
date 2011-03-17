@@ -1,0 +1,24 @@
+<div id="${clientId}" class="${computedClassName}" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+  <input type="hidden" name="${name}"/>
+  <div>
+    <div class="tx-available">
+      <div class="tx-title">Available:</div>
+      <select multiple="multiple"/>
+    </div>
+    <div class="tx-controls">
+      <span class="tx-select tx-disabled" title="Select"/>
+      <span class="tx-deselect tx-disabled" title="Deselect"/>
+    </div>
+    <div class="tx-selected">
+      <div class="tx-title">Selected:</div>
+      <select multiple="multiple"/>
+    </div>
+  </div>
+  <div class="tx-input">
+    <label>
+      Add:
+      <input type="text" size="40"/>
+      <span class="tx-error"/>
+    </label>
+  </div>
+</div>

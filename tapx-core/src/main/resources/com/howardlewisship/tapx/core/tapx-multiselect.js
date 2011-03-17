@@ -84,38 +84,11 @@ Tapx.extendInitializer(function() {
 
 	function initializer(spec) {
 		var outerDiv = $(spec.clientId);
-		var hidden = new Element("input", {
-			type : "hidden",
-			name : spec.name
-		});
-		outerDiv.insert(hidden);
 
-		var mainDiv = new Element("div", {
-			"class" : "tx-multiselect-columns"
-		});
+		var hidden = outerDiv.down("input[type='hidden']");
 
-		outerDiv.insert(mainDiv);
-
-		mainDiv.update("<div class='tx-available'>"
-				+ "<div class='tx-title'>Available:</div>"
-				+ "<select multiple='multiple'></select></div>"
-				+ "<div class='tx-controls'>"
-				+ "<span class='tx-select tx-disabled' title='Select'></span>"
-				+ "<span class='tx-deselect tx-disabled' title='Deselect'>"
-				+ "</span></div><div class='tx-selected'>"
-				+ "<div class='tx-title'>Selected:</div>"
-				+ "<select multiple='multiple'></select></div>");
-
-		inputDiv = new Element("div", {
-			class : "tx-input"
-		});
-		outerDiv.insert(inputDiv);
-
-		inputDiv.update("<label>Add: <input type='text' size='40'>"
-				+ "<span class='tx-error'></div></label>");
-
-		var availableSelect = mainDiv.down(".tx-available > select");
-		var selectedSelect = mainDiv.down(".tx-selected > select");
+		var availableSelect = outerDiv.down(".tx-available > select");
+		var selectedSelect = outerDiv.down(".tx-selected > select");
 
 		(spec.model || []).each(function(row) {
 
@@ -154,21 +127,21 @@ Tapx.extendInitializer(function() {
 
 		rebuildHiddenFieldValue();
 
-		setupButton(availableSelect, mainDiv.down(".tx-select"), function() {
+		setupButton(availableSelect, outerDiv.down(".tx-select"), function() {
 			transferOptions(availableSelect, selectedSelect);
 			rebuildHiddenFieldValue();
 
 		});
-		setupButton(selectedSelect, mainDiv.down(".tx-deselect"), function() {
+		setupButton(selectedSelect, outerDiv.down(".tx-deselect"), function() {
 			transferOptions(selectedSelect, availableSelect);
 			rebuildHiddenFieldValue();
 		});
 
-		var errorDiv = inputDiv.down('.tx-error');
+		var errorDiv = outerDiv.down('.tx-error');
 
 		errorDiv.hide();
 
-		var inputField = inputDiv.down('input');
+		var inputField = outerDiv.down('.tx-input input');
 
 		function error(message) {
 			inputField.addClassName("t-error").select();

@@ -9,6 +9,7 @@ import org.apache.tapestry5.MarkupWriter;
 import org.apache.tapestry5.annotations.Environmental;
 import org.apache.tapestry5.annotations.Import;
 import org.apache.tapestry5.annotations.Parameter;
+import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.corelib.components.Palette;
 import org.apache.tapestry5.dom.Element;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -53,6 +54,9 @@ public class MultipleSelect
     @Inject
     private ComponentResources resources;
 
+    @Property(write = false)
+    private String clientId, name;
+
     public static class ProcessSubmission implements ComponentAction<MultipleSelect>
     {
         private static final long serialVersionUID = -5387860921749570953L;
@@ -62,7 +66,6 @@ public class MultipleSelect
         public ProcessSubmission(String name)
         {
             this.name = name;
-
         }
 
         @Override
@@ -73,28 +76,24 @@ public class MultipleSelect
 
     }
 
-    boolean beginRender(MarkupWriter writer)
+    void setupRender()
     {
-        String clientId = jss.allocateClientId(resources);
+        clientId = jss.allocateClientId(resources);
 
-        String name = formSupport.allocateControlName(resources.getId());
-
-        Element element = writer.element("div", "class", "tx-multiselect", "id", clientId);
-
-        if (className != null)
-            element.addClassName(className);
-
-        writer.end();
+        name = formSupport.allocateControlName(resources.getId());
 
         writeJavaScript(clientId, name);
+    }
 
-        return false;
+    public String getComputedClassName()
+    {
+        return className == null ? "tx-multiselect" : "tx-multiselect " + className;
     }
 
     @SuppressWarnings("unchecked")
     private void writeJavaScript(String clientId, String name)
     {
-        JSONObject spec = new JSONObject("clientId", clientId, "name", name);
+        JSONObject spec = new JSONObject("clientId", clientId);
 
         for (Object value : values)
         {
