@@ -14,6 +14,8 @@
 
 package com.howardlewisship.tapx.core.components;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.tapestry5.BindingConstants;
@@ -22,8 +24,10 @@ import org.apache.tapestry5.annotations.Import;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.corelib.base.AbstractField;
 import org.apache.tapestry5.corelib.components.Palette;
+import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.json.JSONArray;
 import org.apache.tapestry5.json.JSONObject;
+import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 
 import com.howardlewisship.tapx.core.multiselect.MultipleSelectModel;
@@ -33,6 +37,7 @@ import com.howardlewisship.tapx.core.multiselect.MultipleSelectModel;
  * adding new values on the fly on the client side.
  */
 @Import(stack = "tapx-core")
+@SuppressWarnings("rawtypes")
 public class MultipleSelect extends AbstractField
 {
     /**
@@ -41,9 +46,8 @@ public class MultipleSelect extends AbstractField
      * for the first time as part of this process).
      */
     @Parameter(required = true, allowNull = false, autoconnect = true)
-    private Set<?> values;
+    private Set values;
 
-    @SuppressWarnings("rawtypes")
     @Parameter(required = true, allowNull = false)
     private MultipleSelectModel model;
 
@@ -55,6 +59,9 @@ public class MultipleSelect extends AbstractField
 
     @Environmental
     private JavaScriptSupport jss;
+
+    @Inject
+    private Request request;
 
     public String getComputedClassName()
     {
@@ -85,8 +92,50 @@ public class MultipleSelect extends AbstractField
         jss.addInitializerCall("tapxMultipleSelect", spec);
     }
 
+    @SuppressWarnings("unchecked")
     protected void processSubmission(String name)
     {
+        JSONArray selected = new JSONArray(request.getParameter(name));
 
+        values.clear();
+
+        // First the values that have a server-side id.
+
+        for (String clientValue : toStrings(selected, 0))
+        {
+            Object serverValue = model.toValue(clientValue);
+
+            if (serverValue == null)
+                throw new RuntimeException(String.format("Unable to convert client value '%s' to a server-side value.",
+                        clientValue));
+
+            values.add(serverValue);
+        }
+
+        for (String label : toStrings(selected, 1))
+        {
+            Object serverValue = model.createValue(label);
+
+            if (serverValue == null)
+                throw new RuntimeException(String.format("Model returned null when creating value for label '%s'.",
+                        label));
+
+            values.add(serverValue);
+        }
+
+    }
+
+    private List<String> toStrings(JSONArray selected, int index)
+    {
+        JSONArray values = selected.getJSONArray(index);
+
+        List<String> result = new ArrayList<String>(values.length());
+
+        for (int i = 0; i < values.length(); i++)
+        {
+            result.add(values.getString(i));
+        }
+
+        return result;
     }
 }
