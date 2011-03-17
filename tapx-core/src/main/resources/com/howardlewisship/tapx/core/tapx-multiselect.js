@@ -106,6 +106,14 @@ Tapx.extendInitializer(function() {
 				+ "<div class='tx-title'>Selected:</div>"
 				+ "<select multiple='multiple'></select></div>");
 
+		inputDiv = new Element("div", {
+			class : "tx-input"
+		});
+		outerDiv.insert(inputDiv);
+
+		inputDiv.update("<label>Add: <input type='text' size='40'>"
+				+ "<span class='tx-error'></div></label>");
+
 		var availableSelect = mainDiv.down(".tx-available > select");
 		var selectedSelect = mainDiv.down(".tx-selected > select");
 
@@ -113,7 +121,7 @@ Tapx.extendInitializer(function() {
 
 			var valueId = row[0];
 			var selected = (spec.values || []).include(valueId);
-			var divToUpdate = selected ? selectedSelect : availableSelect;
+			var selectElement = selected ? selectedSelect : availableSelect;
 
 			var option = new Element("option").update(row[1]);
 
@@ -121,13 +129,13 @@ Tapx.extendInitializer(function() {
 				clientValue : valueId
 			};
 
-			divToUpdate.insert(option);
+			selectElement.insert(option);
 		});
 
 		function rebuildHiddenFieldValue() {
-			// First array is the list of selected values (for values defined by
-			// the model) Second array is the list of selected labels (for
-			// values added on the client)
+			// First array is the list of selected values (for values
+			// defined by the model at initial render). Second array is the list
+			// of selected labels (for values added on the client)
 
 			var hiddenFieldValue = [ [], [] ];
 
@@ -156,6 +164,64 @@ Tapx.extendInitializer(function() {
 			rebuildHiddenFieldValue();
 		});
 
+		var errorDiv = inputDiv.down('.tx-error');
+
+		errorDiv.hide();
+
+		var inputField = inputDiv.down('input');
+
+		function error(message) {
+			inputField.addClassName("t-error").select();
+			errorDiv.update(message).show();
+		}
+
+		function addNewOption() {
+			var newLabel = inputField.value;
+
+			inputField.removeClassName("t-error");
+			errorDiv.hide().update();
+
+			if (newLabel === "")
+				return;
+
+			var allOptions = $A(availableSelect.options).concat(
+					$A(selectedSelect.options));
+
+			if (allOptions.any(function(opt) {
+				return opt.innerHTML === newLabel
+			})) {
+				error("Value already exists.");
+				return;
+			}
+
+			deselectAllOptions(selectedSelect);
+
+			var option = new Element("option", {
+				selected : true
+			}).update(newLabel);
+
+			option.txValue = {
+				label : newLabel
+			};
+
+			moveOption(option, selectedSelect);
+
+			rebuildHiddenFieldValue();
+
+			inputField.value = '';
+			inputField.focus();
+		}
+
+		inputField.observe("change", addNewOption);
+
+		inputField.observe("keypress", function(event) {
+			if (event.keyCode != Event.KEY_RETURN)
+				return;
+
+			event.stop();
+
+			addNewOption();
+		});
 	}
 
 	return {

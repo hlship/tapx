@@ -170,3 +170,21 @@ DIV.tx-multiselect .tx-disabled {
   opacity: .25; /* FireFox, Chrome, Safari */
   cursor: default;
 }
+
+DIV.tx-multiselect .tx-input {
+  clear: left;
+  padding-top: 5px;
+}
+
+DIV.tx-multiselect .tx-error {  
+  clear: left;
+  display: inline-block;
+  font-weight: bold;
+  font-color: red;
+  padding: 2px 18px 2px 2px;
+  margin-right: 16px;
+  background-color: ead38c;
+  background-image: url(silk/cancel.png);
+  background-repeat: no-repeat;
+  background-position: right center;
+}
