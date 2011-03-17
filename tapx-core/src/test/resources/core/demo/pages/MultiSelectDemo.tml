@@ -2,7 +2,13 @@
 
   <t:form>
 
-    <tx:multipleselect values="selectedValues" model="model"/>
+    <t:label for="colors"/>
+
+    <tx:multipleselect t:id="colors" values="selectedValues" model="model"/>
+
+    <br clear="both"/>
+
+    <input type="submit"/>
 
   </t:form>
 

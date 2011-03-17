@@ -17,17 +17,13 @@ package com.howardlewisship.tapx.core.components;
 import java.util.Set;
 
 import org.apache.tapestry5.BindingConstants;
-import org.apache.tapestry5.ComponentAction;
-import org.apache.tapestry5.ComponentResources;
 import org.apache.tapestry5.annotations.Environmental;
 import org.apache.tapestry5.annotations.Import;
 import org.apache.tapestry5.annotations.Parameter;
-import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.corelib.base.AbstractField;
 import org.apache.tapestry5.corelib.components.Palette;
-import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.json.JSONArray;
 import org.apache.tapestry5.json.JSONObject;
-import org.apache.tapestry5.services.FormSupport;
 import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 
 import com.howardlewisship.tapx.core.multiselect.MultipleSelectModel;
@@ -37,7 +33,7 @@ import com.howardlewisship.tapx.core.multiselect.MultipleSelectModel;
  * adding new values on the fly on the client side.
  */
 @Import(stack = "tapx-core")
-public class MultipleSelect
+public class MultipleSelect extends AbstractField
 {
     /**
      * The set of values edited by the component; this is used when rendering. When the form is submitted,
@@ -58,44 +54,7 @@ public class MultipleSelect
     private String className;
 
     @Environmental
-    private FormSupport formSupport;
-
-    @Environmental
     private JavaScriptSupport jss;
-
-    @Inject
-    private ComponentResources resources;
-
-    @Property(write = false)
-    private String clientId, name;
-
-    public static class ProcessSubmission implements ComponentAction<MultipleSelect>
-    {
-        private static final long serialVersionUID = -5387860921749570953L;
-
-        private final String name;
-
-        public ProcessSubmission(String name)
-        {
-            this.name = name;
-        }
-
-        @Override
-        public void execute(MultipleSelect component)
-        {
-            component.processSubmission(name);
-        }
-
-    }
-
-    void setupRender()
-    {
-        clientId = jss.allocateClientId(resources);
-
-        name = formSupport.allocateControlName(resources.getId());
-
-        writeJavaScript(clientId, name);
-    }
 
     public String getComputedClassName()
     {
@@ -103,9 +62,9 @@ public class MultipleSelect
     }
 
     @SuppressWarnings("unchecked")
-    private void writeJavaScript(String clientId, String name)
+    void afterRender()
     {
-        JSONObject spec = new JSONObject("clientId", clientId);
+        JSONObject spec = new JSONObject("clientId", getClientId());
 
         for (Object value : values)
         {
@@ -126,7 +85,7 @@ public class MultipleSelect
         jss.addInitializerCall("tapxMultipleSelect", spec);
     }
 
-    private void processSubmission(String name)
+    protected void processSubmission(String name)
     {
 
     }

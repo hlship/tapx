@@ -83,11 +83,11 @@ Tapx.extendInitializer(function() {
 	}
 
 	function initializer(spec) {
-		var outerDiv = $(spec.clientId);
+		var availableSelect = $(spec.clientId);
+		var outerDiv = availableSelect.up(".tx-multiselect");
 
 		var hidden = outerDiv.down("input[type='hidden']");
 
-		var availableSelect = outerDiv.down(".tx-available > select");
 		var selectedSelect = outerDiv.down(".tx-selected > select");
 
 		(spec.model || []).each(function(row) {

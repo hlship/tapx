@@ -1,9 +1,9 @@
-<div id="${clientId}" class="${computedClassName}" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-  <input type="hidden" name="${name}"/>
+<div class="${computedClassName}" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+  <input type="hidden" name="${controlName}"/>
   <div>
     <div class="tx-available">
       <div class="tx-title">Available:</div>
-      <select multiple="multiple"/>
+      <select id="${clientId}" multiple=" multiple "/>
     </div>
     <div class="tx-controls">
       <span class="tx-select tx-disabled" title="Select"/>
