@@ -19,6 +19,9 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.tapestry5.BindingConstants;
+import org.apache.tapestry5.ComponentAction;
+import org.apache.tapestry5.ComponentResources;
+import org.apache.tapestry5.Field;
 import org.apache.tapestry5.annotations.Environmental;
 import org.apache.tapestry5.annotations.Import;
 import org.apache.tapestry5.annotations.Parameter;
@@ -27,6 +30,8 @@ import org.apache.tapestry5.corelib.components.Palette;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.json.JSONArray;
 import org.apache.tapestry5.json.JSONObject;
+import org.apache.tapestry5.services.ComponentDefaultProvider;
+import org.apache.tapestry5.services.FormSupport;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 
@@ -38,7 +43,7 @@ import com.howardlewisship.tapx.core.multiselect.MultipleSelectModel;
  */
 @Import(stack = "tapx-core")
 @SuppressWarnings("rawtypes")
-public class MultipleSelect extends AbstractField
+public class MultipleSelect implements Field
 {
     /**
      * The set of values edited by the component; this is used when rendering. When the form is submitted,
@@ -57,11 +62,88 @@ public class MultipleSelect extends AbstractField
     @Parameter(name = "class", defaultPrefix = BindingConstants.LITERAL)
     private String className;
 
+    /**
+     * The user presentable label for the field. If not provided, a reasonable label is generated from the component's
+     * id, first by looking for a message key named "id-label" (substituting the component's actual id), then by
+     * converting the actual id to a presentable string (for example, "userId" to "User Id").
+     */
+    @Parameter(defaultPrefix = BindingConstants.LITERAL)
+    private String label;
+
     @Environmental
     private JavaScriptSupport jss;
 
+    @Environmental
+    private FormSupport formSupport;
+
     @Inject
     private Request request;
+
+    @Inject
+    private ComponentResources resources;
+
+    @Inject
+    private ComponentDefaultProvider defaultProvider;
+
+    private String clientId, controlName;
+
+    public static class ProcessSubmission implements ComponentAction<MultipleSelect>
+    {
+        private static final long serialVersionUID = -7656903896600563715L;
+
+        private final String name;
+
+        public ProcessSubmission(String name)
+        {
+            this.name = name;
+        }
+
+        @Override
+        public void execute(MultipleSelect component)
+        {
+            component.processSubmission(name);
+        }
+
+        public String toString()
+        {
+            return String.format("ProcessSubmission[%s]", name);
+        }
+    }
+
+    final String defaultLabel()
+    {
+        return defaultProvider.defaultLabel(resources);
+    }
+
+    public String getClientId()
+    {
+        return clientId;
+    }
+
+    public String getControlName()
+    {
+        return controlName;
+    }
+
+    @Override
+    public String getLabel()
+    {
+        return label;
+    }
+
+    /** Always returns false. */
+    @Override
+    public boolean isDisabled()
+    {
+        return false;
+    }
+
+    /** Always returns false. */
+    @Override
+    public boolean isRequired()
+    {
+        return false;
+    }
 
     public String getComputedClassName()
     {
@@ -69,10 +151,15 @@ public class MultipleSelect extends AbstractField
     }
 
     @SuppressWarnings("unchecked")
-    void afterRender()
+    void setupRender()
     {
-        JSONObject spec = new JSONObject("clientId", getClientId());
+        clientId = jss.allocateClientId(resources);
 
+        controlName = formSupport.allocateControlName(resources.getId());
+
+        formSupport.store(this, new ProcessSubmission(controlName));
+
+        JSONObject spec = new JSONObject("clientId", clientId);
         for (Object value : values)
         {
             String clientValue = model.toClient(value);
@@ -95,6 +182,8 @@ public class MultipleSelect extends AbstractField
     @SuppressWarnings("unchecked")
     protected void processSubmission(String name)
     {
+        controlName = name;
+
         JSONArray selected = new JSONArray(request.getParameter(name));
 
         values.clear();
