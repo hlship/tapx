@@ -14,6 +14,7 @@
 
 package com.howardlewisship.tapx.core.tree;
 
+import java.util.Collections;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
@@ -105,10 +106,9 @@ public class DefaultTreeModel<T> implements TreeModel<T>
      * @param adapter
      * @param root
      */
-    @SuppressWarnings("unchecked")
     public DefaultTreeModel(ValueEncoder<T> encoder, TreeModelAdapter<T> adapter, T root)
     {
-        this(encoder, adapter, CollectionFactory.newList(root));
+        this(encoder, adapter, Collections.singletonList(root));
     }
 
     /**
