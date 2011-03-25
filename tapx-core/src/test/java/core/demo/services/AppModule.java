@@ -16,6 +16,7 @@ package core.demo.services;
 
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.ioc.MappedConfiguration;
+import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.Contribute;
 import org.apache.tapestry5.ioc.annotations.SubModule;
 
@@ -27,6 +28,11 @@ import com.howardlewisship.tapx.core.services.CoreModule;
 @SubModule(CoreModule.class)
 public class AppModule
 {
+    public static void bind(ServiceBinder binder)
+    {
+        binder.bind(PersonDAO.class);
+    }
+
     public static void contributeApplicationDefaults(MappedConfiguration<String, String> configuration)
     {
         configuration.add(CoreSymbols.TEST_MODE, "true");

@@ -16,7 +16,8 @@ import com.howardlewisship.tapx.core.components.MultipleSelect;
 public interface MultipleSelectModel<T> extends ValueEncoder<T>
 {
     /**
-     * Returns the values that may be selected by the client, in presentation order (typically, alphabetical order).
+     * Returns the values that may be selected by the client. These will be presented to the user
+     * in sorted order by {@linkplain #toLabel(Object) label}.
      */
     Set<T> getAvailableValues();
 
@@ -27,12 +28,12 @@ public interface MultipleSelectModel<T> extends ValueEncoder<T>
      */
     String toLabel(T value);
 
+    /** Creates a new, empty instance of the object ready to have its properties filled in as necessary. */
+    T createEmptyInstance();
+
     /**
-     * Used in the case where the client adds a new value on the client side; as part of the form submission,
-     * a new instance of the value type will be created from the label (as entered on the client side).
-     * 
-     * @param label
-     * @return
+     * Once the values of the instance are filled in, the instance is then persisted. After persisting the value,
+     * its id and {@linkplain #toLabel(Object) label} will be provided to the client side.
      */
-    T createValue(String label);
+    void persistNewInstance(T newInstance);
 }

@@ -15,10 +15,33 @@
     </div>
   </div>
   <div class="tx-input">
-    <label>
-      Add:
-      <input type="text" size="40"/>
-      <span class="tx-error"/>
-    </label>
+    <button>Add New ${label}</button>
   </div>
+
+  <t:block id="editor">
+
+    <t:zone t:id="newValueEditor">
+      <t:form class="${className}" zone="^" t:id="newValue" context="clientId">
+
+        <t:errors/>
+
+        <t:remove>
+          Intentionally omitting the
+          <div class="t-beaneditor-row">
+          </div>
+          around t:beaneditor; the Tapestry default colors
+          are a distraction inside the Modalbox. However,
+          t-beaneditor-row lays out the rows nicely.
+        </t:remove>
+
+        <t:beaneditor object="newValue" model="beanModel" overrides="componentResources"/>
+        <div class="t-beaneditor-row">
+
+          <input type="submit" value="${message:submit-label}"/>
+        </div>
+      </t:form>
+    </t:zone>
+
+  </t:block>
+
 </div>
