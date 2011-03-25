@@ -1,10 +1,12 @@
 Tapx = {
 
+	TEST_MODE : false,
+
 	/**
 	 * Extends an object using a source. In the simple case, the source object's
 	 * properties are overlayed on top of the destination object. In the typical
 	 * case, the source parameter is a function that returns the source object
-	 * ... this is to faciliate modularity and encapsulation.
+	 * ... this is to facilitate modularity and encapsulation.
 	 * 
 	 * @param destination
 	 *            object to receive new or updated properties
@@ -19,6 +21,13 @@ Tapx = {
 		Object.extend(destination, source);
 	},
 
+	/**
+	 * A convienience for extending Tapestry.Initializer.
+	 * 
+	 * @param source
+	 *            source object (or function returning source object) for
+	 *            properties applied to Tapestry.Initializer
+	 */
 	extendInitializer : function(source) {
 		this.extend(Tapestry.Initializer, source);
 	},
@@ -277,3 +286,115 @@ Tapestry.Initializer.tapxExpando = function(spec) {
 	$(spec.clientId).down(".tx-expand").observe("click", expand);
 	$(spec.clientId).down(".tx-collapse").observe("click", collapse);
 };
+
+Tapx.extendInitializer(function() {
+
+	function runModalDialog(title, message, proceed) {
+
+		if (Tapx.testMode) {
+			if (window.confirm(message))
+				proceed.defer();
+
+			return;
+		}
+
+		var div = new Element('div', {
+			className : 'mb-confirm'
+		}).update(new Element('p').update(message));
+
+		/*
+		 * Have to assign ids and reconnect at after load, because ModalBox
+		 * copies DOM elements, rather than move them.
+		 */
+		var baseId = "mb-" + new Date().getTime();
+		var yesId = baseId + "-yes";
+		var noId = baseId + "-no";
+
+		var yesButton = new Element('button', {
+			className : 'mb-yes-button',
+			id : yesId
+		}).update('Yes');
+
+		var noButton = new Element('button', {
+			className : 'mb-no-button',
+			id : noId
+		}).update('No');
+
+		div.insert(yesButton).insert(noButton);
+
+		Modalbox.show(div, {
+			title : title,
+			afterLoad : function() {
+				$(noId).observe("click", function(event) {
+					Modalbox.hide();
+				});
+				$(yesId).observe("click", function(event) {
+					event.stop();
+					Modalbox.hide();
+					proceed.defer();
+				});
+			}
+		});
+	}
+
+	function initializer(spec) {
+
+		var element = $(spec.clientId);
+		var type = element.type;
+
+		var interceptClickEvent = true;
+
+		/*
+		 * Replace the normal click event, knowing that in most cases, the
+		 * original link or button has an Tapestry.ACTION_EVENT event handler to
+		 * do its real work.
+		 */
+		element.stopObserving("click");
+
+		function doAction() {
+			if ($T(element).hasAction) {
+				element.fire(Tapestry.ACTION_EVENT, event);
+				return;
+			}
+
+			/*
+			 * Is it a submit element (i.e., it has a click() method)? Try that
+			 * next.
+			 */
+
+			if (element.click) {
+				interceptClickEvent = false;
+
+				element.click();
+				return;
+			}
+
+			/*
+			 * Not a zone update, so just do a full page refresh to the
+			 * indicated URL.
+			 */
+			window.location = element.href;
+		}
+
+		element.observe("click", function(event) {
+
+			if (interceptClickEvent) {
+
+				event.stop();
+
+				if ($(element).hasClassName('tx-disable-confirm')) {
+					doAction();
+					return;
+				}
+
+				runModalDialog(spec.title, spec.message, doAction);
+			} else {
+				interceptClickEvent = true;
+			}
+		});
+	}
+
+	return {
+		tapxConfirm : initializer
+	};
+});

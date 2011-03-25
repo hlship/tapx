@@ -151,10 +151,18 @@ public class CoreModule
      * <dl>
      * <dt>CoreJS</dt>
      * <dd>Core JavaScript library</dd>
+     * <dt>CoreJS-TestMode</dt>
+     * <dd>Only in {@link CoreSymbols#TEST_MODE}</dd>
+     * <dt>ScriptaculousBuilder</dt2>
+     * <dd>builder.js (needed by Modalbox)</dd>
      * <dt>CoreJS-MultiSelect</dd>
      * <dd>Support for the MultiSelect component</dd>
+     * <dt>CoreJS-Modalbox</dd>
+     * <dd>JavaScript for the Modalbox component (used by the Confirm mixin, and elsewhere)</dd>
      * <dt>CoreCSS</dt>
      * <dd>Core Stylesheet</dd>
+     * <dt>CoreCSS-Modalbox</dt>
+     * <dd>Stylesheet used by Modalbox</dd>
      * </dl>
      * <p>
      * If contributing additional values, you will typically want them expressly ordered <em>after</em> these
@@ -164,12 +172,23 @@ public class CoreModule
      */
     @Contribute(JavaScriptStack.class)
     @TapxCore
-    public static void basicCoreStackElements(OrderedConfiguration<StackExtension> configuration)
+    public static void basicCoreStackElements(OrderedConfiguration<StackExtension> configuration,
+            @Symbol(CoreSymbols.TEST_MODE)
+            boolean testMode)
     {
         configuration.add("CoreJS", new StackExtension(StackExtensionType.LIBRARY, PATH + "/tapx.js"));
         configuration.add("CoreJS-MultiSelect", new StackExtension(StackExtensionType.LIBRARY, PATH
                 + "/tapx-multiselect.js"), "after:CoreJS");
+        configuration.add("CoreJS-Modalbox", new StackExtension(StackExtensionType.LIBRARY, PATH + "/modalbox.js"),
+                "after:CoreJS");
         configuration.add("CoreCSS", new StackExtension(StackExtensionType.STYLESHEET, PATH + "/tapx-core.css"));
+        configuration
+                .add("CoreCSS-Modalbox", new StackExtension(StackExtensionType.STYLESHEET, PATH + "/modalbox.css"));
+        configuration.add("ScriptaculousBuilder", new StackExtension(StackExtensionType.LIBRARY,
+                "${tapestry.scriptaculous}/builder.js"));
 
+        if (testMode)
+            configuration.add("CoreJS-TestMode", new StackExtension(StackExtensionType.LIBRARY, PATH
+                    + "/tapx-testmode.js"), "after:CoreJS");
     }
 }
