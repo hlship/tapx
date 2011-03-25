@@ -168,7 +168,12 @@ Tapx.extendInitializer(function() {
 		});
 	}
 
+	function newValue(spec) {
+		Modalbox.hide();
+	}
+
 	return {
-		tapxMultipleSelect : initializer
+		tapxMultipleSelect : initializer,
+		tapxMultipleSelectNewValue : newValue
 	};
 });

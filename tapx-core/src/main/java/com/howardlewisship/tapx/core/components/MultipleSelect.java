@@ -23,6 +23,8 @@ import org.apache.tapestry5.Block;
 import org.apache.tapestry5.ComponentAction;
 import org.apache.tapestry5.ComponentResources;
 import org.apache.tapestry5.Field;
+import org.apache.tapestry5.MarkupWriter;
+import org.apache.tapestry5.Renderable;
 import org.apache.tapestry5.annotations.Environmental;
 import org.apache.tapestry5.annotations.Import;
 import org.apache.tapestry5.annotations.InjectComponent;
@@ -55,7 +57,8 @@ import com.howardlewisship.tapx.core.multiselect.MultipleSelectModel;
  * the values sorted in alphabetical order by {@linkplain MultipleSelectModel#toLabel(Object) label}.
  * <p>
  * The UI includes an "Add" button to add a new value of the type appropriate to the set. This sets up a modal dialog on
- * the client side, and a uses a server-side {@link BeanEditor} to render the form.
+ * the client side, and a uses a server-side {@link BeanEditor} to render the form. Informal blocks bound do this
+ * component will, in turn, be provided to the BeanEditor component for use as property overrides.
  * <p>
  * TODO: Rename this to SetEditor and delete the current SetEditor.
  */
@@ -138,7 +141,7 @@ public class MultipleSelect implements Field
     private Zone newValueEditor;
 
     @Inject
-    private Block editor;
+    private Block editor, success;
 
     @Inject
     private BeanModelSource beanModelSource;
@@ -348,8 +351,24 @@ public class MultipleSelect implements Field
         newValue = model.createEmptyInstance();
     }
 
-    void onSuccessFromNewValue()
+    Object onSuccessFromNewValue()
     {
+        // Save the new value to the database (or whatever it takes to assign a propery id to it).
+
+        model.persistNewInstance(newValue);
+
+        // Return a block that will render the content. The content will be empty,
+        // but it gives us a chance to write the necessary JS at the correct time.
+
+        return success;
+    }
+
+    void onWriteSuccessJavaScript()
+    {
+        JSONObject spec = new JSONObject("clientId", clientId, "clientValue", model.toClient(newValue), "label",
+                model.toLabel(newValue));
+
+        jss.addInitializerCall("tapxMultipleSelectNewValue", spec);
     }
 
     Object onFailureFromNewValue()

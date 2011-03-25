@@ -41,7 +41,11 @@
         </div>
       </t:form>
     </t:zone>
-
   </t:block>
+
+  <t:block id="success">
+    <t:trigger event="writeSuccessJavaScript"/>
+  </t:block>
+
 
 </div>
