@@ -166,10 +166,33 @@ Tapx.extendInitializer(function() {
 
 			lightbox(event.element().innerHTML, spec.newValueURL);
 		});
+
+		$(spec.clientId).observe("tapx:multiselect:newvalue", function(event) {
+
+			var option = event.memo;
+			option.selected = true;
+
+			deselectAllOptions(selectedSelect);
+
+			moveOption(option, selectedSelect);
+
+			availableSelect.fire("tapx:refreshbuttonstate");
+			selectedSelect.fire("tapx:refreshbuttonstate");
+
+			selectedSelect.focus();
+			
+			rebuildHiddenFieldValue();
+		});
 	}
 
 	function newValue(spec) {
 		Modalbox.hide();
+
+		var option = new Element("option").update(spec.label.escapeHTML());
+
+		option.txClientValue = spec.clientValue;
+
+		$(spec.clientId).fire("tapx:multiselect:newvalue", option);
 	}
 
 	return {
