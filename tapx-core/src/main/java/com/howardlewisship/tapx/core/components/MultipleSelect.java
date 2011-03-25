@@ -25,7 +25,6 @@ import org.apache.tapestry5.Field;
 import org.apache.tapestry5.annotations.Environmental;
 import org.apache.tapestry5.annotations.Import;
 import org.apache.tapestry5.annotations.Parameter;
-import org.apache.tapestry5.corelib.base.AbstractField;
 import org.apache.tapestry5.corelib.components.Palette;
 import org.apache.tapestry5.func.F;
 import org.apache.tapestry5.func.Flow;
