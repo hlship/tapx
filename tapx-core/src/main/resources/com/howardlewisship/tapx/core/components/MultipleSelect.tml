@@ -15,7 +15,7 @@
     </div>
   </div>
   <div class="tx-input">
-    <button>Add New ${label}</button>
+    <button>Add New ${singularLabel}</button>
   </div>
 
   <t:block id="editor">

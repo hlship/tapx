@@ -22,6 +22,9 @@ public class MultiSelectDemo
     @Persist
     private Set<Person> selectedValues;
 
+    @Property
+    private Person newPerson;
+
     void setupRender()
     {
         if (selectedValues == null)

@@ -30,6 +30,7 @@ import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SupportsInformalParameters;
 import org.apache.tapestry5.beaneditor.BeanModel;
+import org.apache.tapestry5.corelib.components.BeanEditor;
 import org.apache.tapestry5.corelib.components.Palette;
 import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.func.F;
@@ -52,6 +53,9 @@ import com.howardlewisship.tapx.core.multiselect.MultipleSelectModel;
  * adding new values on the fly, using a form located inside a Modalbox modal dialog. Specically
  * limited to editing a <em>Set</em> of values: element order is immaterial, and the UI keeps
  * the values sorted in alphabetical order by {@linkplain MultipleSelectModel#toLabel(Object) label}.
+ * <p>
+ * The UI includes an "Add" button to add a new value of the type appropriate to the set. This sets up a modal dialog on
+ * the client side, and a uses a server-side {@link BeanEditor} to render the form.
  * <p>
  * TODO: Rename this to SetEditor and delete the current SetEditor.
  */
@@ -96,6 +100,14 @@ public class MultipleSelect implements Field
     @Parameter(defaultPrefix = BindingConstants.LITERAL)
     private String label;
 
+    /**
+     * Alternate label used to represent a "single" instance of the value; this is used as part of
+     * button labels, and in the title of the modal dialog.
+     */
+    @Property
+    @Parameter(defaultPrefix = BindingConstants.LITERAL, value = "prop:label")
+    private String singularLabel;
+
     @Environmental
     private JavaScriptSupport jss;
 
@@ -113,7 +125,13 @@ public class MultipleSelect implements Field
 
     private String clientId, controlName;
 
+    /**
+     * Parameter used to communicate a newValue instance created from the model up to the containing
+     * component. This is used when creating UI blocks as overrides to the BeanEditor's default
+     * UI blocks for the properties of the new instance.
+     */
     @Property
+    @Parameter
     private Object newValue;
 
     @InjectComponent
@@ -307,20 +325,24 @@ public class MultipleSelect implements Field
         return result;
     }
 
-    Object onNewValue(String clientId) throws Exception
+    /**
+     * Event handler triggered from the client side. The result of this event is a partial page update response
+     * that will be used to fill in the content of the modal dialog.
+     */
+    Object onNewValue(String clientId)
     {
-        // Thread.sleep(5000);
-
         this.clientId = clientId;
 
         return editor;
     }
 
+    /** Event handler triggered when the modal dialog is submitted. */
     void onPrepareForSubmitFromNewValue(String clientId)
     {
         this.clientId = clientId;
     }
 
+    /** Event handler when preparing to render or submit the new value form; creates a new empty instance. */
     void onPrepareFromNewValue()
     {
         newValue = model.createEmptyInstance();

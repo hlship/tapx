@@ -4,7 +4,13 @@
 
     <t:label for="people"/>
 
-    <tx:multipleselect t:id="people" values="selectedValues" model="model"/>
+    <tx:multipleselect t:id="people" newValue="newPerson" values="selectedValues" model="model"
+      singularLabel="Person">
+      <p:lastName>
+        <label for="lastName">Last Name (Sur Name)</label>
+        <t:textfield t:id="lastName" value="newPerson.lastName"/>
+      </p:lastName>
+    </tx:multipleselect>
 
     <br clear="both"/>
 
