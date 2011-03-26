@@ -291,7 +291,7 @@ Tapx.extendInitializer(function() {
 
 	function runModalDialog(title, message, proceed) {
 
-		if (Tapx.testMode) {
+		if (Tapx.TEST_MODE) {
 			if (window.confirm(message))
 				proceed.defer();
 
