@@ -66,6 +66,15 @@ public class CoreModule
     public static void contributeComponentClassResolver(Configuration<LibraryMapping> configuration)
     {
         configuration.add(new LibraryMapping("tapx", "com.howardlewisship.tapx.core"));
+
+        // What's this about?  Because other modules in the TapX project ALSO contribute "tapx"
+        // mapped to other sub-packages of "com.howardlewisship.tapx", there would otherwise
+        // be a difference in how asset URL paths are created dependening on whether it was just
+        // tapx-core or tapx-core plus (for example) tapx-datefield.  Since the tapx-core.css file relies
+        // on a particular layout so that it can reference images that are part of tapestry-core.jar,
+        // we need at least two mappings for the tapx virtual folder.
+        
+        configuration.add(new LibraryMapping("tapx", "com.howardlewisship.tapx.placeholder"));
     }
 
     public static void contributeComponentMessagesSource(OrderedConfiguration<Resource> configuration, @Value(PATH
