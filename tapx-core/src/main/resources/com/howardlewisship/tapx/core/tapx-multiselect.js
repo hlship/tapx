@@ -119,7 +119,7 @@ Tapx.extendInitializer(function() {
 
 		var hidden = outerDiv.down("input[type='hidden']");
 
-		var selectedSelect = outerDiv.down(".tx-selected > select");
+		var selectedSelect = outerDiv.down(".tx-selected select");
 
 		(spec.model || []).each(function(row) {
 

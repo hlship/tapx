@@ -39,6 +39,7 @@ import org.apache.tapestry5.func.F;
 import org.apache.tapestry5.func.Flow;
 import org.apache.tapestry5.func.Mapper;
 import org.apache.tapestry5.internal.bindings.AbstractBinding;
+import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.json.JSONArray;
 import org.apache.tapestry5.json.JSONObject;
@@ -103,6 +104,14 @@ public class MultipleSelect implements Field
     @Parameter(defaultPrefix = BindingConstants.LITERAL)
     private String label;
 
+    @Property(write = false)
+    @Parameter(defaultPrefix = BindingConstants.LITERAL, value = "message:tapx-multiple-select-selected-column-label")
+    private String selectedColumnLabel;
+
+    @Property(write = false)
+    @Parameter(defaultPrefix = BindingConstants.LITERAL, value = "message:tapx-multiple-select-available-column-label")
+    private String availableColumnLabel;
+
     /**
      * Alternate label used to represent a "single" instance of the value; this is used as part of
      * button labels, and in the title of the modal dialog.
@@ -122,6 +131,9 @@ public class MultipleSelect implements Field
 
     @Inject
     private ComponentResources resources;
+
+    @Inject
+    private Messages messages;
 
     @Inject
     private ComponentDefaultProvider defaultProvider;
@@ -374,5 +386,10 @@ public class MultipleSelect implements Field
     Object onFailureFromNewValue()
     {
         return newValueEditor.getBody();
+    }
+
+    public String getAddNewButtonLabel()
+    {
+        return messages.format("tapx-multiple-select-add-button-label", singularLabel);
     }
 }

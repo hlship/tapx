@@ -131,8 +131,9 @@ DIV.tx-multiselect SELECT {
 DIV.tx-multiselect .tx-title {
   color: white;
   background: black;
-  width: 200px;
+  width: 197px;
   font-weight: bold;
+  padding: 3px 0px 3px 3px;
 }
 
 DIV.tx-multiselect .tx-available, DIV.tx-multiselect .tx-controls, DIV.tx-multiselect .tx-selected {

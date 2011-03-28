@@ -2,16 +2,20 @@
   <input type="hidden" name="${controlName}"/>
   <div>
     <div class="tx-available">
-      <div class="tx-title">Available:</div>
-      <select id="${clientId}" multiple=" multiple "/>
+      <label>
+        <div class="tx-title">${availableColumnLabel}</div>
+        <select id="${clientId}" multiple=" multiple "/>
+      </label>
     </div>
     <div class="tx-controls">
       <span class="tx-select tx-disabled" title="Select"/>
       <span class="tx-deselect tx-disabled" title="Deselect"/>
     </div>
     <div class="tx-selected">
-      <div class="tx-title">Selected:</div>
-      <select multiple="multiple"/>
+      <label>
+        <div class="tx-title">${selectedColumnLabel}</div>
+        <select multiple="multiple"/>
+      </label>
     </div>
   </div>
   <div class="tx-input">
@@ -37,7 +41,7 @@
         <t:beaneditor object="newValue" model="beanModel" overrides="componentResources"/>
         <div class="t-beaneditor-row">
 
-          <input type="submit" value="${message:submit-label}"/>
+          <input type="submit" value="${message:tapx-multiple-select-submit-label}"/>
         </div>
       </t:form>
     </t:zone>
