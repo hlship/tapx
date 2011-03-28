@@ -15,6 +15,7 @@
 package com.howardlewisship.tapx.core.components;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -70,8 +71,7 @@ public class MultipleSelect implements Field
 {
     /**
      * The set of values edited by the component; this is used when rendering. When the form is submitted,
-     * the values are first cleared, then repopulated with the selected values (some of which may be created
-     * for the first time as part of this process).
+     * the set is modified, removing some old values and adding in some new values.
      */
     @Parameter(required = true, allowNull = false, autoconnect = true)
     private Set values;
@@ -312,7 +312,7 @@ public class MultipleSelect implements Field
 
         JSONArray selected = new JSONArray(request.getParameter(name));
 
-        values.clear();
+        Set newValues = new HashSet(selected.length());
 
         // First the values that have a server-side id.
 
@@ -324,8 +324,14 @@ public class MultipleSelect implements Field
                 throw new RuntimeException(String.format("Unable to convert client value '%s' to a server-side value.",
                         clientValue));
 
-            values.add(serverValue);
+            newValues.add(serverValue);
         }
+
+        // Keep just what's in newValues
+        values.retainAll(newValues);
+
+        // Now add in anything in newValues that wasn't in values
+        values.addAll(newValues);
     }
 
     private List<String> toStrings(JSONArray values)
