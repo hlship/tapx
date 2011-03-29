@@ -1,6 +1,6 @@
 description = "Collection of add-ons for Tapestry 5"
 
-tapestryVersion = "5.2.4"
+tapestryVersion = "5.2.5"
 
 if (!project.hasProperty('deployUserName')) deployUserName = '*UNSET-USERNAME*'
 if (!project.hasProperty('deployPassword')) deployPassword = '*UNSET-PASSWORD*'
