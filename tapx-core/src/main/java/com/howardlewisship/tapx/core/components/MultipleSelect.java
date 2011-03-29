@@ -24,8 +24,6 @@ import org.apache.tapestry5.Block;
 import org.apache.tapestry5.ComponentAction;
 import org.apache.tapestry5.ComponentResources;
 import org.apache.tapestry5.Field;
-import org.apache.tapestry5.MarkupWriter;
-import org.apache.tapestry5.Renderable;
 import org.apache.tapestry5.annotations.Environmental;
 import org.apache.tapestry5.annotations.Import;
 import org.apache.tapestry5.annotations.InjectComponent;
