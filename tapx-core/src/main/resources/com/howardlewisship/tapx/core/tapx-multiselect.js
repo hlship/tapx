@@ -82,33 +82,54 @@ Tapx.extendInitializer(function() {
 		to.fire("tapx:refreshbuttonstate");
 	}
 
+	// Re. "Modalbox" vs. "Lightbox". Modalbox is a specific implementation of
+	// the general Lightbox design; we may swap out Modalbox for some other
+	// Lightbox implementation, given how awkward it is to use with Tapestry.
+
 	function lightbox(title, contentURL) {
+
+		var animationComplete = false;
+		var animationCompleteCallback = null;
+
+		function updateLightboxFromReply(reply) {
+			var inits = reply.inits;
+			reply.inits = null;
+
+			Modalbox.show(reply.content, {
+				title : title,
+				autoFocusing : false,
+				afterLoad : function() {
+					Tapestry.executeInits(inits);
+				},
+				afterUpdate : function() {
+					Modalbox.resizeToContent();
+				}
+			});
+		}
+
+		Tapestry.ajaxRequest(contentURL, function(transport) {
+			var reply = transport.responseJSON;
+
+			// When the Modalbox animation is complete,
+			// then update its content.
+
+			animationCompleteCallback = function() {
+				updateLightboxFromReply(reply);
+			};
+
+			if (animationComplete) {
+				animationCompleteCallback();
+				return;
+			}
+		});
+
 		Modalbox.show("<span class='tx-ajax-wait'></span>", {
 			title : title,
 			afterLoad : function() {
-				Tapestry.ajaxRequest(contentURL, function(transport) {
-					var reply = transport.responseJSON;
 
-					var inits = reply.inits;
-					reply.inits = null;
+				animationComplete = true;
 
-					Tapestry.loadScriptsInReply(reply, function() {
-
-						Modalbox.show(reply.content, {
-							title : title,
-							autoFocusing : false,
-							afterLoad : function() {
-
-								Tapestry.executeInits(inits);
-							},
-
-							afterUpdate : function() {
-
-								Modalbox.resizeToContent();
-							}
-						});
-					});
-				});
+				animationCompleteCallback && animationCompleteCallback();
 			}
 		});
 	}
@@ -180,7 +201,7 @@ Tapx.extendInitializer(function() {
 			selectedSelect.fire("tapx:refreshbuttonstate");
 
 			selectedSelect.focus();
-			
+
 			rebuildHiddenFieldValue();
 		});
 	}
