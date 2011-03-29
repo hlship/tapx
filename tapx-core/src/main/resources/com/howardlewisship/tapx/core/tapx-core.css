@@ -81,12 +81,12 @@ SPAN.tx-tree-icon {
 }
 
 SPAN.tx-leaf-node {
-  cursor: none;
+  cursor: default;
   background-position: -32px -16px;
 }
 
 SPAN.tx-empty-node {
-  cursor: none !important;
+  cursor: default;
   background-position: -32px 0px !important;
 }
 
