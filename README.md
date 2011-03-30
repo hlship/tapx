@@ -64,6 +64,10 @@ Bundles [Processing.js 0.9.7](http://processingjs.org/) as a component.
 * Components:
   * Processing
 
+tapx-prototype
+--------------
+
+Patches Tapestry to Script.aculo.us 1.9.0 and Prototype 1.7.
 
 tapx-templating
 ---------------

@@ -1,10 +1,10 @@
-// Copyright 2009 Howard M. Lewis Ship
+// Copyright 2009, 2011 Howard M. Lewis Ship
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//     http://www.apache.org/licenses/LICENSE-2.0
+// http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,21 +14,18 @@
 
 package com.howardlewisship.tapx.prototype;
 
-import org.apache.tapestry5.test.AbstractIntegrationTestSuite;
+import org.apache.tapestry5.test.SeleniumTestCase;
 import org.testng.annotations.Test;
 
-public class IntegrationTests extends AbstractIntegrationTestSuite
+public class IntegrationTests extends SeleniumTestCase
 {
-    public IntegrationTests()
-    {
-        super("src/test/webapp");
-    }
 
     @Test
     public void check_version()
     {
         open("/");
-        
-        assertText("id=protoversion", "1.6.1");
+
+        assertText("id=protoversion", "1.7");
+        assertText("id=scriptyversion", "1.9.0");
     }
 }

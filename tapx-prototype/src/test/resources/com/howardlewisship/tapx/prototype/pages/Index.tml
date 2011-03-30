@@ -5,6 +5,9 @@
 			Prototype Version:
 			<span id="protoversion">Not Set</span>
 		</p>
-
+        <p style="font-size: x-large;">
+            Scriptaculous Version:
+            <span id="scriptyversion">Not Set</span>
+        </p>
 	</body>
 </html>
