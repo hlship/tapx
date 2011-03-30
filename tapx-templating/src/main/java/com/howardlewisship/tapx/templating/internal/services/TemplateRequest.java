@@ -1,4 +1,4 @@
-// Copyright 2009, 2010 Howard M. Lewis Ship
+// Copyright 2009, 2010, 2011 Howard M. Lewis Ship
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -124,6 +124,17 @@ public class TemplateRequest implements Request
      * @since Tapestry 5.2.0
      */
     public int getLocalPort()
+    {
+        return 80;
+    }
+
+    /**
+     * Returns 80.
+     * 
+     * @since Tapestry 5.2.5
+     * @since 1.1
+     */
+    public int getServerPort()
     {
         return 80;
     }
