@@ -14,7 +14,9 @@
 
 package com.howardlewisship.tapx.prototype;
 
+import org.apache.tapestry5.ioc.Configuration;
 import org.apache.tapestry5.ioc.MappedConfiguration;
+import org.apache.tapestry5.services.LibraryMapping;
 
 public class PrototypeModule
 {
@@ -22,4 +24,10 @@ public class PrototypeModule
     {
         configuration.override("tapestry.scriptaculous.path", "com/howardlewisship/tapx/prototype");
     }
+
+    public static void contributeComponentClassResolver(final Configuration<LibraryMapping> configuration)
+    {
+        configuration.add(new LibraryMapping("tapx", "com.howardlewisship.tapx.prototype"));
+    }
+
 }
