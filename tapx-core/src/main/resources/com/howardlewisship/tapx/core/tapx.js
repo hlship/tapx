@@ -186,6 +186,9 @@ Tapx.extendInitializer(function() {
 	function initializer(spec) {
 		var loaded = spec.expanded;
 		var expanded = spec.expanded;
+		if (expanded) {
+			$(spec.clientId).addClassName("tx-tree-expanded")
+		}
 		var loading = false;
 
 		function successHandler(reply) {
