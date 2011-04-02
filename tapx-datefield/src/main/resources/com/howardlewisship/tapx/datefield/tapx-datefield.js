@@ -7,6 +7,7 @@ Tapestry.Initializer.tapxDateField = function(spec)
         showsTime : spec.time,
         ifFormat : spec.clientDateFormat,
         timeFormat : spec.time && spec.clientDateFormat.match("%p") != null ? "12" : "24",
-        cache : true
+        cache : true,
+        singleClick : spec.singleClick
     });
 }

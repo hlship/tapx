@@ -1,4 +1,4 @@
-// Copyright 2009, 2010 Howard M. Lewis Ship
+// Copyright 2009, 2010, 2011 Howard M. Lewis Ship
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -69,6 +69,12 @@ import com.howardlewisship.tapx.datefield.services.DateFieldFormatConverter;
 @Import(stack = "tapx-datefield")
 public class DateField extends AbstractField
 {
+    /**
+     * If true, the pop-up closes when a date is selected
+     */
+    @Parameter(defaultPrefix = BindingConstants.LITERAL)
+    private boolean singleClick = true;
+
     /**
      * The value parameter of a DateField must be a {@link java.util.Date}.
      */
@@ -269,8 +275,8 @@ public class DateField extends AbstractField
 
         writeTimeZone(writer);
 
-        JSONObject spec = new JSONObject("clientId", clientId, "clientDateFormat",
-                formatConverter.convertToClient(format)).put("time", time);
+        JSONObject spec = new JSONObject("clientId", clientId, "clientDateFormat", formatConverter
+                .convertToClient(format)).put("time", time).put("singleClick", singleClick);
 
         javascriptSupport.addInitializerCall("tapxDateField", spec);
     }
