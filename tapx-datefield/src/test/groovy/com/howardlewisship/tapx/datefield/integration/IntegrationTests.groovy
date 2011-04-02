@@ -44,7 +44,7 @@ class IntegrationTests extends SeleniumTestCase
         
         clickAndWait SUBMIT
         
-        assertFieldValue "date", "3/13/09 12:00 AM"
+        assertFieldValue "date", "3/13/2009 12:00 AM"
         assertText "outputdate", "March 13, 2009 12:00:00 AM"
     }
     
@@ -58,6 +58,6 @@ class IntegrationTests extends SeleniumTestCase
         // That's about as far as we take it; this demonstrates that the tapx DateField was used,
         // and that it picked up on the @TimeSignificant annotation.
         
-        assertFieldValue "date", "3/16/09 12:00 AM"
+        assertFieldValue "date", "3/16/2009 12:00 AM"
     }
 }

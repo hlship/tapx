@@ -213,7 +213,7 @@ public class DateField extends AbstractField
 
                     String pattern = simpleDateFormat.toPattern();
 
-                    String revised = pattern.replaceAll("([^y])yy$", "$1yyyy");
+                    String revised = pattern.replaceAll("(?<!y)yy(?!y)", "yyyy");
 
                     return new SimpleDateFormat(revised);
                 }
