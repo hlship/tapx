@@ -63,31 +63,26 @@ public class DefaultTreeModel<T> implements TreeModel<T>
             this.value = value;
         }
 
-        @Override
         public String getId()
         {
             return encoder.toClient(value);
         }
 
-        @Override
         public T getValue()
         {
             return value;
         }
 
-        @Override
         public boolean isLeaf()
         {
             return adapter.isLeaf(value);
         }
 
-        @Override
         public boolean getHasChildren()
         {
             return adapter.hasChildren(value);
         }
 
-        @Override
         public List<TreeNode<T>> getChildren()
         {
             if (children == null)
@@ -96,7 +91,6 @@ public class DefaultTreeModel<T> implements TreeModel<T>
             return children;
         }
 
-        @Override
         public String getLabel()
         {
             return adapter.getLabel(value);
@@ -139,13 +133,11 @@ public class DefaultTreeModel<T> implements TreeModel<T>
         this.roots = F.flow(roots).map(toTreeNode).toList();
     }
 
-    @Override
     public List<TreeNode<T>> getRootNodes()
     {
         return roots;
     }
 
-    @Override
     public TreeNode<T> getById(String id)
     {
         assert id != null;
@@ -190,7 +182,6 @@ public class DefaultTreeModel<T> implements TreeModel<T>
         return null;
     }
 
-    @Override
     public TreeNode<T> find(T element)
     {
         return findById(encoder.toClient(element));

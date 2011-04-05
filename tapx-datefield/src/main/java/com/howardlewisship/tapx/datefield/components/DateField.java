@@ -61,10 +61,9 @@ import com.howardlewisship.tapx.datefield.services.DateFieldFormatConverter;
  * JSCalendar Widget</a>. This is a highly functional calendar, but is distributed as LGPL and so
  * can't be built directly into Tapestry.
  * <p>
- * Starting with version 1.1, there is enhanced control over the time zone displayed to the user
- * (including the optional ability to edit the time zone). You will likely want to include a
- * {@link TimeZoneIdentifier} component in your application's Layout to ensure that the correct time
- * zone for the client is used.
+ * Starting with version 1.1, there is enhanced control over the time zone displayed to the user (including the optional
+ * ability to edit the time zone). You will likely want to include a {@link TimeZoneIdentifier} component in your
+ * application's Layout to ensure that the correct time zone for the client is used.
  */
 @Import(stack = "tapx-datefield")
 public class DateField extends AbstractField
@@ -209,9 +208,8 @@ public class DateField extends AbstractField
 
             public Object get()
             {
-                DateFormat shortDateFormat = time ? DateFormat.getDateTimeInstance(
-                        DateFormat.SHORT, DateFormat.SHORT, locale) : DateFormat.getDateInstance(
-                        DateFormat.SHORT, locale);
+                DateFormat shortDateFormat = time ? DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT,
+                        locale) : DateFormat.getDateInstance(DateFormat.SHORT, locale);
 
                 if (shortDateFormat instanceof SimpleDateFormat)
                 {
@@ -275,8 +273,8 @@ public class DateField extends AbstractField
 
         writeTimeZone(writer);
 
-        JSONObject spec = new JSONObject("clientId", clientId, "clientDateFormat", formatConverter
-                .convertToClient(format)).put("time", time).put("singleClick", singleClick);
+        JSONObject spec = new JSONObject("clientId", clientId, "clientDateFormat",
+                formatConverter.convertToClient(format)).put("time", time).put("singleClick", singleClick);
 
         javascriptSupport.addInitializerCall("tapxDateField", spec);
     }
@@ -292,7 +290,6 @@ public class DateField extends AbstractField
 
     private Comparator<TimeZone> timeZoneComparator = new Comparator<TimeZone>()
     {
-        @Override
         public int compare(TimeZone o1, TimeZone o2)
         {
             int result = o1.getRawOffset() - o2.getRawOffset();
@@ -324,8 +321,7 @@ public class DateField extends AbstractField
 
                 writer.element("select", "name", getControlName() + "$timezone");
 
-                for (TimeZone option : F.flow(TimeZone.getAvailableIDs()).map(ID_TO_TIME_ZONE)
-                        .sort(timeZoneComparator))
+                for (TimeZone option : F.flow(TimeZone.getAvailableIDs()).map(ID_TO_TIME_ZONE).sort(timeZoneComparator))
                 {
                     writer.element("option", "value", option.getID());
 

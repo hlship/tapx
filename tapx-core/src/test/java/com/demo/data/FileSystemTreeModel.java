@@ -28,13 +28,11 @@ public class FileSystemTreeModel extends DefaultTreeModel<File>
     private static final ValueEncoder<File> ENCODER = new ValueEncoder<File>()
     {
 
-        @Override
         public String toClient(File value)
         {
             return value.getPath();
         }
 
-        @Override
         public File toValue(String clientValue)
         {
             return new File(clientValue);
@@ -44,25 +42,21 @@ public class FileSystemTreeModel extends DefaultTreeModel<File>
     private static final TreeModelAdapter<File> ADAPTER = new TreeModelAdapter<File>()
     {
 
-        @Override
         public boolean isLeaf(File value)
         {
             return value.isFile();
         }
 
-        @Override
         public boolean hasChildren(File value)
         {
             return value.list().length > 0;
         }
 
-        @Override
         public List<File> getChildren(File value)
         {
             return CollectionFactory.newList(value.listFiles());
         }
 
-        @Override
         public String getLabel(File value)
         {
             return value.getName();

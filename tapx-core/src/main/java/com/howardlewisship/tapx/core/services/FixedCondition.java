@@ -28,7 +28,6 @@ public class FixedCondition implements Condition
         this.value = value;
     }
 
-    @Override
     public boolean isConditionTrue()
     {
         return value;

@@ -46,7 +46,6 @@ public class AppModule
         configuration.add("always-false", new Condition()
         {
 
-            @Override
             public boolean isConditionTrue()
             {
                 return false;

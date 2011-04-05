@@ -135,7 +135,6 @@ public class Tree
     {
         return new RenderCommand()
         {
-            @Override
             public void render(MarkupWriter writer, RenderQueue queue)
             {
                 // Inform the component's container about what value is being rendered
@@ -215,7 +214,6 @@ public class Tree
             this.nodes = F.flow(nodes).reverse();
         }
 
-        @Override
         public void render(MarkupWriter writer, final RenderQueue queue)
         {
             writer.element("ul");

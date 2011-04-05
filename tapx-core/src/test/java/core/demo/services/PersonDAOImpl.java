@@ -1,6 +1,5 @@
 package core.demo.services;
 
-import java.util.List;
 import java.util.Set;
 
 import org.apache.tapestry5.func.F;
@@ -33,13 +32,11 @@ public class PersonDAOImpl implements PersonDAO
         persist(new Person(0, "Luke", "Skywalker", "luke@lightside.gov"));
     }
 
-    @Override
     public Set<Person> findAll()
     {
         return F.flow(db).map(SAFE_COPY).toSet();
     }
 
-    @Override
     public void persist(Person person)
     {
         Person persisted = new Person(person);
@@ -49,7 +46,6 @@ public class PersonDAOImpl implements PersonDAO
         person.setId(persisted.getId());
     }
 
-    @Override
     public Person findById(final long id)
     {
         return F.flow(db).filter(new Predicate<Person>()

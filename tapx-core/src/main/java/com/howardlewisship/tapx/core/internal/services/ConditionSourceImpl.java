@@ -31,7 +31,6 @@ public class ConditionSourceImpl implements ConditionSource
         this.configuration = configuration;
     }
 
-    @Override
     public Condition getCondition(String name)
     {
         Condition result = configuration.get(name);
@@ -44,3 +43,4 @@ public class ConditionSourceImpl implements ConditionSource
     }
 
 }
+

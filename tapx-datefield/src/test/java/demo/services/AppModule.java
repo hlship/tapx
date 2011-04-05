@@ -1,4 +1,4 @@
-// Copyright 2009 Howard M. Lewis Ship
+// Copyright 2009, 2011 Howard M. Lewis Ship
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -31,8 +31,7 @@ import com.howardlewisship.tapx.datefield.services.DateFieldModule;
 { CoreModule.class, DateFieldModule.class })
 public class AppModule
 {
-    public static void contributeApplicationDefaults(
-            MappedConfiguration<String, String> configuration)
+    public static void contributeApplicationDefaults(MappedConfiguration<String, String> configuration)
     {
         configuration.add(SymbolConstants.PRODUCTION_MODE, "false");
         configuration.add(SymbolConstants.SUPPORTED_LOCALES, "en,fr,de");
@@ -44,7 +43,6 @@ public class AppModule
     {
         configuration.add(CoercionTuple.create(Flow.class, List.class, new Coercion<Flow, List>()
         {
-            @Override
             public List coerce(Flow input)
             {
                 return input.toList();

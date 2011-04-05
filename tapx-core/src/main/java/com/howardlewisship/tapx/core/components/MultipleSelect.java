@@ -166,7 +166,6 @@ public class MultipleSelect implements Field
                 return false;
             }
 
-            @Override
             public Object get()
             {
                 if (newValue == null)
@@ -189,7 +188,6 @@ public class MultipleSelect implements Field
             this.clientValue = clientValue;
         }
 
-        @Override
         public int compareTo(Pair o)
         {
             return this.label.compareTo(o.label);
@@ -216,7 +214,6 @@ public class MultipleSelect implements Field
             this.name = name;
         }
 
-        @Override
         public void execute(MultipleSelect component)
         {
             component.processSubmission(name);
@@ -243,21 +240,18 @@ public class MultipleSelect implements Field
         return controlName;
     }
 
-    @Override
     public String getLabel()
     {
         return label;
     }
 
     /** Always returns false. */
-    @Override
     public boolean isDisabled()
     {
         return false;
     }
 
     /** Always returns false. */
-    @Override
     public boolean isRequired()
     {
         return false;

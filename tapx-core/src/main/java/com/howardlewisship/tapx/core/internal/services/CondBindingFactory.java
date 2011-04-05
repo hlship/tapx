@@ -37,7 +37,6 @@ public class CondBindingFactory implements BindingFactory
         this.conditionSource = conditionSource;
     }
 
-    @Override
     public Binding newBinding(String description, ComponentResources container, ComponentResources component,
             String expression, Location location)
     {
@@ -57,7 +56,6 @@ public class CondBindingFactory implements BindingFactory
 
             /** Return Boolean.class. */
             @SuppressWarnings("rawtypes")
-            @Override
             public Class getBindingType()
             {
                 return Boolean.class;
@@ -66,7 +64,6 @@ public class CondBindingFactory implements BindingFactory
             /**
              * Invokes and returns {@link Condition#isConditionTrue()}.
              */
-            @Override
             public Object get()
             {
                 return condition.isConditionTrue();
@@ -95,7 +92,6 @@ public class CondBindingFactory implements BindingFactory
     {
         return new Condition()
         {
-            @Override
             public boolean isConditionTrue()
             {
                 return !condition.isConditionTrue();
