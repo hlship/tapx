@@ -18,6 +18,7 @@ import java.io.File;
 import java.util.List;
 
 import org.apache.tapestry5.ValueEncoder;
+import org.apache.tapestry5.func.F;
 import org.apache.tapestry5.ioc.internal.util.CollectionFactory;
 
 import com.howardlewisship.tapx.core.tree.DefaultTreeModel;
@@ -70,6 +71,6 @@ public class FileSystemTreeModel extends DefaultTreeModel<File>
 
     public FileSystemTreeModel(String rootDir)
     {
-        super(ENCODER, ADAPTER, CollectionFactory.newList(new File(rootDir).listFiles()));
+        super(ENCODER, ADAPTER, F.flow(new File(rootDir).listFiles()).toList());
     }
 }
