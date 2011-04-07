@@ -14,19 +14,22 @@
 
 package com.howardlewisship.tapx.prototype;
 
+import java.util.List;
+
 import org.apache.tapestry5.Asset;
-import org.apache.tapestry5.MarkupWriter;
+import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.annotations.Path;
 import org.apache.tapestry5.corelib.components.Palette;
+import org.apache.tapestry5.func.F;
+import org.apache.tapestry5.internal.InternalConstants;
+import org.apache.tapestry5.internal.services.javascript.CoreJavaScriptStack;
 import org.apache.tapestry5.ioc.Configuration;
 import org.apache.tapestry5.ioc.MappedConfiguration;
-import org.apache.tapestry5.ioc.OrderedConfiguration;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.Environment;
+import org.apache.tapestry5.ioc.annotations.Symbol;
+import org.apache.tapestry5.services.ClientInfrastructure;
 import org.apache.tapestry5.services.LibraryMapping;
-import org.apache.tapestry5.services.MarkupRenderer;
-import org.apache.tapestry5.services.MarkupRendererFilter;
-import org.apache.tapestry5.services.javascript.JavaScriptSupport;
+import org.apache.tapestry5.services.javascript.JavaScriptStack;
 
 public class PrototypeModule
 {
@@ -42,35 +45,24 @@ public class PrototypeModule
 
     /**
      * Patches Tapestry to include a file of fixes to make Tapestry 5.2.5 work with Prototype 1.7.
-     * This has two side effects: first <em>every</em> page will not have the base Tapestry stack on it.
-     * That's ok ... most pages already will have this. Secondly, all pages will import the Tapestry {@link Palette}s
-     * JavaScript (so that it can be patched) even if they don't use the Palette.
+     * This has the side effect of all pages importing the Tapestry {@link Palette}s JavaScript
+     * (so that it can be patched) even if they don't use the Palette.
      */
-    public static void contributeMarkupRenderer(final OrderedConfiguration<MarkupRendererFilter> configuration,
-            final Environment environment,
-
-            @Inject
-            @Path("classpath:org/apache/tapestry5/corelib/components/palette.js")
-            final Asset paletteLibrary,
-
+    public static void contributeJavaScriptStackSource(MappedConfiguration<String, JavaScriptStack> configuration,
+            ClientInfrastructure clientInfrastructure,
+            @Inject@Symbol(SymbolConstants.PRODUCTION_MODE) boolean productionMode,
             @Inject
             @Path("classpath:com/howardlewisship/tapx/prototype/tapestry-js-fixes.js")
-            final Asset tapestryPatches)
+            final Asset tapestryPatches,
+            @Inject
+            @Path("classpath:org/apache/tapestry5/corelib/components/palette.js")
+            final Asset paletteLibrary )
     {
-
-        MarkupRendererFilter tapestryFixesFilter = new MarkupRendererFilter()
-        {
-            public void renderMarkup(final MarkupWriter writer, final MarkupRenderer renderer)
-            {
-                JavaScriptSupport javaScriptSupport = environment.peekRequired(JavaScriptSupport.class);
-
-                javaScriptSupport.importJavaScriptLibrary(paletteLibrary);
-                javaScriptSupport.importJavaScriptLibrary(tapestryPatches);
-
-                renderer.renderMarkup(writer);
+        configuration.override(InternalConstants.CORE_STACK_NAME, new CoreJavaScriptStack(clientInfrastructure, productionMode){
+            @Override
+            public List<Asset> getJavaScriptLibraries() {
+                return F.flow(super.getJavaScriptLibraries()).append(paletteLibrary, tapestryPatches).toList();
             }
-        };
-
-        configuration.add("TapestryFixes", tapestryFixesFilter, "after:RenderSupport");
+        });
     }
 }
