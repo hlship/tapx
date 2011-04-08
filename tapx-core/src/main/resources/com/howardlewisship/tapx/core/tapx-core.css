@@ -176,3 +176,9 @@ DIV.tx-multiselect .tx-input {
 DIV.t-error-popup {
   z-index: 20000;
 }
+
+DIV.tx-lightbox-loading {
+    padding: 1.5em;
+    text-indent: -10000px;
+    background: transparent url(spinner.gif) 50% 0 no-repeat;
+}

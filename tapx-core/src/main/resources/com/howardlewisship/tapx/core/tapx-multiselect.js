@@ -110,27 +110,11 @@ Tapx.extendInitializer(function() {
 		Tapestry.ajaxRequest(contentURL, function(transport) {
 			var reply = transport.responseJSON;
 
-			// When the Modalbox animation is complete,
-			// then update its content.
-
-			animationCompleteCallback = function() {
-				updateLightboxFromReply(reply);
-			};
-
-			if (animationComplete) {
-				animationCompleteCallback();
-				return;
-			}
+			updateLightboxFromReply(reply);			
 		});
 
-		Modalbox.show("<span class='tx-ajax-wait'></span>", {
+		Modalbox.show("<div class='tx-lightbox-loading'></div>", {
 			title : title,
-			afterLoad : function() {
-
-				animationComplete = true;
-
-				animationCompleteCallback && animationCompleteCallback();
-			}
 		});
 	}
 
