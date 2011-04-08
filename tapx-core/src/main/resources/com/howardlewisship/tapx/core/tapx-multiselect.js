@@ -88,9 +88,6 @@ Tapx.extendInitializer(function() {
 
 	function lightbox(title, contentURL) {
 
-		var animationComplete = false;
-		var animationCompleteCallback = null;
-
 		function updateLightboxFromReply(reply) {
 			var inits = reply.inits;
 			reply.inits = null;
@@ -107,14 +104,15 @@ Tapx.extendInitializer(function() {
 			});
 		}
 
+		// Been experimenting with running the Modalbox loading animation in parallel
+		// with doing the Ajax, but Modalbox is a twisted singleton that causes some
+		// bad timing issues.  Back to just running the (quick) Ajax request and then running
+		// the Modalbox animation.
+		
 		Tapestry.ajaxRequest(contentURL, function(transport) {
 			var reply = transport.responseJSON;
 
-			updateLightboxFromReply(reply);			
-		});
-
-		Modalbox.show("<div class='tx-lightbox-loading'></div>", {
-			title : title,
+			updateLightboxFromReply(reply);
 		});
 	}
 
