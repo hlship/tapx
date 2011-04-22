@@ -223,7 +223,6 @@ public class Tree
 
             nodes.rest().each(new Worker<TreeNode>()
             {
-                @Override
                 public void work(TreeNode element)
                 {
                     queue.push(toRenderCommand(element, false));

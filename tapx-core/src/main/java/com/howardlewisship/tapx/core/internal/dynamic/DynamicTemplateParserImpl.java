@@ -1,4 +1,4 @@
-// Copyright 2010 Howard M. Lewis Ship
+// Copyright 2010, 2011 Howard M. Lewis Ship
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@ package com.howardlewisship.tapx.core.internal.dynamic;
 
 import java.util.Map;
 
-import org.apache.tapestry5.internal.services.PagePool;
 import org.apache.tapestry5.ioc.Resource;
 import org.apache.tapestry5.ioc.internal.util.CollectionFactory;
 import org.apache.tapestry5.ioc.internal.util.URLChangeTracker;
@@ -31,15 +30,12 @@ public class DynamicTemplateParserImpl implements DynamicTemplateParser, UpdateL
 {
     private final Map<Resource, DynamicTemplate> cache = CollectionFactory.newConcurrentMap();
 
-    private final PagePool pagePool;
-
     private final BindingSource bindingSource;
 
     private final URLChangeTracker tracker;
 
-    public DynamicTemplateParserImpl(ClasspathURLConverter converter, PagePool pagePool, BindingSource bindingSource)
+    public DynamicTemplateParserImpl(ClasspathURLConverter converter, BindingSource bindingSource)
     {
-        this.pagePool = pagePool;
         this.bindingSource = bindingSource;
 
         tracker = new URLChangeTracker(converter);
@@ -79,7 +75,9 @@ public class DynamicTemplateParserImpl implements DynamicTemplateParser, UpdateL
             // rebuilt, which is a crude way of clearing out that data. Other alternatives exist, such as
             // yielding up a proxy to the DynamicTemplate that is more change-aware.
 
-            pagePool.clear();
+            // But PagePool no longer exists in 5.3 ... need to expose an explicit way to clear the PageSource's cache
+
+            // pagePool.clear();
         }
     }
 

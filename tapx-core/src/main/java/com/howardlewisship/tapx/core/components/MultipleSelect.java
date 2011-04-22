@@ -196,7 +196,6 @@ public class MultipleSelect implements Field
 
     private final Mapper<Object, Pair> toPair = new Mapper<Object, Pair>()
     {
-        @Override
         public Pair map(Object value)
         {
             return new Pair(model.toLabel(value), model.toClient(value));

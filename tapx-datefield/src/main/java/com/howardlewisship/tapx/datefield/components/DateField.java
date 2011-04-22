@@ -281,7 +281,6 @@ public class DateField extends AbstractField
 
     private static Mapper<String, TimeZone> ID_TO_TIME_ZONE = new Mapper<String, TimeZone>()
     {
-        @Override
         public TimeZone map(String value)
         {
             return TimeZone.getTimeZone(value);

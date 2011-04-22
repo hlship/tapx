@@ -50,7 +50,6 @@ public class PersonDAOImpl implements PersonDAO
     {
         return F.flow(db).filter(new Predicate<Person>()
         {
-            @Override
             public boolean accept(Person object)
             {
                 return object.getId() == id;
