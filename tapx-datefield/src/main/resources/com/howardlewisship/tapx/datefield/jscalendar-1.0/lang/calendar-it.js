@@ -53,7 +53,7 @@ Calendar._MN = new Array
  "Maggio",
  "Giugno",
  "Luglio",
- "Augosto",
+ "Agosto",
  "Settembre",
  "Ottobre",
  "Novembre",
@@ -73,6 +73,8 @@ Calendar._SMN = new Array
  "Ott",
  "Nov",
  "Dic");
+
+Calendar._FD = 1;
 
 // tooltips
 Calendar._TT = {};
