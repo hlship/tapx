@@ -74,6 +74,8 @@ Calendar._SMN = new Array
  "Nov",
  "Dic");
 
+Calendar._FD = 1;
+
 // tooltips
 Calendar._TT = {};
 Calendar._TT["INFO"] = "Informazioni sul calendario";
