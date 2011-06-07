@@ -67,13 +67,13 @@ public class CoreModule
     {
         configuration.add(new LibraryMapping("tapx", "com.howardlewisship.tapx.core"));
 
-        // What's this about?  Because other modules in the TapX project ALSO contribute "tapx"
+        // What's this about? Because other modules in the TapX project ALSO contribute "tapx"
         // mapped to other sub-packages of "com.howardlewisship.tapx", there would otherwise
         // be a difference in how asset URL paths are created dependening on whether it was just
-        // tapx-core or tapx-core plus (for example) tapx-datefield.  Since the tapx-core.css file relies
+        // tapx-core or tapx-core plus (for example) tapx-datefield. Since the tapx-core.css file relies
         // on a particular layout so that it can reference images that are part of tapestry-core.jar,
         // we need at least two mappings for the tapx virtual folder.
-        
+
         configuration.add(new LibraryMapping("tapx", "com.howardlewisship.tapx.placeholder"));
     }
 
@@ -181,9 +181,7 @@ public class CoreModule
      */
     @Contribute(JavaScriptStack.class)
     @TapxCore
-    public static void basicCoreStackElements(OrderedConfiguration<StackExtension> configuration,
-            @Symbol(CoreSymbols.TEST_MODE)
-            boolean testMode)
+    public static void basicCoreStackElements(OrderedConfiguration<StackExtension> configuration)
     {
         configuration.add("CoreJS", new StackExtension(StackExtensionType.LIBRARY, PATH + "/tapx.js"));
         configuration.add("CoreJS-MultiSelect", new StackExtension(StackExtensionType.LIBRARY, PATH
@@ -195,9 +193,5 @@ public class CoreModule
                 .add("CoreCSS-Modalbox", new StackExtension(StackExtensionType.STYLESHEET, PATH + "/modalbox.css"));
         configuration.add("ScriptaculousBuilder", new StackExtension(StackExtensionType.LIBRARY,
                 "${tapestry.scriptaculous}/builder.js"));
-
-        if (testMode)
-            configuration.add("CoreJS-TestMode", new StackExtension(StackExtensionType.LIBRARY, PATH
-                    + "/tapx-testmode.js"), "after:CoreJS");
     }
 }

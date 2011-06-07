@@ -1,7 +1,5 @@
 Tapx = {
 
-	TEST_MODE : false,
-
 	/**
 	 * Extends an object using a source. In the simple case, the source object's
 	 * properties are overlayed on top of the destination object. In the typical
@@ -293,13 +291,6 @@ Tapestry.Initializer.tapxExpando = function(spec) {
 Tapx.extendInitializer(function() {
 
 	function runModalDialog(title, message, proceed) {
-
-		if (Tapx.TEST_MODE) {
-			if (window.confirm(message))
-				proceed.defer();
-
-			return;
-		}
 
 		var div = new Element('div', {
 			className : 'mb-confirm'
