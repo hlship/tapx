@@ -107,8 +107,14 @@ Tapx.extendInitializer(function() {
 			value : state.values.toJSON()
 		});
 
+		var addButton = new Element("span", {
+			"class" : "tx-seteditor-add"
+		});
+
 		textField.insert({
 			after : hiddenField
+		}).insert({
+			after : addButton
 		});
 
 		var valuesColumn = textField.up(".tx-seteditor").down(
@@ -122,12 +128,7 @@ Tapx.extendInitializer(function() {
 			addItemToList(value, state, valueList, hiddenField);
 		});
 
-		textField.observe("keypress", function(event) {
-			if (event.keyCode != Event.KEY_RETURN)
-				return;
-
-			event.stop();
-
+		function addNewItem() {
 			var value = textField.value;
 
 			if (value == null || value.empty())
@@ -140,7 +141,18 @@ Tapx.extendInitializer(function() {
 			updateHiddenField(hiddenField, state);
 
 			textField.value = "";
+		}
+
+		textField.observe("keypress", function(event) {
+			if (event.keyCode != Event.KEY_RETURN)
+				return;
+
+			event.stop();
+
+			addNewItem();
 		});
+
+		addButton.observe("click", addNewItem);
 	}
 
 	return {

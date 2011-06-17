@@ -33,6 +33,17 @@ SPAN.tx-seteditor-delete {
 }
 
 
+SPAN.tx-seteditor-add {
+  width: 16px;
+  height: 16px;
+  margin-left: 2px;
+  float: right;
+  background-image: url(silk/add.png);
+  display: inline-block;
+  cursor: pointer;
+}
+
+
 DIV.tx-tree-container
 {
   padding: 0;
