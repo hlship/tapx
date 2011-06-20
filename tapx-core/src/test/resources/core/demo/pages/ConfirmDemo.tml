@@ -1,27 +1,38 @@
-<t:layout xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:tx="tapestry-library:tapx">
+<t:layout xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+	xmlns:tx="tapestry-library:tapx">
 
-  <p id="message">${message}</p>
+	<t:zone id="messageZone" t:id="messageZone">
+		<p id="message">${message}</p>
+	</t:zone>
 
-  <ul>
-    <li>
-      <t:actionlink t:id="link1" t:mixins="tapx/confirm">actionlink</t:actionlink>
-    </li>
-    <li>
-      <t:actionlink t:id="link2" zone="zone" t:mixins="tapx/confirm" title="Update zone?"
-        message="Custom message?">zone update link</t:actionlink>
-    </li>
-    <li>
-      <t:actionlink class="tx-disable-confirm" t:id="link3" t:mixins="tapx/confirm">confirm disabled
+	<ul>
+		<li>
+			<t:actionlink t:id="link1" t:mixins="tapx/confirm">actionlink
+			</t:actionlink>
+		</li>
+		<li>
+			<t:actionlink t:id="link2" zone="zone" t:mixins="tapx/confirm"
+				title="Update zone?" message="Custom message?">zone update link</t:actionlink>
+		</li>
+		<li>
+			<t:actionlink class="tx-disable-confirm" t:id="link3"
+				t:mixins="tapx/confirm">confirm disabled
       </t:actionlink>
-    </li>
-    <li>
-      <t:form t:id="form">
-        <t:submit value="Form Submit" t:mixins="tapx/confirm"/>
-      </t:form>
-    </li>
-  </ul>
+		</li>
+		<li>
+			<t:form t:id="form">
+				<t:submit value="Form Submit" t:mixins="tapx/confirm" />
+			</t:form>
+		</li>
+		<li>
+			<t:form t:id="zoneForm" zone="messageZone">
+				<t:submit value="Zone Form Submit" t:mixins="tapx/confirm" mode="cancel"/>
+			</t:form>
+		</li>
 
-  <t:zone t:id="zone" id="zone" visible="false">
-    <p id="zone-message">Zone link was clicked.</p>
-  </t:zone>
+	</ul>
+
+	<t:zone t:id="zone" id="zone" visible="false">
+		<p id="zone-message">Zone link was clicked.</p>
+	</t:zone>
 </t:layout>

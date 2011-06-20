@@ -1,4 +1,4 @@
-// Copyright 2010 Howard M. Lewis Ship
+// Copyright 2010, 2011 Howard M. Lewis Ship
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,32 +20,33 @@ import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.corelib.components.Zone;
 
-public class ConfirmDemo
-{
-    @Property
-    @Persist(PersistenceConstants.FLASH)
-    private String message;
+public class ConfirmDemo {
+	@Property
+	@Persist(PersistenceConstants.FLASH)
+	private String message;
 
-    @InjectComponent
-    private Zone zone;
+	@InjectComponent
+	private Zone zone, messageZone;
 
-    void onActionFromLink1()
-    {
-        message = "update from link1";
-    }
+	void onActionFromLink1() {
+		message = "update from link1";
+	}
 
-    Object onActionFromLink2()
-    {
-        return zone.getBody();
-    }
+	Object onActionFromLink2() {
+		return zone.getBody();
+	}
 
-    void onSuccessFromForm()
-    {
-        message = "update via form submit";
-    }
+	void onSuccessFromForm() {
+		message = "update via form submit";
+	}
 
-    void onActionFromLink3()
-    {
-        message = "update from link3";
-    }
+	Object onSuccessFromZoneForm() {
+		message = "update via zone form submit";
+
+		return messageZone.getBody();
+	}
+
+	void onActionFromLink3() {
+		message = "update from link3";
+	}
 }

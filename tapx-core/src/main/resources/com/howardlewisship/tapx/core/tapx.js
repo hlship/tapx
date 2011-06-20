@@ -349,6 +349,7 @@ Tapx.extendInitializer(function() {
 		var type = element.type;
 
 		var interceptClickEvent = true;
+		var capturedClickEvent;
 
 		/*
 		 * Replace the normal click event, knowing that in most cases, the
@@ -359,7 +360,7 @@ Tapx.extendInitializer(function() {
 
 		function doAction() {
 			if ($T(element).hasAction) {
-				element.fire(Tapestry.ACTION_EVENT, event);
+				element.fire(Tapestry.ACTION_EVENT, capturedClickEvent);
 				return;
 			}
 
@@ -387,6 +388,8 @@ Tapx.extendInitializer(function() {
 			if (interceptClickEvent) {
 
 				event.stop();
+				
+				capturedClickEvent = event;
 
 				if ($(element).hasClassName('tx-disable-confirm')) {
 					doAction();
