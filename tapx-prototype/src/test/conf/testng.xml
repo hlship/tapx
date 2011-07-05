@@ -1,9 +1,0 @@
-<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="tapx-prototype" annotations="1.5" verbose="2">
-  <parameter name="tapestry.web-app-folder" value="src/test/webapp"/>
-  <test name="Integration Tests">
-    <packages>
-      <package name="com.howardlewisship.tapx.prototype"/>
-    </packages>
-  </test>
-</suite>

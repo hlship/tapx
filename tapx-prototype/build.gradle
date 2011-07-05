@@ -1,7 +1,0 @@
-description = "Patch Tapestry's Prototype to version 1.7 and Script.aculo.us 1.9.0"
-
-jar {
-    manifest {
-        attributes 'Tapestry-Module-Classes': 'com.howardlewisship.tapx.prototype.PrototypeModule'
-    }
-}
