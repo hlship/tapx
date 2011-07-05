@@ -37,7 +37,6 @@ public class AppModule
     {
         configuration.add(CoreSymbols.TEST_MODE, "true");
         configuration.add(SymbolConstants.PRODUCTION_MODE, "false");
-        configuration.add(SymbolConstants.BLACKBIRD_ENABLED, "true");
     }
 
     @Contribute(ConditionSource.class)

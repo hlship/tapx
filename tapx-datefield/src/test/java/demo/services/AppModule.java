@@ -14,8 +14,8 @@
 
 package demo.services;
 
-import java.util.List;
-
+import com.howardlewisship.tapx.core.services.CoreModule;
+import com.howardlewisship.tapx.datefield.services.DateFieldModule;
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.func.Flow;
 import org.apache.tapestry5.ioc.Configuration;
@@ -24,8 +24,7 @@ import org.apache.tapestry5.ioc.annotations.SubModule;
 import org.apache.tapestry5.ioc.services.Coercion;
 import org.apache.tapestry5.ioc.services.CoercionTuple;
 
-import com.howardlewisship.tapx.core.services.CoreModule;
-import com.howardlewisship.tapx.datefield.services.DateFieldModule;
+import java.util.List;
 
 @SubModule(
 { CoreModule.class, DateFieldModule.class })
@@ -35,7 +34,6 @@ public class AppModule
     {
         configuration.add(SymbolConstants.PRODUCTION_MODE, "false");
         configuration.add(SymbolConstants.SUPPORTED_LOCALES, "en,fr,de");
-        configuration.add(SymbolConstants.BLACKBIRD_ENABLED, "true");
     }
 
     @SuppressWarnings("rawtypes")

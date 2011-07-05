@@ -1,4 +1,4 @@
-// Copyright 2010 Howard M. Lewis Ship
+// Copyright 2010, 2011 Howard M. Lewis Ship
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -30,7 +30,6 @@ public class AppModule
     {
         configuration.add(CoreSymbols.TEST_MODE, "true");
         configuration.add(SymbolConstants.PRODUCTION_MODE, "false");
-        configuration.add(SymbolConstants.BLACKBIRD_ENABLED, "true");
 
     }
 }

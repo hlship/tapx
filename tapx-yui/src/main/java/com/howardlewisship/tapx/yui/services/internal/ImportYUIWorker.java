@@ -1,4 +1,4 @@
-// Copyright 2010 Howard M. Lewis Ship
+// Copyright 2010, 2011 Howard M. Lewis Ship
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +14,10 @@
 
 package com.howardlewisship.tapx.yui.services.internal;
 
+import com.howardlewisship.tapx.yui.ImportYUI;
+import com.howardlewisship.tapx.yui.YuiSymbols;
 import org.apache.tapestry5.Asset;
+import org.apache.tapestry5.MarkupWriter;
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.annotations.BeginRender;
 import org.apache.tapestry5.func.F;
@@ -23,19 +26,15 @@ import org.apache.tapestry5.func.Mapper;
 import org.apache.tapestry5.func.Worker;
 import org.apache.tapestry5.ioc.annotations.Symbol;
 import org.apache.tapestry5.model.MutableComponentModel;
+import org.apache.tapestry5.plastic.*;
+import org.apache.tapestry5.runtime.Component;
+import org.apache.tapestry5.runtime.Event;
 import org.apache.tapestry5.services.AssetSource;
-import org.apache.tapestry5.services.ClassTransformation;
-import org.apache.tapestry5.services.ComponentClassTransformWorker;
-import org.apache.tapestry5.services.ComponentMethodAdvice;
-import org.apache.tapestry5.services.ComponentMethodInvocation;
-import org.apache.tapestry5.services.TransformConstants;
-import org.apache.tapestry5.services.TransformMethod;
 import org.apache.tapestry5.services.javascript.JavaScriptSupport;
+import org.apache.tapestry5.services.transform.ComponentClassTransformWorker2;
+import org.apache.tapestry5.services.transform.TransformationSupport;
 
-import com.howardlewisship.tapx.yui.ImportYUI;
-import com.howardlewisship.tapx.yui.YuiSymbols;
-
-public class ImportYUIWorker implements ComponentClassTransformWorker
+public class ImportYUIWorker implements ComponentClassTransformWorker2
 {
     private final AssetSource assetSource;
 
@@ -45,15 +44,18 @@ public class ImportYUIWorker implements ComponentClassTransformWorker
 
     private final boolean productionMode;
 
+    public static final MethodDescription BEGIN_RENDER_DESCRIPTION = PlasticUtils.getMethodDescription(Component.class,
+            "beginRender", MarkupWriter.class, Event.class);
+
     public ImportYUIWorker(AssetSource assetSource,
 
-    JavaScriptSupport javaScriptSupport,
+                           JavaScriptSupport javaScriptSupport,
 
-    @Symbol(YuiSymbols.BASE)
-    String yuiBase,
+                           @Symbol(YuiSymbols.BASE)
+                           String yuiBase,
 
-    @Symbol(SymbolConstants.PRODUCTION_MODE)
-    boolean productionMode)
+                           @Symbol(SymbolConstants.PRODUCTION_MODE)
+                           boolean productionMode)
     {
         this.assetSource = assetSource;
         this.javaScriptSupport = javaScriptSupport;
@@ -99,33 +101,34 @@ public class ImportYUIWorker implements ComponentClassTransformWorker
         }
     };
 
-    public void transform(ClassTransformation transformation, MutableComponentModel model)
+    public void transform(PlasticClass plasticClass, TransformationSupport support, MutableComponentModel model)
     {
-        ImportYUI annotation = transformation.getAnnotation(ImportYUI.class);
+        ImportYUI annotation = plasticClass.getAnnotation(ImportYUI.class);
 
         if (annotation == null)
+        {
             return;
+        }
 
         Flow<Asset> assetFlow = F.flow(annotation.value()).map(expandSimpleName).map(pathToAsset);
 
-        addAdvicetoBeginRender(transformation, assetFlow);
+        addAdvicetoBeginRender(plasticClass, assetFlow);
 
         model.addRenderPhase(BeginRender.class);
     }
 
-    private void addAdvicetoBeginRender(ClassTransformation transformation, Flow<Asset> assetFlow)
+    private void addAdvicetoBeginRender(PlasticClass transformation, Flow<Asset> assetFlow)
     {
-        TransformMethod method = transformation.getOrCreateMethod(TransformConstants.BEGIN_RENDER_SIGNATURE);
-
-        method.addAdvice(createBeginRenderAdvice(assetFlow));
+        transformation.introduceMethod(BEGIN_RENDER_DESCRIPTION).addAdvice(
+                createBeginRenderAdvice(assetFlow));
     }
 
-    private ComponentMethodAdvice createBeginRenderAdvice(final Flow<Asset> assetFlow)
+    private MethodAdvice createBeginRenderAdvice(final Flow<Asset> assetFlow)
     {
 
-        return new ComponentMethodAdvice()
+        return new MethodAdvice()
         {
-            public void advise(ComponentMethodInvocation invocation)
+            public void advise(MethodInvocation invocation)
             {
                 assetFlow.each(importLibrary);
 

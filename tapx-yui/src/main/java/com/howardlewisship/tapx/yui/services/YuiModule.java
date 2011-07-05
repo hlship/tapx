@@ -1,4 +1,4 @@
-// Copyright 2010 Howard M. Lewis Ship
+// Copyright 2010, 2011 Howard M. Lewis Ship
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,14 +14,13 @@
 
 package com.howardlewisship.tapx.yui.services;
 
+import com.howardlewisship.tapx.yui.YuiSymbols;
+import com.howardlewisship.tapx.yui.services.internal.ImportYUIWorker;
 import org.apache.tapestry5.ioc.Configuration;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.OrderedConfiguration;
-import org.apache.tapestry5.services.ComponentClassTransformWorker;
 import org.apache.tapestry5.services.LibraryMapping;
-
-import com.howardlewisship.tapx.yui.YuiSymbols;
-import com.howardlewisship.tapx.yui.services.internal.ImportYUIWorker;
+import org.apache.tapestry5.services.transform.ComponentClassTransformWorker2;
 
 public class YuiModule
 {
@@ -33,7 +32,7 @@ public class YuiModule
     }
 
     public static void contributeComponentClassTransformWorker(
-            OrderedConfiguration<ComponentClassTransformWorker> configuration)
+            OrderedConfiguration<ComponentClassTransformWorker2> configuration)
     {
         configuration.addInstance("ImportYUI", ImportYUIWorker.class, "before:RenderPhase");
     }
