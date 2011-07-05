@@ -34,7 +34,6 @@ public class TimeZoneIdentifierDemo
     {
         return F.flow(TimeZone.getAvailableIDs()).map(new Mapper<String, TimeZone>()
         {
-            @Override
             public TimeZone map(String id)
             {
                 return TimeZone.getTimeZone(id);

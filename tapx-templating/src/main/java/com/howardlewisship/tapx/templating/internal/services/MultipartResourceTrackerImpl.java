@@ -1,10 +1,10 @@
-// Copyright 2009, 2010 Howard M. Lewis Ship
+// Copyright 2009, 2010, 2011 Howard M. Lewis Ship
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//     http://www.apache.org/licenses/LICENSE-2.0
+// http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,11 +22,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.tapestry5.internal.services.ResourceStreamer;
 import org.apache.tapestry5.ioc.Resource;
 import org.apache.tapestry5.ioc.annotations.Scope;
 import org.apache.tapestry5.ioc.internal.util.CollectionFactory;
 import org.apache.tapestry5.ioc.internal.util.InternalUtils;
+import org.apache.tapestry5.services.assets.ContentTypeAnalyzer;
 
 import com.howardlewisship.tapx.templating.RenderedStream;
 import com.howardlewisship.tapx.templating.RenderedStreamEnclosure;
@@ -34,7 +34,7 @@ import com.howardlewisship.tapx.templating.RenderedStreamEnclosure;
 @Scope(PERTHREAD)
 public class MultipartResourceTrackerImpl implements MultipartResourceTracker
 {
-    private final ResourceStreamer resourceStreamer;
+    private final ContentTypeAnalyzer contentTypeAnalyzer;
 
     private long uid = System.nanoTime();
 
@@ -56,9 +56,9 @@ public class MultipartResourceTrackerImpl implements MultipartResourceTracker
 
     }
 
-    public MultipartResourceTrackerImpl(ResourceStreamer resourceStreamer)
+    public MultipartResourceTrackerImpl(ContentTypeAnalyzer contentTypeAnalyzer)
     {
-        this.resourceStreamer = resourceStreamer;
+        this.contentTypeAnalyzer = contentTypeAnalyzer;
     }
 
     /**
@@ -173,6 +173,6 @@ public class MultipartResourceTrackerImpl implements MultipartResourceTracker
 
     private String getContentType(Resource resource) throws IOException
     {
-        return resourceStreamer.getContentType(resource);
+        return contentTypeAnalyzer.getContentType(resource);
     }
 }

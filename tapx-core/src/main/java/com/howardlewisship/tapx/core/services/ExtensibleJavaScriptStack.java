@@ -44,7 +44,6 @@ public class ExtensibleJavaScriptStack implements JavaScriptStack
     {
         return new Predicate<StackExtension>()
         {
-            @Override
             public boolean accept(StackExtension element)
             {
                 return element.type == type;
