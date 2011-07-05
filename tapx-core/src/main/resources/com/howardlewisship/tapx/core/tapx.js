@@ -1,71 +1,22 @@
-Tapx = {
+// Copyright 2011 Howard M. Lewis Ship
+// Copyright 2011 Howard M. Lewis Ship
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
-	/**
-	 * Extends an object using a source. In the simple case, the source object's
-	 * properties are overlayed on top of the destination object. In the typical
-	 * case, the source parameter is a function that returns the source object
-	 * ... this is to facilitate modularity and encapsulation.
-	 * 
-	 * @param destination
-	 *            object to receive new or updated properties
-	 * @param source
-	 *            source object for properties, or function returning source
-	 *            object
-	 */
-	extend : function(destination, source) {
-		if (Object.isFunction(source))
-			source = source();
-
-		Object.extend(destination, source);
-	},
-
-	/**
-	 * A convienience for extending Tapestry.Initializer.
-	 * 
-	 * @param source
-	 *            source object (or function returning source object) for
-	 *            properties applied to Tapestry.Initializer
-	 */
-	extendInitializer : function(source) {
-		this.extend(Tapestry.Initializer, source);
-	},
-
-	/**
-	 * Tapx.Tree contains configurable constants for controlling how animations
-	 * of the tapx/Tree component operate.
-	 */
-	Tree : {
-
-		/**
-		 * Approximate time per pixel for the hide and reveal animations. The
-		 * idea is to have small (few children) and large (many childen)
-		 * animations operate at the same visible rate, even though they will
-		 * take different amounts of time.
-		 */
-		ANIMATION_RATE : .005,
-
-		/**
-		 * Maximum animation time, in seconds. This is necessary for very large
-		 * animations, otherwise its looks visually odd to see the child tree
-		 * nodes whip down the screen.
-		 */
-		MAX_ANIMATION_DURATION : .5,
-
-		/** Type of Scriptaculous effect to hide/show child nodes. */
-		TOGGLE_TYPE : 'blind',
-
-		/**
-		 * Name of Scriptaculous effects queue to ensure that animations do not
-		 * overwrite each other.
-		 */
-		QUEUE_NAME : 'tx-tree-updates'
-	}
-};
-
-Tapx.extendInitializer(function() {
+T5.extendInitializer(function() {
 
 	function updateHiddenField(field, state) {
-		field.value = state.values.toJSON();
+		field.value = Object.toJSON(state.values);
 	}
 
 	function addItemToList(value, state, listElement, hiddenFieldElement) {
@@ -80,7 +31,7 @@ Tapx.extendInitializer(function() {
 			event.stop();
 
 			state.values = state.values.without(value);
-			hiddenFieldElement.value = state.values.toJSON();
+			hiddenFieldElement.value = Object.toJSON(state.values);
 
 			listItemElement.remove();
 		});
@@ -104,7 +55,7 @@ Tapx.extendInitializer(function() {
 		var hiddenField = new Element("input", {
 			type : "hidden",
 			name : spec.name,
-			value : state.values.toJSON()
+			value : Object.toJSON(state.values)
 		});
 
 		var addButton = new Element("span", {
@@ -160,117 +111,6 @@ Tapx.extendInitializer(function() {
 	};
 });
 
-Tapx.extendInitializer(function() {
-
-	var cfg = Tapx.Tree;
-
-	function doAnimate(element) {
-		var sublist = $(element).up('li').down("ul");
-
-		var dim = sublist.getDimensions();
-
-		var duration = Math.min(dim.height * cfg.ANIMATION_RATE,
-				cfg.MAX_ANIMATION_DURATION)
-
-		new Effect.toggle(sublist, cfg.TOGGLE_TYPE, {
-			duration : duration,
-			queue : {
-				position : 'end',
-				scope : cfg.QUEUE_NAME
-			}
-		});
-	}
-
-	function animateRevealChildren(element) {
-		$(element).addClassName("tx-tree-expanded");
-
-		doAnimate(element);
-	}
-
-	function animateHideChildren(element) {
-		$(element).removeClassName("tx-tree-expanded");
-
-		doAnimate(element);
-	}
-
-	function initializer(spec) {
-		var loaded = spec.expanded;
-		var expanded = spec.expanded;
-		if (expanded) {
-			$(spec.clientId).addClassName("tx-tree-expanded")
-		}
-		var loading = false;
-
-		function successHandler(reply) {
-			// Remove the Ajax load indicator
-			$(spec.clientId).update("");
-			$(spec.clientId).removeClassName("tx-empty-node");
-
-			var response = reply.responseJSON;
-
-			Tapestry.loadScriptsInReply(response, function() {
-				var element = $(spec.clientId).up("li");
-				var label = element.down("span.tx-tree-label");
-
-				label.insert({
-					after : response.content
-				});
-
-				// Hide the new sublist so that we can animate revealing it.
-				element.down("ul").hide();
-
-				animateRevealChildren(spec.clientId);
-
-				loading = false;
-				loaded = true;
-				expanded = true;
-			});
-
-		}
-
-		function doLoad() {
-			if (loading)
-				return;
-
-			loading = true;
-
-			$(spec.clientId).addClassName("tx-empty-node");
-			$(spec.clientId).update("<span class='tx-ajax-wait'/>");
-
-			Tapestry.ajaxRequest(spec.expandChildrenURL, successHandler);
-		}
-
-		$(spec.clientId).observe("click", function(event) {
-			event.stop();
-
-			if (!loaded) {
-
-				doLoad();
-
-				return;
-			}
-
-			// Children have been loaded, just a matter of toggling
-			// between
-			// showing or hiding the children.
-
-			var f = expanded ? animateHideChildren : animateRevealChildren;
-
-			f.call(null, spec.clientId);
-
-			var url = expanded ? spec.markCollapsedURL : spec.markExpandedURL;
-
-			Tapestry.ajaxRequest(url, {});
-
-			expanded = !expanded;
-		});
-	}
-
-	return {
-		tapxTreeNode : initializer
-	};
-});
-
 Tapestry.Initializer.tapxExpando = function(spec) {
 
 	var loaded = false;
@@ -300,7 +140,7 @@ Tapestry.Initializer.tapxExpando = function(spec) {
 	$(spec.clientId).down(".tx-collapse").observe("click", collapse);
 };
 
-Tapx.extendInitializer(function() {
+T5.extendInitializer(function() {
 
 	function runModalDialog(title, message, proceed) {
 

@@ -1,4 +1,4 @@
-Tapx.extendInitializer(function() {
+T5.extendInitializer(function() {
 
 	function setupButton(select, button, callback) {
 		var enabled = false;

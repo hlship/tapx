@@ -14,36 +14,20 @@
 
 package com.howardlewisship.tapx.core.services;
 
-import org.apache.tapestry5.Asset;
+import com.howardlewisship.tapx.core.CoreSymbols;
+import com.howardlewisship.tapx.core.TapxCore;
+import com.howardlewisship.tapx.core.internal.services.CondBindingFactory;
+import com.howardlewisship.tapx.core.internal.services.ConditionSourceImpl;
 import org.apache.tapestry5.SymbolConstants;
-import org.apache.tapestry5.ioc.Configuration;
-import org.apache.tapestry5.ioc.MappedConfiguration;
-import org.apache.tapestry5.ioc.OrderedConfiguration;
-import org.apache.tapestry5.ioc.Resource;
-import org.apache.tapestry5.ioc.ServiceBinder;
-import org.apache.tapestry5.ioc.annotations.Autobuild;
+import org.apache.tapestry5.ioc.*;
 import org.apache.tapestry5.ioc.annotations.Contribute;
 import org.apache.tapestry5.ioc.annotations.Local;
 import org.apache.tapestry5.ioc.annotations.Symbol;
 import org.apache.tapestry5.ioc.annotations.Value;
-import org.apache.tapestry5.ioc.services.Coercion;
-import org.apache.tapestry5.ioc.services.CoercionTuple;
 import org.apache.tapestry5.services.BindingFactory;
 import org.apache.tapestry5.services.BindingSource;
 import org.apache.tapestry5.services.LibraryMapping;
-import org.apache.tapestry5.services.UpdateListenerHub;
-import org.apache.tapestry5.services.javascript.JavaScriptStack;
-import org.apache.tapestry5.services.javascript.JavaScriptStackSource;
-
-import com.howardlewisship.tapx.core.CoreSymbols;
-import com.howardlewisship.tapx.core.StackExtension;
-import com.howardlewisship.tapx.core.StackExtensionType;
-import com.howardlewisship.tapx.core.TapxCore;
-import com.howardlewisship.tapx.core.dynamic.DynamicTemplate;
-import com.howardlewisship.tapx.core.dynamic.DynamicTemplateParser;
-import com.howardlewisship.tapx.core.internal.dynamic.DynamicTemplateParserImpl;
-import com.howardlewisship.tapx.core.internal.services.CondBindingFactory;
-import com.howardlewisship.tapx.core.internal.services.ConditionSourceImpl;
+import org.apache.tapestry5.services.javascript.*;
 
 public class CoreModule
 {
@@ -91,43 +75,6 @@ public class CoreModule
         configuration.add("tapx-core", tapxCoreStack);
     }
 
-    /**
-     * Contributes:
-     * <ul>
-     * <li>{@link Resource} to {@link DynamicTemplate}</li>
-     * <li>{@link Asset} to {@link Resource}</li>
-     * </ul>
-     */
-    public static void contributeTypeCoercer(Configuration<CoercionTuple> configuration,
-
-    @Local
-    final DynamicTemplateParser parser)
-    {
-        configuration.add(CoercionTuple.create(Resource.class, DynamicTemplate.class,
-                new Coercion<Resource, DynamicTemplate>()
-                {
-                    public DynamicTemplate coerce(Resource input)
-                    {
-                        return parser.parseTemplate(input);
-                    }
-                }));
-
-        configuration.add(CoercionTuple.create(Asset.class, Resource.class, new Coercion<Asset, Resource>()
-        {
-            public Resource coerce(Asset input)
-            {
-                return input.getResource();
-            }
-        }));
-    }
-
-    public static DynamicTemplateParser buildDynamicTemplateParser(@Autobuild
-    DynamicTemplateParserImpl service, UpdateListenerHub updateListenerHub)
-    {
-        updateListenerHub.addUpdateListener(service);
-
-        return service;
-    }
 
     @Contribute(BindingSource.class)
     public static void setupCondBindingPrefix(MappedConfiguration<String, BindingFactory> configuration, @Local
@@ -147,9 +94,9 @@ public class CoreModule
      */
     @Contribute(ConditionSource.class)
     public static void basicConditions(MappedConfiguration<String, Condition> configuration,
-            @Symbol(SymbolConstants.PRODUCTION_MODE)
-            boolean productionMode, @Symbol(CoreSymbols.TEST_MODE)
-            boolean testMode)
+                                       @Symbol(SymbolConstants.PRODUCTION_MODE)
+                                       boolean productionMode, @Symbol(CoreSymbols.TEST_MODE)
+    boolean testMode)
     {
         configuration.add("production-mode", new FixedCondition(productionMode));
         configuration.add("test-mode", new FixedCondition(testMode));
@@ -173,10 +120,10 @@ public class CoreModule
      * <dt>CoreCSS-Modalbox</dt>
      * <dd>Stylesheet used by Modalbox</dd>
      * </dl>
-     * <p>
+     * <p/>
      * If contributing additional values, you will typically want them expressly ordered <em>after</em> these
      * contributions.
-     * 
+     *
      * @param configuration
      */
     @Contribute(JavaScriptStack.class)

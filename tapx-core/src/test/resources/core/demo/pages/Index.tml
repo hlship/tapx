@@ -1,43 +1,31 @@
 <t:layout xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:tx="tapestry-library:tapx">
 
 
-  <h1>tapx-core Demos</h1>
+    <h1>tapx-core Demos</h1>
 
-  <ul>
-    <li>
-      <t:pagelink page="ConfirmDemo">Confirm Mixin Demo</t:pagelink>
-    </li>
-    <li>
-      <t:pagelink page="ConfirmPac" context="1">Confirm Mixin / Page Activation Context Demo
-      </t:pagelink>
-    </li>
-    <li>
-      <t:pagelink page="SetEditorDemo">SetEditor Demo</t:pagelink>
-    </li>
-    <li>
-      <t:pagelink page="DynamicDemo">Dynamic Demo</t:pagelink>
-    </li>
-    <li>
-      <t:pagelink page="DynamicExpansionsDemo">Expansions in Dynamic Templates</t:pagelink>
-    </li>
-    <li>
-      <t:pagelink page="InvalidExpressionInDynamicTemplate">Invalid expression in a dynamic template</t:pagelink>
-    </li>
-    <li>
-      <t:pagelink page="CondBindingDemo">CondBindingPrefix Demo</t:pagelink>
-    </li>
-    <li>
-      <t:pagelink page="treedemo">Tree Component Demo</t:pagelink>
-    </li>
-    <li>
-      <t:pagelink page="silkimagedemo">SilkImage Component Demo</t:pagelink>
-    </li>
-    <li>
-      <t:pagelink page="expandoDemo">Expando Component Demo</t:pagelink>
-    </li>
-    <li>
-      <t:pagelink page="multiselectdemo">MultipleSelect Demo</t:pagelink>
-    </li>
-  </ul>
+    <ul>
+        <li>
+            <t:pagelink page="ConfirmDemo">Confirm Mixin Demo</t:pagelink>
+        </li>
+        <li>
+            <t:pagelink page="ConfirmPac" context="1">Confirm Mixin / Page Activation Context Demo
+            </t:pagelink>
+        </li>
+        <li>
+            <t:pagelink page="SetEditorDemo">SetEditor Demo</t:pagelink>
+        </li>
+        <li>
+            <t:pagelink page="CondBindingDemo">CondBindingPrefix Demo</t:pagelink>
+        </li>
+        <li>
+            <t:pagelink page="silkimagedemo">SilkImage Component Demo</t:pagelink>
+        </li>
+        <li>
+            <t:pagelink page="expandoDemo">Expando Component Demo</t:pagelink>
+        </li>
+        <li>
+            <t:pagelink page="multiselectdemo">MultipleSelect Demo</t:pagelink>
+        </li>
+    </ul>
 
 </t:layout>
