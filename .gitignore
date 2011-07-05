@@ -9,3 +9,7 @@ build
 .settings
 target
 .DS_Store
+out/
+*.iml
+*.ipr
+*.iws
