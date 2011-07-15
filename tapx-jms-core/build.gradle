@@ -1,0 +1,10 @@
+description = "Basic support for JMS services."
+
+dependencies {
+}
+
+jar {
+    manifest {
+        attributes 'Tapestry-Module-Classes': 'com.howardlewisship.tapx.jms.core.CoreJMSModule'
+    }
+}
