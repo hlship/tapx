@@ -14,5 +14,37 @@
 
 package com.howardlewisship.tapx.json;
 
+import com.howardlewisship.tapx.internal.json.IdentityJSONEncoder;
+import com.howardlewisship.tapx.internal.json.IterableJSONEncoder;
+import com.howardlewisship.tapx.internal.json.MapJSONEncoder;
+import org.apache.tapestry5.ioc.MappedConfiguration;
+import org.apache.tapestry5.ioc.annotations.Primary;
+import org.apache.tapestry5.ioc.services.StrategyBuilder;
+import org.apache.tapestry5.json.JSONArray;
+import org.apache.tapestry5.json.JSONObject;
+import org.apache.tapestry5.json.JSONString;
+
+import java.util.Map;
+
 public class JSONModule {
+
+    @Primary
+    public static JSONEncoder buildJSONEncoder(StrategyBuilder builder, Map<Class, JSONEncoder> configuration) {
+        return builder.build(JSONEncoder.class, configuration);
+    }
+
+    public static void standardJSONEncoders(MappedConfiguration<Class, JSONEncoder> configuration) {
+        JSONEncoder identity = new IdentityJSONEncoder();
+
+        configuration.add(String.class, identity);
+        configuration.add(Number.class, identity);
+        configuration.add(Boolean.class, identity);
+        configuration.add(JSONObject.class, identity);
+        configuration.add(JSONArray.class, identity);
+        configuration.add(JSONString.class, identity);
+
+        configuration.addInstance(Iterable.class, IterableJSONEncoder.class);
+        configuration.addInstance(Map.class, MapJSONEncoder.class);
+    }
+
 }
