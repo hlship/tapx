@@ -4,9 +4,11 @@ import com.howardlewisship.tapx.json.JSONEncoder
 import com.howardlewisship.tapx.json.JSONModule
 import org.apache.tapestry5.ioc.Registry
 import org.apache.tapestry5.ioc.RegistryBuilder
+import org.apache.tapestry5.json.JSONObject
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Unroll
+import org.apache.tapestry5.json.JSONArray
 
 /**
  * Tests various implementations of {@link com.howardlewisship.tapx.json.JSONEncoder}.
@@ -35,4 +37,28 @@ class JSONEncoderTests extends Specification {
         3.75f      | 3.75f
         null       | null
     }
+
+    def "map encodes to JSONObject"() {
+        when:
+        def input = [key1: "value1", key2: 2, key3: true]
+        def output = encoder.encodeAsJSON(input)
+        def expected = new JSONObject("{ 'key1' : 'value1', 'key2' : 2, 'key3' : true }")
+
+        then:
+
+        output == expected
+    }
+
+    def "list encodes to JSONArray"() {
+        when:
+
+        def input = [1, 2, 3]
+        def output = encoder.encodeAsJSON(input)
+        def expected = new JSONArray(1, 2, 3)
+
+        then:
+
+        output == expected
+    }
+
 }
