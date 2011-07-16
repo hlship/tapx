@@ -4,11 +4,11 @@ import com.howardlewisship.tapx.json.JSONEncoder
 import com.howardlewisship.tapx.json.JSONModule
 import org.apache.tapestry5.ioc.Registry
 import org.apache.tapestry5.ioc.RegistryBuilder
+import org.apache.tapestry5.json.JSONArray
 import org.apache.tapestry5.json.JSONObject
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Unroll
-import org.apache.tapestry5.json.JSONArray
 
 /**
  * Tests various implementations of {@link com.howardlewisship.tapx.json.JSONEncoder}.
@@ -60,5 +60,21 @@ class JSONEncoderTests extends Specification {
 
         output == expected
     }
+
+    def "encoding of nested maps and lists"() {
+        when:
+
+        def input = [top: [level: 'nested'], anArray: [1, 2, 3, [level: 'deep']]]
+        def output = encoder.encodeAsJSON(input)
+        def expected = new JSONObject("""
+              { "top" : { "level" : "nested" },
+                 "anArray" : [1, 2, 3, { "level" : "deep" }]}
+         """)
+
+        then:
+
+        output == expected
+    }
+
 
 }
