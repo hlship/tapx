@@ -22,16 +22,16 @@ class JSONEncoderTests extends Specification {
     @Unroll("JSON encoding of #input should be #expected")
     def "encoding of simple value types"() {
         expect:
-            encoder.encodeAsJSON(input) == expected
+        encoder.encodeAsJSON(input) == expected
 
-            where:
+        where:
 
-        input | expected
+        input      | expected
 
         "a string" | "a string"
-        5 | 5
-        false | false
-        true | true
-        3.75f | 3.75f
+        5          | 5
+        false      | false
+        true       | true
+        3.75f      | 3.75f
     }
 }
