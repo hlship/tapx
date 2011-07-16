@@ -33,5 +33,6 @@ class JSONEncoderTests extends Specification {
         false      | false
         true       | true
         3.75f      | 3.75f
+        null       | null
     }
 }
