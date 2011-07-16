@@ -1,7 +1,8 @@
 description = "Utilities for converting arbitrary objects to native JSON values."
 
 dependencies {
-  compile "org.apache.tapestry:tapestry-ioc:$tapestryVersion"
+  compile       "org.apache.tapestry:tapestry-ioc:$tapestryVersion"
+  testCompile   "org.spockframework:spock-core:0.5-groovy-1.7"
 }
 
 jar {
