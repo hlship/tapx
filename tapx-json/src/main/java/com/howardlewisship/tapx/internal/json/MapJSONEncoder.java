@@ -34,7 +34,7 @@ public class MapJSONEncoder implements JSONEncoder<Map<String, Object>> {
     @Override
     public Object encodeAsJSON(Map<String, Object> input) {
 
-        JSONObject result = new JSONObject(input);
+        JSONObject result = new JSONObject();
 
         for (Map.Entry<String, Object> entry :
                 input.entrySet()) {

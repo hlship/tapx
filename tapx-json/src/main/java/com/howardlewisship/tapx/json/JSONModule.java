@@ -18,6 +18,7 @@ import com.howardlewisship.tapx.internal.json.IdentityJSONEncoder;
 import com.howardlewisship.tapx.internal.json.IterableJSONEncoder;
 import com.howardlewisship.tapx.internal.json.MapJSONEncoder;
 import org.apache.tapestry5.ioc.MappedConfiguration;
+import org.apache.tapestry5.ioc.annotations.Contribute;
 import org.apache.tapestry5.ioc.annotations.Primary;
 import org.apache.tapestry5.ioc.services.StrategyBuilder;
 import org.apache.tapestry5.json.JSONArray;
@@ -33,6 +34,8 @@ public class JSONModule {
         return builder.build(JSONEncoder.class, configuration);
     }
 
+    @Contribute(JSONEncoder.class)
+    @Primary
     public static void standardJSONEncoders(MappedConfiguration<Class, JSONEncoder> configuration) {
         JSONEncoder identity = new IdentityJSONEncoder();
 
