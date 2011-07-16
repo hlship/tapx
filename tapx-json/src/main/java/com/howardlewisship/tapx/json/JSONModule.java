@@ -45,6 +45,7 @@ public class JSONModule {
         configuration.add(JSONObject.class, identity);
         configuration.add(JSONArray.class, identity);
         configuration.add(JSONString.class, identity);
+        configuration.add(void.class, identity);
 
         configuration.addInstance(Iterable.class, IterableJSONEncoder.class);
         configuration.addInstance(Map.class, MapJSONEncoder.class);
