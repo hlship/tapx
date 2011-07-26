@@ -13,7 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-T5.extendInitializer(function() {
+T5.extendInitializers(function() {
 
 	function updateHiddenField(field, state) {
 		field.value = Object.toJSON(state.values);
@@ -140,7 +140,7 @@ Tapestry.Initializer.tapxExpando = function(spec) {
 	$(spec.clientId).down(".tx-collapse").observe("click", collapse);
 };
 
-T5.extendInitializer(function() {
+T5.extendInitializers(function() {
 
 	function runModalDialog(title, message, proceed) {
 
