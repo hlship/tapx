@@ -44,6 +44,8 @@ tapx-kaptcha
 
 Two components for enabling KAPTCHA verification that the client is a living person, based on the [kaptcha](http://code.google.com/p/kaptcha/) project.
 
+This code has been moved to the Tapestry framework in Tapestry 5.3.
+
 * Components:
   * KaptchaField
   * KaptchaImage
@@ -55,19 +57,6 @@ This is a very simple extension to Tapestry.  It adds a new binding prefix, "pla
 
 Plain works just like "message:", except that any HTML elements are scrubbed, and XML
 entities are replaced with the corresponding characters.
-
-tapx-processing
----------------
-
-Bundles [Processing.js 0.9.7](http://processingjs.org/) as a component.
-
-* Components:
-  * Processing
-
-tapx-prototype
---------------
-
-Patches Tapestry to Script.aculo.us 1.9.0 and Prototype 1.7.
 
 tapx-templating
 ---------------
