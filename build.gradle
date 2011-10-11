@@ -54,7 +54,7 @@ subprojects {
         compile "org.apache.tapestry:tapestry-core:$tapestryVersion"        
         testCompile "org.apache.tapestry:tapestry-test:$tapestryVersion"        
         testCompile "org.easymock:easymock:3.0"
-        groovy "org.codehaus.groovy:groovy-all:1.7.4"
+        groovy "org.codehaus.groovy:groovy-all:1.7.10"
         
         deployerJars "org.apache.maven.wagon:wagon-ftp:1.0-beta-2"        
     }
@@ -88,10 +88,10 @@ subprojects {
     
     ideaModule {
       scopes.PROVIDED.plus += configurations.provided
-      javaVersion : "inherited"
+      javaVersion = "inherited"
     }
 }
 
 ideaProject {
-  javaVersion : "1.5"
+  javaVersion = "1.5"
 }
