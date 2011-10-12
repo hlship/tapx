@@ -14,13 +14,10 @@
 
 package com.howardlewisship.tapx.datefield.services;
 
-import java.util.List;
-
-import org.apache.tapestry5.ioc.Configuration;
-import org.apache.tapestry5.ioc.MappedConfiguration;
-import org.apache.tapestry5.ioc.OrderedConfiguration;
-import org.apache.tapestry5.ioc.Resource;
-import org.apache.tapestry5.ioc.ServiceBinder;
+import com.howardlewisship.tapx.datefield.DateFieldSymbols;
+import com.howardlewisship.tapx.datefield.TimeZoneVisibility;
+import com.howardlewisship.tapx.internal.datefield.services.*;
+import org.apache.tapestry5.ioc.*;
 import org.apache.tapestry5.ioc.annotations.Contribute;
 import org.apache.tapestry5.ioc.annotations.Marker;
 import org.apache.tapestry5.ioc.annotations.Primary;
@@ -33,14 +30,7 @@ import org.apache.tapestry5.services.LibraryMapping;
 import org.apache.tapestry5.services.javascript.JavaScriptStack;
 import org.apache.tapestry5.util.StringToEnumCoercion;
 
-import com.howardlewisship.tapx.datefield.DateFieldSymbols;
-import com.howardlewisship.tapx.datefield.TimeZoneVisibility;
-import com.howardlewisship.tapx.internal.datefield.services.BestGuessTimeZoneAnalyzer;
-import com.howardlewisship.tapx.internal.datefield.services.ClientTimeZoneTrackerImpl;
-import com.howardlewisship.tapx.internal.datefield.services.DateFieldFormatConverterImpl;
-import com.howardlewisship.tapx.internal.datefield.services.GeonameTimeZoneResolver;
-import com.howardlewisship.tapx.internal.datefield.services.LatLongTimeZoneAnalyzer;
-import com.howardlewisship.tapx.internal.datefield.services.SystemTimeZoneAnalyzer;
+import java.util.List;
 
 public class DateFieldModule
 {
@@ -57,6 +47,7 @@ public class DateFieldModule
                 "classpath:/com/howardlewisship/tapx/datefield/jscalendar-1.0");
         configuration.add(DateFieldSymbols.SKIN, "aqua");
         configuration.add(DateFieldSymbols.THEME, "");
+        configuration.add(DateFieldSymbols.GEONAMES_URL, "http://ws.geonames.org/timezoneJSON");
     }
 
     public static void contributeComponentClassResolver(Configuration<LibraryMapping> configuration)

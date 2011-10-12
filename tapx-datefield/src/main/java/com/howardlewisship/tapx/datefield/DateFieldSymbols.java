@@ -14,8 +14,7 @@
 
 package com.howardlewisship.tapx.datefield;
 
-public class DateFieldSymbols
-{
+public class DateFieldSymbols {
     /**
      * Path to the JSCalendar scripts and support files.
      */
@@ -31,4 +30,12 @@ public class DateFieldSymbols
      * "win2k-cold-2"). Defaults to "". If a theme is configured, then the {@link #SKIN} is ignored.
      */
     public static final String THEME = "tapx.datefield.theme";
+
+    /**
+     * Symbol that defines the base URL for accessing the GeoNames database. This can be overridden just for
+     * testing purposes.
+     *
+     * @since 1.2
+     */
+    public static final String GEONAMES_URL = "tapx.geonames.url";
 }

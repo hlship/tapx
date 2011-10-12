@@ -14,6 +14,13 @@
 
 package com.howardlewisship.tapx.internal.datefield.services;
 
+import com.howardlewisship.tapx.datefield.DateFieldSymbols;
+import com.howardlewisship.tapx.datefield.services.LatLongToTimeZoneResolver;
+import org.apache.tapestry5.ioc.annotations.Symbol;
+import org.apache.tapestry5.ioc.internal.util.InternalUtils;
+import org.apache.tapestry5.json.JSONObject;
+import org.slf4j.Logger;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -21,37 +28,35 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.TimeZone;
 
-import org.apache.tapestry5.ioc.annotations.InjectResource;
-import org.apache.tapestry5.ioc.internal.util.InternalUtils;
-import org.apache.tapestry5.json.JSONObject;
-import org.slf4j.Logger;
-
-import com.howardlewisship.tapx.datefield.services.LatLongToTimeZoneResolver;
-
 /**
  * Makes use of the web service at http://ws.geonames.org/timezoneJSON to convert a latitude and
  * longitude into TimeZone.
  */
-public class GeonameTimeZoneResolver implements LatLongToTimeZoneResolver
-{
-    @InjectResource
-    private Logger logger;
+public class GeonameTimeZoneResolver implements LatLongToTimeZoneResolver {
+    private final Logger logger;
 
-    public TimeZone resolveTimeZone(double latitude, double longitude)
-    {
-        try
-        {
+    private final String geonamesURL;
+
+    public GeonameTimeZoneResolver(Logger logger, @Symbol(DateFieldSymbols.GEONAMES_URL) String geonamesURL) {
+        this.logger = logger;
+        this.geonamesURL = geonamesURL;
+    }
+
+    public TimeZone resolveTimeZone(double latitude, double longitude) {
+        try {
             String content = readContent(latitude, longitude);
+
+            if (content == null) {
+                return null;
+            }
 
             JSONObject response = new JSONObject(content);
 
             String timeZoneId = response.getString("timezoneId");
 
             return TimeZone.getTimeZone(timeZoneId);
-        }
-        catch (Exception ex)
-        {
-            logger.error(String.format("Unable to use geonames.org to resolve time zone for %f, %f: %s", latitude,
+        } catch (Exception ex) {
+            logger.error(String.format("Unable to use %s to resolve time zone for %f, %f: %s", geonamesURL, latitude,
                     longitude, InternalUtils.toMessage(ex)), ex);
 
             return null;
@@ -59,13 +64,21 @@ public class GeonameTimeZoneResolver implements LatLongToTimeZoneResolver
 
     }
 
-    private String readContent(double latitude, double longitude) throws IOException
-    {
-        URL url = new URL(String.format("http://ws.geonames.org/timezoneJSON?lat=%f&lng=%f", latitude, longitude));
+    private String readContent(double latitude, double longitude) throws IOException {
+        URL url = new URL(String.format("%s?lat=%f&lng=%f", geonamesURL, latitude, longitude));
 
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
         connection.connect();
+
+        if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
+            logger.info(String.format("Attempt to resolve location to time zone got %d result from %s",
+                    connection.getResponseCode(), url));
+
+            connection.disconnect();
+
+            return null;
+        }
 
         String content = readContentFromConnection(connection);
 
@@ -75,18 +88,15 @@ public class GeonameTimeZoneResolver implements LatLongToTimeZoneResolver
 
     }
 
-    private String readContentFromConnection(HttpURLConnection connection) throws IOException
-    {
+    private String readContentFromConnection(HttpURLConnection connection) throws IOException {
         StringBuilder result = new StringBuilder(200);
         BufferedReader reader = null;
 
-        try
-        {
+        try {
             reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String line = null;
 
-            while (true)
-            {
+            while (true) {
                 line = reader.readLine();
 
                 if (line == null)
@@ -94,9 +104,7 @@ public class GeonameTimeZoneResolver implements LatLongToTimeZoneResolver
 
                 result.append(line).append('\n');
             }
-        }
-        finally
-        {
+        } finally {
             InternalUtils.close(reader);
         }
 
