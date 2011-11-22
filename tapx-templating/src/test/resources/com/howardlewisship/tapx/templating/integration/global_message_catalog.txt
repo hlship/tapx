@@ -1,7 +1,6 @@
 <html>
 <head>
-<meta content="Apache Tapestry Framework (version [TAPVERSION])" name="generator">
-</meta>
+<meta content="Apache Tapestry Framework (version [TAPVERSION])" name="generator"/>
 </head>
 <body>
 <dl><dt>Global</dt>

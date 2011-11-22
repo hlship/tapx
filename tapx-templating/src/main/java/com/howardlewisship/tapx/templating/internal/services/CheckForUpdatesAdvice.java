@@ -1,4 +1,4 @@
-// Copyright 2009 Howard M. Lewis Ship
+// Copyright 2009, 2011 Howard M. Lewis Ship
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,12 +15,12 @@
 package com.howardlewisship.tapx.templating.internal.services;
 
 import org.apache.tapestry5.SymbolConstants;
-import org.apache.tapestry5.ioc.Invocation;
-import org.apache.tapestry5.ioc.MethodAdvice;
 import org.apache.tapestry5.ioc.annotations.IntermediateType;
 import org.apache.tapestry5.ioc.annotations.Symbol;
 import org.apache.tapestry5.ioc.internal.util.ConcurrentBarrier;
 import org.apache.tapestry5.ioc.util.TimeInterval;
+import org.apache.tapestry5.plastic.MethodAdvice;
+import org.apache.tapestry5.plastic.MethodInvocation;
 import org.apache.tapestry5.services.UpdateListenerHub;
 
 import java.util.concurrent.TimeUnit;
@@ -87,7 +87,7 @@ public class CheckForUpdatesAdvice implements MethodAdvice
     }
 
 
-    public void advise(final Invocation invocation)
+    public void advise(final MethodInvocation invocation)
     {
         Runnable checkAndProceed = new Runnable()
         {
@@ -97,7 +97,6 @@ public class CheckForUpdatesAdvice implements MethodAdvice
                     barrier.tryWithWrite(checker, updateTimeout, TimeUnit.MILLISECONDS);
 
                 // And, now, back to code within the read lock.
-
 
                 invocation.proceed();
             }

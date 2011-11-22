@@ -1,4 +1,4 @@
-// Copyright 2009, 2010 Howard M. Lewis Ship
+// Copyright 2009, 2010, 2011 Howard M. Lewis Ship
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
 package com.howardlewisship.tapx.templating.services;
 
 import com.howardlewisship.tapx.templating.internal.services.*;
-
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.internal.InternalSymbols;
 import org.apache.tapestry5.ioc.MappedConfiguration;
@@ -53,7 +52,7 @@ public class TemplateModule
      */
     public static void contributeMarkupRenderer(OrderedConfiguration<MarkupRendererFilter> configuration)
     {
-        configuration.override("InjectDefaultStyleheet", null);
+        configuration.override("InjectDefaultStylesheet", null);
     }
 
     /**

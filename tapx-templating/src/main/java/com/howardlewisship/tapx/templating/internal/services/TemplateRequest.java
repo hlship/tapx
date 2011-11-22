@@ -139,4 +139,7 @@ public class TemplateRequest implements Request
         return 80;
     }
 
+    public String getRemoteHost() {
+        return null;
+    }
 }

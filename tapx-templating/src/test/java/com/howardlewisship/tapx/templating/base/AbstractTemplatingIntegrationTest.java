@@ -1,4 +1,4 @@
-// Copyright 2009 Howard M. Lewis Ship
+// Copyright 2009, 2011 Howard M. Lewis Ship
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@ package com.howardlewisship.tapx.templating.base;
 import com.howardlewisship.tapx.templating.RenderedStream;
 import com.howardlewisship.tapx.templating.TemplateAPI;
 import com.howardlewisship.tapx.templating.TemplateRenderer;
-
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.internal.TapestryInternalUtils;
 import org.apache.tapestry5.ioc.Registry;
@@ -99,12 +98,6 @@ public class AbstractTemplatingIntegrationTest extends TestBase
 
             throw ex;
         }
-    }
-
-    protected void compare(InputStream actualStream, String contentFile)
-            throws IOException
-    {
-        compare(actualStream, getClass().getResourceAsStream(contentFile));
     }
 
     protected void compare(InputStream actualStream, InputStream expectedStream)

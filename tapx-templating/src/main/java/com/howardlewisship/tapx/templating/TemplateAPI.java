@@ -1,4 +1,4 @@
-// Copyright 2009, 2010 Howard M. Lewis Ship
+// Copyright 2009, 2010, 2011 Howard M. Lewis Ship
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,9 +14,9 @@
 
 package com.howardlewisship.tapx.templating;
 
-import java.io.File;
-import java.io.IOException;
-
+import com.howardlewisship.tapx.templating.internal.TemplateContext;
+import com.howardlewisship.tapx.templating.services.TemplateModule;
+import com.howardlewisship.tapx.templating.services.TemplateRendererSource;
 import org.apache.tapestry5.internal.TapestryAppInitializer;
 import org.apache.tapestry5.ioc.Registry;
 import org.apache.tapestry5.ioc.internal.util.InternalUtils;
@@ -25,16 +25,14 @@ import org.apache.tapestry5.services.Context;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.howardlewisship.tapx.templating.internal.TemplateContext;
-import com.howardlewisship.tapx.templating.services.TemplateModule;
-import com.howardlewisship.tapx.templating.services.TemplateRendererSource;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Responsible for starting up the Tapestry Template Library, analagous to how TapestryFilter starts up a Tapestry
  * application.
  */
-public class TemplateAPI implements TemplateRendererSource
-{
+public class TemplateAPI implements TemplateRendererSource {
     private final Logger logger = LoggerFactory.getLogger(TemplateAPI.class);
 
     private final TemplateRendererSource templateRendererSource;
@@ -52,15 +50,13 @@ public class TemplateAPI implements TemplateRendererSource
      * @param applicationPackage root package name to search for pages, components and services
      * @param contextDirectory   directory containing static resources and template files
      */
-    public TemplateAPI(String applicationPackage, File contextDirectory)
-    {
+    public TemplateAPI(String applicationPackage, File contextDirectory) {
         assert InternalUtils.isNonBlank(applicationPackage);
         assert contextDirectory != null;
 
         Context context = new TemplateContext(contextDirectory);
 
-        TapestryAppInitializer initializer = new TapestryAppInitializer(logger, applicationPackage, "app",
-                                                                        TemplateConstants.TEMPLATE_MODE);
+        TapestryAppInitializer initializer = new TapestryAppInitializer(logger, applicationPackage, "app");
 
         initializer.addModules(TemplateModule.class);
 
@@ -84,8 +80,7 @@ public class TemplateAPI implements TemplateRendererSource
      * This method must be called after rendering content; it ensures that any resources used during rendering are
      * cleaned up (this includes returning page instances to the page pool for later reuse).
      */
-    public void cleanupThread()
-    {
+    public void cleanupThread() {
         registry.cleanupThread();
     }
 
@@ -98,8 +93,7 @@ public class TemplateAPI implements TemplateRendererSource
      *                     (it is intended to support location-specific content delivery servers)
      * @return the renderer
      */
-    public TemplateRenderer createRenderer(String templateName, String localeName, String location)
-    {
+    public TemplateRenderer createRenderer(String templateName, String localeName, String location) {
         return templateRendererSource.createRenderer(templateName, localeName, location);
     }
 
@@ -116,16 +110,12 @@ public class TemplateAPI implements TemplateRendererSource
      */
     public void performTemplateRendererOperation(String templateName, String localeName, String location,
                                                  TemplateRendererCallback callback)
-            throws IOException
-    {
-        try
-        {
+            throws IOException {
+        try {
             TemplateRenderer renderer = createRenderer(templateName, localeName, location);
 
             callback.performOperation(renderer);
-        }
-        finally
-        {
+        } finally {
             cleanupThread();
         }
     }
@@ -137,16 +127,14 @@ public class TemplateAPI implements TemplateRendererSource
      *
      * @return the services registry
      */
-    public Registry getRegistry()
-    {
+    public Registry getRegistry() {
         return registry;
     }
 
     /**
      * Shuts down the Registry, which immediately invalidates all services.
      */
-    public void shutdown()
-    {
+    public void shutdown() {
         registry.shutdown();
     }
 }
