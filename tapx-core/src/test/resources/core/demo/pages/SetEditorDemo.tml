@@ -5,7 +5,7 @@
 
   <t:form>
 
-    <x:seteditor set="values"/>
+    <x:seteditor set="values" label="Names" />
 
     <br clear="both"/>
 
