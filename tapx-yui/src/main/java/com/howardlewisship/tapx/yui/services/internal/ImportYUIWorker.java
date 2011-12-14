@@ -17,35 +17,33 @@ package com.howardlewisship.tapx.yui.services.internal;
 import com.howardlewisship.tapx.yui.ImportYUI;
 import com.howardlewisship.tapx.yui.YuiSymbols;
 import org.apache.tapestry5.Asset;
-import org.apache.tapestry5.MarkupWriter;
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.annotations.BeginRender;
 import org.apache.tapestry5.func.F;
 import org.apache.tapestry5.func.Flow;
 import org.apache.tapestry5.func.Mapper;
 import org.apache.tapestry5.func.Worker;
+import org.apache.tapestry5.ioc.Resource;
 import org.apache.tapestry5.ioc.annotations.Symbol;
 import org.apache.tapestry5.model.MutableComponentModel;
-import org.apache.tapestry5.plastic.*;
-import org.apache.tapestry5.runtime.Component;
-import org.apache.tapestry5.runtime.Event;
+import org.apache.tapestry5.plastic.MethodAdvice;
+import org.apache.tapestry5.plastic.MethodInvocation;
+import org.apache.tapestry5.plastic.PlasticClass;
 import org.apache.tapestry5.services.AssetSource;
+import org.apache.tapestry5.services.TransformConstants;
 import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 import org.apache.tapestry5.services.transform.ComponentClassTransformWorker2;
 import org.apache.tapestry5.services.transform.TransformationSupport;
 
 public class ImportYUIWorker implements ComponentClassTransformWorker2
 {
+    private final Resource yuiBaseFolder;
+
     private final AssetSource assetSource;
 
     private final JavaScriptSupport javaScriptSupport;
 
-    private final String yuiBase;
-
     private final boolean productionMode;
-
-    public static final MethodDescription BEGIN_RENDER_DESCRIPTION = PlasticUtils.getMethodDescription(Component.class,
-            "beginRender", MarkupWriter.class, Event.class);
 
     public ImportYUIWorker(AssetSource assetSource,
 
@@ -60,7 +58,8 @@ public class ImportYUIWorker implements ComponentClassTransformWorker2
         this.assetSource = assetSource;
         this.javaScriptSupport = javaScriptSupport;
 
-        this.yuiBase = yuiBase;
+        yuiBaseFolder = assetSource.getExpandedAsset(yuiBase + "/build").getResource();
+
         this.productionMode = productionMode;
     }
 
@@ -68,28 +67,34 @@ public class ImportYUIWorker implements ComponentClassTransformWorker2
     {
         public String map(String name)
         {
-            String relativePath = name.contains("/") ? name : name + "/" + name;
-
-            return yuiBase + "/build/" + relativePath;
+            return name.contains("/") ? name : name + "/" + name;
         }
     };
 
-    private final Mapper<String, Asset> pathToAsset = new Mapper<String, Asset>()
+    private final Mapper<String, Resource> nameToResource = new Mapper<String, Resource>()
     {
-        public Asset map(String path)
+        public Resource map(String name)
         {
-
-            if (!productionMode)
+            if (productionMode)
             {
-                String minPath = path + "-min.js";
+                Resource minimized = yuiBaseFolder.forFile("build/" + name + "-min.js");
 
-                Asset asset = assetSource.getExpandedAsset(minPath);
-
-                if (asset.getResource().exists())
-                    return asset;
+                if (minimized.exists())
+                {
+                    return minimized;
+                }
             }
 
-            return assetSource.getExpandedAsset(path + ".js");
+            return yuiBaseFolder.forFile("build/" + name + ".js");
+        }
+    };
+
+    private final Mapper<Resource, Asset> resourceToAsset = new Mapper<Resource, Asset>()
+    {
+        public Asset map(Resource element)
+        {
+            // A bit roundabout, but AssetSource doesn't currently give us the necessary options.
+            return assetSource.getUnlocalizedAsset(element.getPath());
         }
     };
 
@@ -110,22 +115,21 @@ public class ImportYUIWorker implements ComponentClassTransformWorker2
             return;
         }
 
-        Flow<Asset> assetFlow = F.flow(annotation.value()).map(expandSimpleName).map(pathToAsset);
+        Flow<Asset> assetFlow = F.flow(annotation.value()).map(expandSimpleName).map(nameToResource).map(resourceToAsset);
 
-        addAdvicetoBeginRender(plasticClass, assetFlow);
+        addAdviceToBeginRender(plasticClass, assetFlow);
 
         model.addRenderPhase(BeginRender.class);
     }
 
-    private void addAdvicetoBeginRender(PlasticClass transformation, Flow<Asset> assetFlow)
+    private void addAdviceToBeginRender(PlasticClass transformation, Flow<Asset> assetFlow)
     {
-        transformation.introduceMethod(BEGIN_RENDER_DESCRIPTION).addAdvice(
+        transformation.introduceMethod(TransformConstants.BEGIN_RENDER_DESCRIPTION).addAdvice(
                 createBeginRenderAdvice(assetFlow));
     }
 
     private MethodAdvice createBeginRenderAdvice(final Flow<Asset> assetFlow)
     {
-
         return new MethodAdvice()
         {
             public void advise(MethodInvocation invocation)
