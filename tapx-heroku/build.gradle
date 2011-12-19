@@ -1,0 +1,14 @@
+description = "Common general components"
+
+versions = [
+        jetty : "8.0.3.v20111011",
+        mongo : "2.6.5"
+]
+
+dependencies {
+    compile "org.eclipse.jetty:jetty-webapp:$versions.jetty"
+    compile "org.eclipse.jetty:jetty-nosql:$versions.jetty"
+    compile "org.mongodb:mongo-java-driver:$versions.mongo"
+    compile "commons-cli:commons-cli:1.2"
+}
+
