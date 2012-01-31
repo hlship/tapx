@@ -43,6 +43,22 @@ SPAN.tx-seteditor-add {
   cursor: pointer;
 }
 
+SPAN.tx-expand {
+    width: 16px;
+    height: 16px;
+    background-image: url(expand.png);
+    display: inline-block;
+    cursor: pointer;
+}
+
+SPAN.tx-collapse {
+    width: 16px;
+    height: 16px;
+    background-image: url(collapse.png);
+    display: inline-block;
+    cursor: pointer;
+}
+
 DIV.tx-expando.tx-expanded SPAN.tx-expand { display: none; }
 
 DIV.tx-expando.tx-collapsed SPAN.tx-collapse { display: none; }
