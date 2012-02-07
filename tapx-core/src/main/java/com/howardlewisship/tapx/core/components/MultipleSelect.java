@@ -14,22 +14,9 @@
 
 package com.howardlewisship.tapx.core.components;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import org.apache.tapestry5.BindingConstants;
-import org.apache.tapestry5.Block;
-import org.apache.tapestry5.ComponentAction;
-import org.apache.tapestry5.ComponentResources;
-import org.apache.tapestry5.Field;
-import org.apache.tapestry5.annotations.Environmental;
-import org.apache.tapestry5.annotations.Import;
-import org.apache.tapestry5.annotations.InjectComponent;
-import org.apache.tapestry5.annotations.Parameter;
-import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.annotations.SupportsInformalParameters;
+import com.howardlewisship.tapx.core.multiselect.MultipleSelectModel;
+import org.apache.tapestry5.*;
+import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.beaneditor.BeanModel;
 import org.apache.tapestry5.corelib.components.BeanEditor;
 import org.apache.tapestry5.corelib.components.Palette;
@@ -48,11 +35,14 @@ import org.apache.tapestry5.services.FormSupport;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 
-import com.howardlewisship.tapx.core.multiselect.MultipleSelectModel;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Both a simplification of the Tapestry {@link Palette} component, and an extension in that it supports
- * adding new values on the fly, using a form located inside a Modalbox modal dialog. Specically
+ * adding new values on the fly, using a form located inside a Modalbox modal dialog. Specifically
  * limited to editing a <em>Set</em> of values: element order is immaterial, and the UI keeps
  * the values sorted in alphabetical order by {@linkplain MultipleSelectModel#toLabel(Object) label}.
  * <p>
