@@ -38,18 +38,14 @@ base on Geolocation data (if allowed by the client).
 * Components:
   * DateField
   * TimeZoneIdentifier
-  
-tapx-kaptcha
-------------
 
-Two components for enabling KAPTCHA verification that the client is a living person, based on the [kaptcha](http://code.google.com/p/kaptcha/) project.
+tapx-heroku
+-----------
 
-This code has been moved to the Tapestry framework in Tapestry 5.3.
+A small wrapper that allows Tapestry applications to be deployed onto the Heroku cloud computing service.
 
-* Components:
-  * KaptchaField
-  * KaptchaImage
-  
+The documentation is currently just a posting on [James Ward's blog](http://www.jamesward.com/2012/02/08/deploy-containerless-tapestry-apps-on-heroku).
+
 tapx-plainmessage
 -----------------
 
