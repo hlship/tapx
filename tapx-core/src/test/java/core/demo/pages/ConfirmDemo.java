@@ -14,39 +14,62 @@
 
 package core.demo.pages;
 
-import org.apache.tapestry5.PersistenceConstants;
+import org.apache.tapestry5.alerts.AlertManager;
 import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.corelib.components.Zone;
+import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class ConfirmDemo {
-	@Property
-	@Persist(PersistenceConstants.FLASH)
-	private String message;
 
-	@InjectComponent
-	private Zone zone, messageZone;
+    @Inject
+    private AlertManager alertManager;
 
-	void onActionFromLink1() {
-		message = "update from link1";
-	}
+    @Persist
+    @Property
+    private int updates;
 
-	Object onActionFromLink2() {
-		return zone.getBody();
-	}
 
-	void onSuccessFromForm() {
-		message = "update via form submit";
-	}
+    @InjectComponent
+    private Zone zone;
 
-	Object onSuccessFromZoneForm() {
-		message = "update via zone form submit";
+    void onActionFromLink1() {
+        alertManager.info("update from link1");
+    }
 
-		return messageZone.getBody();
-	}
+    void onSelectedFromFormSubmit() {
+        alertManager.info("formSubmit was selected");
+    }
 
-	void onActionFromLink3() {
-		message = "update from link3";
-	}
+    void onSelectedFromZoneFormSubmit() {
+        alertManager.info("zoneFormSubmit was selected");
+    }
+
+    Object onActionFromLink2() {
+
+        updates++;
+
+        alertManager.info("update from link2");
+
+        return zone.getBody();
+    }
+
+    void onSuccessFromForm() {
+        alertManager.info("update via form submit");
+    }
+
+    Object onSuccessFromZoneForm() {
+
+        updates++;
+
+        alertManager.info("update via zone form submit");
+
+        return zone.getBody();
+
+    }
+
+    void onActionFromLink3() {
+        alertManager.info("update from link3");
+    }
 }
