@@ -1,9 +1,9 @@
 description = "Collection of add-ons for Tapestry 5"
 
-tapestryVersion = "5.3.2"
+ext.tapestryVersion = "5.3.3"
 
-if (!project.hasProperty('deployUserName')) deployUserName = '*UNSET-USERNAME*'
-if (!project.hasProperty('deployPassword')) deployPassword = '*UNSET-PASSWORD*'
+if (!project.hasProperty('deployUserName')) ext.deployUserName = '*UNSET-USERNAME*'
+if (!project.hasProperty('deployPassword')) ext.deployPassword = '*UNSET-PASSWORD*'
 
 
 apply plugin: 'idea'
