@@ -46,7 +46,6 @@ public class DateFieldModule
                 "classpath:/com/howardlewisship/tapx/datefield/jscalendar-1.0");
         configuration.add(DateFieldSymbols.SKIN, "aqua");
         configuration.add(DateFieldSymbols.THEME, "");
-        configuration.add(DateFieldSymbols.SECURE_TIME_ZONE_COOKIE, false);
     }
 
     public static void contributeComponentClassResolver(Configuration<LibraryMapping> configuration)

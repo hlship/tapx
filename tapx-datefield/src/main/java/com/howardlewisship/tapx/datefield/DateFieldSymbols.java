@@ -30,13 +30,4 @@ public class DateFieldSymbols {
      * "win2k-cold-2"). Defaults to "". If a theme is configured, then the {@link #SKIN} is ignored.
      */
     public static final String THEME = "tapx.datefield.theme";
-
-    /**
-     * If true, then the cookie used to track the user's time zone (once identified) is secure.
-     * Default is false.
-     *
-     * @since 1.2
-     */
-    public static final String SECURE_TIME_ZONE_COOKIE = "tapx.datefield.secure-timezone-cookie";
-
 }

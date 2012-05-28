@@ -14,12 +14,10 @@
 
 package com.howardlewisship.tapx.internal.datefield.services;
 
-import com.howardlewisship.tapx.datefield.DateFieldSymbols;
 import com.howardlewisship.tapx.datefield.services.ClientTimeZoneTracker;
 import org.apache.tapestry5.internal.services.CookieSink;
 import org.apache.tapestry5.ioc.ScopeConstants;
 import org.apache.tapestry5.ioc.annotations.Scope;
-import org.apache.tapestry5.ioc.annotations.Symbol;
 import org.apache.tapestry5.services.Cookies;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.Session;
@@ -42,20 +40,15 @@ public class ClientTimeZoneTrackerImpl implements ClientTimeZoneTracker
 
     private final Request request;
 
-    private final boolean secure;
-
     private TimeZone timeZone;
 
     private boolean identified;
 
-    public ClientTimeZoneTrackerImpl(Cookies cookies, CookieSink cookieSink, Request request,
-                                     @Symbol(DateFieldSymbols.SECURE_TIME_ZONE_COOKIE)
-                                     boolean secure)
+    public ClientTimeZoneTrackerImpl(Cookies cookies, CookieSink cookieSink, Request request)
     {
         this.cookies = cookies;
         this.cookieSink = cookieSink;
         this.request = request;
-        this.secure = secure;
 
         setupTimeZone();
     }
@@ -129,7 +122,6 @@ public class ClientTimeZoneTrackerImpl implements ClientTimeZoneTracker
         Cookie cookie = new Cookie(COOKIE_NAME, timeZone.getID());
         cookie.setPath(request.getContextPath() + "/");
         cookie.setMaxAge(THIRTY_DAYS_IN_SECONDS);
-        cookie.setSecure(secure);
 
         cookieSink.addCookie(cookie);
 
