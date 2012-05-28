@@ -1,41 +1,49 @@
+// Copyright 2011, 2012 Howard M. Lewis Ship
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 package com.howardlewisship.tapx.datefield.components;
 
-import java.util.TimeZone;
-
+import com.howardlewisship.tapx.datefield.services.ClientTimeZoneAnalyzer;
+import com.howardlewisship.tapx.datefield.services.ClientTimeZoneData;
+import com.howardlewisship.tapx.datefield.services.ClientTimeZoneTracker;
 import org.apache.tapestry5.ComponentResources;
 import org.apache.tapestry5.Link;
 import org.apache.tapestry5.annotations.Import;
 import org.apache.tapestry5.annotations.RequestParameter;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.annotations.Primary;
-import org.apache.tapestry5.ioc.internal.util.InternalUtils;
 import org.apache.tapestry5.json.JSONObject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 
-import com.howardlewisship.tapx.datefield.services.ClientTimeZoneAnalyzer;
-import com.howardlewisship.tapx.datefield.services.ClientTimeZoneData;
-import com.howardlewisship.tapx.datefield.services.ClientTimeZoneTracker;
+import java.util.TimeZone;
 
 /**
  * Determines if {@linkplain ClientTimeZoneTracker#isClientTimeZoneIdentified() the client has
  * identified the time zone} and, if not, adds JavaScript to the page to send the time zone
- * information to the server. The JavaScript will ask for access to geolocation data available on
- * the
- * client (this works in Firefox and Chrome) and will report the client's latitude and longitude.
- * If geolocation data is not available, other date information is used to determine the best
- * matching TimeZone.
- * <p>
+ * information to the server.
+ * <p/>
  * Typically, this component is placed into the application's <em>Layout</em> component (a common
  * component that defines the global layout of the application).
- * <p>
+ * <p/>
  * After the time zone is identified, an event, "tapx:time-zone-identified" is triggered on the
  * document object. The memo of the event is a JSON object with key "timeZoneId".
- * <p>
+ * <p/>
  * TODO: Seems like collecting this information is just part of a larger cycle of determining
  * exactly what's running on the client ... imagine if we knew exactly what browser was out there,
  * and what features it supported, and could customize to that!
- * 
+ *
  * @see ClientTimeZoneTracker
  * @see ClientTimeZoneAnalyzer
  */
@@ -75,24 +83,17 @@ public class TimeZoneIdentifier
     }
 
     Object onIdentifyTimeZone(@RequestParameter("offsetMinutes")
-    int offsetMinutes, @RequestParameter("dateString")
+                              int offsetMinutes, @RequestParameter("dateString")
     String dateString, @RequestParameter("epochMillis")
     long epochMillis)
     {
         TimeZone timeZone = timeZoneAnalyzer.extractTimeZone(new ClientTimeZoneData(dateString,
-                offsetMinutes, epochMillis, getDouble("latitude"), getDouble("longitude")));
+                offsetMinutes, epochMillis));
 
         tracker.setClientTimeZone(timeZone);
 
         JSONObject response = new JSONObject("timeZoneId", timeZone.getID());
 
         return response;
-    }
-
-    private Double getDouble(String name)
-    {
-        String value = request.getParameter(name);
-
-        return InternalUtils.isBlank(value) ? null : new Double(value);
     }
 }

@@ -1,4 +1,4 @@
-// Copyright 2009, 2010, 2011 Howard M. Lewis Ship
+// Copyright 2009, 2010, 2011, 2012 Howard M. Lewis Ship
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,25 +14,11 @@
 
 package com.howardlewisship.tapx.datefield.components;
 
-import java.lang.annotation.Annotation;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.Locale;
-import java.util.TimeZone;
-
-import org.apache.tapestry5.Asset;
-import org.apache.tapestry5.Binding;
-import org.apache.tapestry5.BindingConstants;
-import org.apache.tapestry5.ComponentResources;
-import org.apache.tapestry5.FieldValidationSupport;
-import org.apache.tapestry5.FieldValidator;
-import org.apache.tapestry5.MarkupWriter;
-import org.apache.tapestry5.ValidationException;
-import org.apache.tapestry5.ValidationTracker;
+import com.howardlewisship.tapx.datefield.TimeSignificant;
+import com.howardlewisship.tapx.datefield.TimeZoneVisibility;
+import com.howardlewisship.tapx.datefield.services.ClientTimeZoneTracker;
+import com.howardlewisship.tapx.datefield.services.DateFieldFormatConverter;
+import org.apache.tapestry5.*;
 import org.apache.tapestry5.annotations.Environmental;
 import org.apache.tapestry5.annotations.Import;
 import org.apache.tapestry5.annotations.Parameter;
@@ -50,17 +36,18 @@ import org.apache.tapestry5.services.ComponentDefaultProvider;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 
-import com.howardlewisship.tapx.datefield.TimeSignificant;
-import com.howardlewisship.tapx.datefield.TimeZoneVisibility;
-import com.howardlewisship.tapx.datefield.services.ClientTimeZoneTracker;
-import com.howardlewisship.tapx.datefield.services.DateFieldFormatConverter;
+import java.lang.annotation.Annotation;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * A replacement for Tapestry's built-in DateField, built around the <a
  * href="http://www.dynarch.com/projects/calendar/old/">Dynarch
  * JSCalendar Widget</a>. This is a highly functional calendar, but is distributed as LGPL and so
  * can't be built directly into Tapestry.
- * <p>
+ * <p/>
  * Starting with version 1.1, there is enhanced control over the time zone displayed to the user (including the optional
  * ability to edit the time zone). You will likely want to include a {@link TimeZoneIdentifier} component in your
  * application's Layout to ensure that the correct time zone for the client is used.
@@ -93,7 +80,7 @@ public class DateField extends AbstractField
     /**
      * If true, then the calendar will include time selection as well as date selection. This is
      * normally false, unless the property has the {@link TimeSignificant} annotation.
-     * 
+     *
      * @since 1.1
      */
     @Parameter
@@ -101,7 +88,7 @@ public class DateField extends AbstractField
 
     /**
      * Controls how the time zone is presented to the user; the default (for compatibility) is NONE.
-     * 
+     *
      * @since 1.1
      */
     @Parameter(value = "none", defaultPrefix = BindingConstants.LITERAL)
@@ -118,11 +105,20 @@ public class DateField extends AbstractField
      * Object that will provide access to annotations (such as {@link TimeSignificant}). This is
      * only used when configuring DateField to work within the {@link BeanEditor}. Normally,
      * annotations come from the property bound the value parameter.
-     * 
+     *
      * @since 1.1
      */
     @Parameter
     private AnnotationProvider annotationProvider;
+
+    /**
+     * Sets optional maximum and minimum dates for the calendar. This is enforced on the client-side
+     * by making dates outside the range non-selectable, and is enforced on the server as a validation error.
+     *
+     * @since 1.2
+     */
+    @Parameter
+    private Date max, min;
 
     /**
      * The object that will perform input validation (which occurs after translation). The translate
@@ -131,7 +127,9 @@ public class DateField extends AbstractField
     @Parameter(defaultPrefix = BindingConstants.VALIDATE)
     private FieldValidator<Object> validate;
 
-    /** The icon to use for the button that raises the calendar popup. */
+    /**
+     * The icon to use for the button that raises the calendar popup.
+     */
     @Parameter(defaultPrefix = BindingConstants.ASSET, value = "datefield.gif")
     private Asset icon;
 
@@ -232,23 +230,27 @@ public class DateField extends AbstractField
         String value = tracker.getInput(this);
 
         if (value == null)
+        {
             value = formatCurrentValue();
+        }
 
         String clientId = getClientId();
         String triggerId = clientId + "-trigger";
 
         writer.element("input",
 
-        "type", hideTextField ? "hidden" : "text",
+                "type", hideTextField ? "hidden" : "text",
 
-        "name", getControlName(),
+                "name", getControlName(),
 
-        "id", clientId,
+                "id", clientId,
 
-        "value", value);
+                "value", value);
 
         if (isDisabled())
+        {
             writer.attributes("disabled", "disabled");
+        }
 
         validate.render(writer);
 
@@ -262,19 +264,31 @@ public class DateField extends AbstractField
 
         writer.element("img",
 
-        "id", triggerId,
+                "id", triggerId,
 
-        "class", "t-calendar-trigger",
+                "class", "t-calendar-trigger",
 
-        "src", icon.toClientURL(),
+                "src", icon.toClientURL(),
 
-        "alt", "[Show]");
+                "alt", "[Show]");
         writer.end(); // img
 
         writeTimeZone(writer);
 
-        JSONObject spec = new JSONObject("clientId", clientId, "clientDateFormat",
-                formatConverter.convertToClient(format)).put("time", time).put("singleClick", singleClick);
+        JSONObject spec = new JSONObject("clientId", clientId,
+                "clientDateFormat", formatConverter.convertToClient(format))
+                .put("time", time)
+                .put("singleClick", singleClick);
+
+        if (max != null)
+        {
+            spec.put("max", convertDateToClientTimeZone(max).getTime());
+        }
+
+        if (min != null)
+        {
+            spec.put("min", convertDateToClientTimeZone(min).getTime());
+        }
 
         javascriptSupport.addInitializerCall("tapxDateField", spec);
     }
@@ -346,7 +360,9 @@ public class DateField extends AbstractField
     private String formatCurrentValue()
     {
         if (value == null)
+        {
             return "";
+        }
 
         format.setTimeZone(timeZoneTracker.getClientTimeZone());
 
@@ -373,20 +389,9 @@ public class DateField extends AbstractField
 
                 Date inDefaultTimeZone = format.parse(value);
 
-                Calendar c = Calendar.getInstance(locale);
-                c.setTime(inDefaultTimeZone);
-
-                TimeZone clientZone = timeZoneTracker.getClientTimeZone();
-                TimeZone defaultZone = TimeZone.getDefault();
-                long now = System.currentTimeMillis();
-                int offset = defaultZone.getOffset(now) - clientZone.getOffset(now);
-
-                c.add(Calendar.MILLISECOND, offset);
-
-                parsedValue = c.getTime();
+                parsedValue = convertDateToClientTimeZone(inDefaultTimeZone);
             }
-        }
-        catch (ParseException ex)
+        } catch (ParseException ex)
         {
             tracker.recordError(this, messages.format("tapx-date-value-not-parseable", value));
             return;
@@ -396,12 +401,46 @@ public class DateField extends AbstractField
         {
             fieldValidationSupport.validate(parsedValue, resources, validate);
 
-            this.value = parsedValue;
-        }
-        catch (ValidationException ex)
+        } catch (ValidationException ex)
         {
             tracker.recordError(this, ex.getMessage());
+
+            return;
         }
+
+        if (min != null && parsedValue.before(min)) {
+            tracker.recordError(this, messages.get("tapx-date-value-to-early"));
+            return;
+        }
+
+        if (max != null && parsedValue.after(max)) {
+            tracker.recordError(this, messages.get("tapx-date-value-too-late"));
+            return;
+        }
+
+        this.value = parsedValue;
+    }
+
+    /**
+     * Converts a Date in default time zone to client's time zone.
+     *
+     * @param inputDate
+     *         a date in the default time zone
+     * @return a date in the client time zone
+     */
+    private Date convertDateToClientTimeZone(Date inputDate)
+    {
+        Calendar c = Calendar.getInstance(locale);
+        c.setTime(inputDate);
+
+        TimeZone clientZone = timeZoneTracker.getClientTimeZone();
+        TimeZone defaultZone = TimeZone.getDefault();
+        long now = System.currentTimeMillis();
+        int offset = defaultZone.getOffset(now) - clientZone.getOffset(now);
+
+        c.add(Calendar.MILLISECOND, offset);
+
+        return c.getTime();
     }
 
     private void updateClientTimeZone(String elementName)
@@ -414,6 +453,5 @@ public class DateField extends AbstractField
         TimeZone tz = TimeZone.getTimeZone(id);
 
         timeZoneTracker.setClientTimeZone(tz);
-
     }
 }

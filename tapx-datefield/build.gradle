@@ -2,6 +2,7 @@ description = "Improved JavaScript date/time selection control"
 
 dependencies {
     compile project(':tapx-core')
+    provided "javax.servlet:servlet-api:2.5"
 }
 
 jar {

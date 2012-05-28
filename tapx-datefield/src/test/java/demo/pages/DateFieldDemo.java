@@ -1,10 +1,7 @@
 package demo.pages;
 
-import java.text.DateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-
+import com.howardlewisship.tapx.datefield.TimeZoneVisibility;
+import com.howardlewisship.tapx.datefield.services.ClientTimeZoneTracker;
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
@@ -13,8 +10,10 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.annotations.Symbol;
 import org.apache.tapestry5.services.PersistentLocale;
 
-import com.howardlewisship.tapx.datefield.TimeZoneVisibility;
-import com.howardlewisship.tapx.datefield.services.ClientTimeZoneTracker;
+import java.text.DateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 public class DateFieldDemo
 {
@@ -58,9 +57,9 @@ public class DateFieldDemo
     {
         return time
 
-        ? DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.MEDIUM, locale)
+                ? DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.MEDIUM, locale)
 
-        : DateFormat.getDateInstance(DateFormat.LONG, locale);
+                : DateFormat.getDateInstance(DateFormat.LONG, locale);
     }
 
     public String getLocaleName()
@@ -75,7 +74,7 @@ public class DateFieldDemo
     }
 
     @SuppressWarnings(
-    { "deprecation" })
+            {"deprecation"})
     void onActionFromSetup()
     {
         setLocaleName("en");
@@ -83,4 +82,22 @@ public class DateFieldDemo
         time = false;
     }
 
+    public Date getMinDate()
+    {
+        return nowOffset(Calendar.DAY_OF_YEAR, -30);
+    }
+
+    public Date getMaxDate()
+    {
+        return nowOffset(Calendar.DAY_OF_YEAR, 30);
+    }
+
+    private Date nowOffset(int units, int offset)
+    {
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.add(units, offset);
+
+        return calendar.getTime();
+    }
 }

@@ -1,4 +1,4 @@
-// Copyright 2011 Howard M. Lewis Ship
+// Copyright 2011, 2012 Howard M. Lewis Ship
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,15 +14,18 @@
 
 package com.howardlewisship.tapx.internal.datefield.services;
 
-import java.util.TimeZone;
-
+import com.howardlewisship.tapx.datefield.DateFieldSymbols;
+import com.howardlewisship.tapx.datefield.services.ClientTimeZoneTracker;
+import org.apache.tapestry5.internal.services.CookieSink;
 import org.apache.tapestry5.ioc.ScopeConstants;
 import org.apache.tapestry5.ioc.annotations.Scope;
+import org.apache.tapestry5.ioc.annotations.Symbol;
 import org.apache.tapestry5.services.Cookies;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.Session;
 
-import com.howardlewisship.tapx.datefield.services.ClientTimeZoneTracker;
+import javax.servlet.http.Cookie;
+import java.util.TimeZone;
 
 @Scope(ScopeConstants.PERTHREAD)
 public class ClientTimeZoneTrackerImpl implements ClientTimeZoneTracker
@@ -31,18 +34,28 @@ public class ClientTimeZoneTrackerImpl implements ClientTimeZoneTracker
 
     private static final String ATTRIBUTE_NAME = "tapx-datefield.timezone-id";
 
+    private static final int THIRTY_DAYS_IN_SECONDS = 30 * 24 * 60 * 60;
+
     private final Cookies cookies;
 
+    private final CookieSink cookieSink;
+
     private final Request request;
+
+    private final boolean secure;
 
     private TimeZone timeZone;
 
     private boolean identified;
 
-    public ClientTimeZoneTrackerImpl(Cookies cookies, Request request)
+    public ClientTimeZoneTrackerImpl(Cookies cookies, CookieSink cookieSink, Request request,
+                                     @Symbol(DateFieldSymbols.SECURE_TIME_ZONE_COOKIE)
+                                     boolean secure)
     {
         this.cookies = cookies;
+        this.cookieSink = cookieSink;
         this.request = request;
+        this.secure = secure;
 
         setupTimeZone();
     }
@@ -52,12 +65,18 @@ public class ClientTimeZoneTrackerImpl implements ClientTimeZoneTracker
         timeZone = readTimeZoneFromSession();
 
         if (timeZone == null)
+        {
             timeZone = readTimeZoneFromCookie();
+        }
 
         if (timeZone == null)
+        {
             timeZone = TimeZone.getDefault();
+        }
         else
+        {
             identified = true;
+        }
     }
 
     private TimeZone readTimeZoneFromSession()
@@ -69,7 +88,9 @@ public class ClientTimeZoneTrackerImpl implements ClientTimeZoneTracker
             String id = (String) session.getAttribute(ATTRIBUTE_NAME);
 
             if (id != null)
+            {
                 return TimeZone.getTimeZone(id);
+            }
         }
 
         return null;
@@ -99,18 +120,28 @@ public class ClientTimeZoneTrackerImpl implements ClientTimeZoneTracker
         identified = true;
 
         if (timeZone == this.timeZone)
+        {
             return;
+        }
 
         this.timeZone = timeZone;
 
-        cookies.writeCookieValue(COOKIE_NAME, timeZone.getID());
+        Cookie cookie = new Cookie(COOKIE_NAME, timeZone.getID());
+        cookie.setPath(request.getContextPath() + "/");
+        cookie.setMaxAge(THIRTY_DAYS_IN_SECONDS);
+        cookie.setSecure(secure);
+
+        cookieSink.addCookie(cookie);
+
 
         // Write to the Session, if it exists, in case the client doesn't support cookies.
 
         Session session = request.getSession(false);
 
         if (session != null)
+        {
             session.setAttribute(ATTRIBUTE_NAME, timeZone.getID());
+        }
 
         // Worst case: no session yet AND client doesn't support cookies. That means we'll likely
         // keep tracking the time zone (on the client) and updating (here on the server) until

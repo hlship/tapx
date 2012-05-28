@@ -1,4 +1,4 @@
-// Copyright 2010, 2011 Howard M. Lewis Ship
+// Copyright 2010, 2011, 2012 Howard M. Lewis Ship
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,15 +14,14 @@
 
 package com.howardlewisship.tapx.internal.datefield.services;
 
+import com.howardlewisship.tapx.datefield.services.ClientTimeZoneAnalyzer;
+import com.howardlewisship.tapx.datefield.services.ClientTimeZoneData;
+
 import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.howardlewisship.tapx.datefield.services.ClientTimeZoneAnalyzer;
-import com.howardlewisship.tapx.datefield.services.ClientTimeZoneData;
-
-/**
- * Used in the absence of latitude/longitude information to perform a best guess based purely on
+/** Performs a best guess based purely on
  * the remaining data from the client, possibly including a time zone id extracted from the Date
  * string.
  */

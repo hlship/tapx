@@ -1,4 +1,4 @@
-// Copyright 2009 Howard M. Lewis Ship
+// Copyright 2009, 2012 Howard M. Lewis Ship
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -32,10 +32,11 @@ public class DateFieldSymbols {
     public static final String THEME = "tapx.datefield.theme";
 
     /**
-     * Symbol that defines the base URL for accessing the GeoNames database. This can be overridden just for
-     * testing purposes.
+     * If true, then the cookie used to track the user's time zone (once identified) is secure.
+     * Default is false.
      *
      * @since 1.2
      */
-    public static final String GEONAMES_URL = "tapx.geonames.url";
+    public static final String SECURE_TIME_ZONE_COOKIE = "tapx.datefield.secure-timezone-cookie";
+
 }
