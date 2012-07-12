@@ -167,7 +167,7 @@ T5.extendInitializers(function () {
         outerDiv.down(".tx-input button").observe("click", function (event) {
             event.stop();
 
-            lightbox(event.element().innerHTML, spec.newValueURL);
+            lightbox(spec.newValueTitle, spec.newValueURL);
         });
 
         $(spec.clientId).observe("tapx:multiselect:newvalue", function (event) {

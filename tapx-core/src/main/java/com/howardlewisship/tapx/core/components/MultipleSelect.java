@@ -260,9 +260,10 @@ public class MultipleSelect implements Field
 
         formSupport.store(this, new ProcessSubmission(controlName));
 
-        JSONObject spec = new JSONObject("clientId", clientId,
-
-        "newValueURL", createEventURL("newValue"));
+        JSONObject spec = new JSONObject(
+                "clientId", clientId,
+                "newValueTitle", "New " + singularLabel,
+                "newValueURL", createEventURL("newValue"));
 
         for (Object value : values)
         {
