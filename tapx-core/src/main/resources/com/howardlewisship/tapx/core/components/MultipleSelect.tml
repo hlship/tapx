@@ -1,4 +1,4 @@
-<div class="${computedClassName}" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+<div class="${computedClassName}" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd">
   <input type="hidden" name="${controlName}"/>
   <div>
     <div class="tx-available">
@@ -39,10 +39,13 @@
         </t:remove>
 
         <t:beaneditor object="newValue" model="beanModel" overrides="componentResources"/>
-        <div class="t-beaneditor-row">
 
-          <input type="submit" value="${message:tapx-multiple-select-submit-label}"/>
-        </div>
+          <t:extension-point id="submit-row">
+              <div class="t-beaneditor-row">
+
+                  <input type="submit" value="${message:tapx-multiple-select-submit-label}"/>
+              </div>
+          </t:extension-point>
       </t:form>
     </t:zone>
   </t:block>
