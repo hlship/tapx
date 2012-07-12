@@ -1,205 +1,205 @@
-T5.extendInitializers(function() {
+T5.extendInitializers(function () {
 
-	function setupButton(select, button, callback) {
-		var enabled = false;
+    function setupButton(select, button, callback) {
+        var enabled = false;
 
-		function updateButton() {
-			var newEnabled = select.selectedIndex >= 0;
+        function updateButton() {
+            var newEnabled = select.selectedIndex >= 0;
 
-			if (enabled != newEnabled) {
-				enabled = newEnabled;
+            if (enabled != newEnabled) {
+                enabled = newEnabled;
 
-				if (enabled)
-					button.removeClassName("tx-disabled");
-				else
-					button.addClassName("tx-disabled");
-			}
-		}
+                if (enabled)
+                    button.removeClassName("tx-disabled");
+                else
+                    button.addClassName("tx-disabled");
+            }
+        }
 
-		select.observe("change", updateButton);
-		select.observe("tapx:refreshbuttonstate", updateButton);
+        select.observe("change", updateButton);
+        select.observe("tapx:refreshbuttonstate", updateButton);
 
-		function callbackIfEnabled() {
-			if (enabled)
-				callback();
-		}
+        function callbackIfEnabled() {
+            if (enabled)
+                callback();
+        }
 
-		button.observe("click", callbackIfEnabled);
+        button.observe("click", callbackIfEnabled);
 
-		select.observe("dblclick", callbackIfEnabled);
-	}
+        select.observe("dblclick", callbackIfEnabled);
+    }
 
-	function moveOption(option, to) {
+    function moveOption(option, to) {
 
-		var before = $A(to.options).detect(function(targetOption) {
-			return targetOption.innerHTML > option.innerHTML;
-		});
+        var before = $A(to.options).detect(function (targetOption) {
+            return targetOption.innerHTML > option.innerHTML;
+        });
 
-		if (Prototype.IE) {
-			if (before == null) {
-				to.add(option);
-			} else {
-				to.add(option, before.index);
-			}
+        if (Prototype.IE) {
+            if (before == null) {
+                to.add(option);
+            } else {
+                to.add(option, before.index);
+            }
 
-			return;
-		}
+            return;
+        }
 
-		to.add(option, before);
-	}
+        to.add(option, before);
+    }
 
-	function moveOptions(movers, to) {
-		movers.each(function(option) {
-			moveOption(option, to);
-		});
-	}
+    function moveOptions(movers, to) {
+        movers.each(function (option) {
+            moveOption(option, to);
+        });
+    }
 
-	function deselectAllOptions(select) {
-		$A(select.options).each(function(option) {
-			option.selected = false;
-		});
-	}
+    function deselectAllOptions(select) {
+        $A(select.options).each(function (option) {
+            option.selected = false;
+        });
+    }
 
-	function removeSelectedOptions(select) {
-		var movers = [];
-		var options = select.options;
+    function removeSelectedOptions(select) {
+        var movers = [];
+        var options = select.options;
 
-		for ( var i = select.selectedIndex; i < select.length; i++) {
-			var option = options[i];
-			if (option.selected) {
-				select.remove(i--);
-				movers.push(option);
-			}
-		}
+        for (var i = select.selectedIndex; i < select.length; i++) {
+            var option = options[i];
+            if (option.selected) {
+                select.remove(i--);
+                movers.push(option);
+            }
+        }
 
-		return movers;
-	}
+        return movers;
+    }
 
-	function transferOptions(from, to) {
-		deselectAllOptions(to);
-		moveOptions(removeSelectedOptions(from), to);
-		from.fire("tapx:refreshbuttonstate");
-		to.fire("tapx:refreshbuttonstate");
-	}
+    function transferOptions(from, to) {
+        deselectAllOptions(to);
+        moveOptions(removeSelectedOptions(from), to);
+        from.fire("tapx:refreshbuttonstate");
+        to.fire("tapx:refreshbuttonstate");
+    }
 
-	// Re. "Modalbox" vs. "Lightbox". Modalbox is a specific implementation of
-	// the general Lightbox design; we may swap out Modalbox for some other
-	// Lightbox implementation, given how awkward it is to use with Tapestry.
+    // Re. "Modalbox" vs. "Lightbox". Modalbox is a specific implementation of
+    // the general Lightbox design; we may swap out Modalbox for some other
+    // Lightbox implementation, given how awkward it is to use with Tapestry.
 
-	function lightbox(title, contentURL) {
+    function lightbox(title, contentURL) {
 
-		function updateLightboxFromReply(reply) {
-			var inits = reply.inits;
-			reply.inits = null;
+        function updateLightboxFromReply(reply) {
+            var inits = reply.inits;
+            reply.inits = null;
 
-			Modalbox.show(reply.content, {
-				title : title,
-				autoFocusing : false,
-				afterLoad : function() {
-					Tapestry.executeInits(inits);
-				},
-				afterUpdate : function() {
-					Modalbox.resizeToContent();
-				}
-			});
-		}
+            Modalbox.show(reply.content, {
+                title: title,
+                autoFocusing: false,
+                afterLoad: function () {
+                    Tapestry.executeInits(inits);
+                },
+                afterUpdate: function () {
+                    Modalbox.resizeToContent();
+                }
+            });
+        }
 
-		// Been experimenting with running the Modalbox loading animation in parallel
-		// with doing the Ajax, but Modalbox is a twisted singleton that causes some
-		// bad timing issues.  Back to just running the (quick) Ajax request and then running
-		// the Modalbox animation.
-		
-		Tapestry.ajaxRequest(contentURL, function(transport) {
-			var reply = transport.responseJSON;
+        // Been experimenting with running the Modalbox loading animation in parallel
+        // with doing the Ajax, but Modalbox is a twisted singleton that causes some
+        // bad timing issues.  Back to just running the (quick) Ajax request and then running
+        // the Modalbox animation.
 
-			updateLightboxFromReply(reply);
-		});
-	}
+        Tapestry.ajaxRequest(contentURL, function (transport) {
+            var reply = transport.responseJSON;
 
-	function initializer(spec) {
-		var availableSelect = $(spec.clientId);
-		var outerDiv = availableSelect.up(".tx-multiselect");
+            updateLightboxFromReply(reply);
+        });
+    }
 
-		var hidden = outerDiv.down("input[type='hidden']");
+    function initializer(spec) {
+        var availableSelect = $(spec.clientId);
+        var outerDiv = availableSelect.up(".tx-multiselect");
 
-		var selectedSelect = outerDiv.down(".tx-selected select");
+        var hidden = outerDiv.down("input[type='hidden']");
 
-		(spec.model || []).each(function(row) {
+        var selectedSelect = outerDiv.down(".tx-selected select");
 
-			var valueId = row[0];
-			var selected = (spec.values || []).include(valueId);
-			var selectElement = selected ? selectedSelect : availableSelect;
+        (spec.model || []).each(function (row) {
 
-			var option = new Element("option").update(row[1].escapeHTML());
+            var valueId = row[0];
+            var selected = (spec.values || []).include(valueId);
+            var selectElement = selected ? selectedSelect : availableSelect;
 
-			option.txClientValue = valueId;
+            var option = new Element("option").update(row[1].escapeHTML());
 
-			selectElement.insert(option);
-		});
+            option.txClientValue = valueId;
 
-		function rebuildHiddenFieldValue() {
-			// First array is the list of selected values (for values
-			// defined by the model at initial render). Second array is the list
-			// of selected labels (for values added on the client)
+            selectElement.insert(option);
+        });
 
-			var hiddenFieldValue = [];
+        function rebuildHiddenFieldValue() {
+            // First array is the list of selected values (for values
+            // defined by the model at initial render). Second array is the list
+            // of selected labels (for values added on the client)
 
-			$A(selectedSelect.options).each(function(option) {
-				hiddenFieldValue.push(option.txClientValue);
-			});
+            var hiddenFieldValue = [];
 
-			hidden.value = Object.toJSON(hiddenFieldValue);
-		}
+            $A(selectedSelect.options).each(function (option) {
+                hiddenFieldValue.push(option.txClientValue);
+            });
 
-		rebuildHiddenFieldValue();
+            hidden.value = Object.toJSON(hiddenFieldValue);
+        }
 
-		setupButton(availableSelect, outerDiv.down(".tx-select"), function() {
-			transferOptions(availableSelect, selectedSelect);
-			rebuildHiddenFieldValue();
+        rebuildHiddenFieldValue();
 
-		});
+        setupButton(availableSelect, outerDiv.down(".tx-select"), function () {
+            transferOptions(availableSelect, selectedSelect);
+            rebuildHiddenFieldValue();
 
-		setupButton(selectedSelect, outerDiv.down(".tx-deselect"), function() {
-			transferOptions(selectedSelect, availableSelect);
-			rebuildHiddenFieldValue();
-		});
+        });
 
-		outerDiv.down(".tx-input button").observe("click", function(event) {
-			event.stop();
+        setupButton(selectedSelect, outerDiv.down(".tx-deselect"), function () {
+            transferOptions(selectedSelect, availableSelect);
+            rebuildHiddenFieldValue();
+        });
 
-			lightbox(event.element().innerHTML, spec.newValueURL);
-		});
+        outerDiv.down(".tx-input button").observe("click", function (event) {
+            event.stop();
 
-		$(spec.clientId).observe("tapx:multiselect:newvalue", function(event) {
+            lightbox(event.element().innerHTML, spec.newValueURL);
+        });
 
-			var option = event.memo;
-			option.selected = true;
+        $(spec.clientId).observe("tapx:multiselect:newvalue", function (event) {
 
-			deselectAllOptions(selectedSelect);
+            var option = event.memo;
+            option.selected = true;
 
-			moveOption(option, selectedSelect);
+            deselectAllOptions(selectedSelect);
 
-			availableSelect.fire("tapx:refreshbuttonstate");
-			selectedSelect.fire("tapx:refreshbuttonstate");
+            moveOption(option, selectedSelect);
 
-			selectedSelect.focus();
+            availableSelect.fire("tapx:refreshbuttonstate");
+            selectedSelect.fire("tapx:refreshbuttonstate");
 
-			rebuildHiddenFieldValue();
-		});
-	}
+            selectedSelect.focus();
 
-	function newValue(spec) {
-		Modalbox.hide();
+            rebuildHiddenFieldValue();
+        });
+    }
 
-		var option = new Element("option").update(spec.label.escapeHTML());
+    function newValue(spec) {
+        Modalbox.hide();
 
-		option.txClientValue = spec.clientValue;
+        var option = new Element("option").update(spec.label.escapeHTML());
 
-		$(spec.clientId).fire("tapx:multiselect:newvalue", option);
-	}
+        option.txClientValue = spec.clientValue;
 
-	return {
-		tapxMultipleSelect : initializer,
-		tapxMultipleSelectNewValue : newValue
-	};
+        $(spec.clientId).fire("tapx:multiselect:newvalue", option);
+    }
+
+    return {
+        tapxMultipleSelect: initializer,
+        tapxMultipleSelectNewValue: newValue
+    };
 });
