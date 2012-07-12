@@ -31,8 +31,9 @@ T5.extendInitializers(function () {
 
     function moveOption(option, to) {
 
+        var optionSort = option.readAttribute("data-sort");
         var before = $A(to.options).detect(function (targetOption) {
-            return targetOption.innerHTML > option.innerHTML;
+            return targetOption.readAttribute("data-sort") > optionSort;
         });
 
         if (Prototype.IE) {
@@ -127,10 +128,15 @@ T5.extendInitializers(function () {
         (spec.model || []).each(function (row) {
 
             var valueId = row[0];
+            var label = row[1];
+            var sort = row[2];
+
             var selected = (spec.values || []).include(valueId);
             var selectElement = selected ? selectedSelect : availableSelect;
 
-            var option = new Element("option").update(row[1].escapeHTML());
+            var option = new Element("option").update(label.escapeHTML());
+
+            option.writeAttribute("data-sort", sort);
 
             option.txClientValue = valueId;
 
@@ -192,6 +198,8 @@ T5.extendInitializers(function () {
         Modalbox.hide();
 
         var option = new Element("option").update(spec.label.escapeHTML());
+
+        option.writeAttribute("data-sort", spec.sort);
 
         option.txClientValue = spec.clientValue;
 

@@ -1,4 +1,4 @@
-// Copyright 2011 Howard M. Lewis Ship
+// Copyright 2011, 2012 Howard M. Lewis Ship
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -29,10 +29,8 @@ import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.json.JSONArray;
 import org.apache.tapestry5.json.JSONObject;
-import org.apache.tapestry5.services.BeanModelSource;
-import org.apache.tapestry5.services.ComponentDefaultProvider;
-import org.apache.tapestry5.services.FormSupport;
-import org.apache.tapestry5.services.Request;
+import org.apache.tapestry5.plastic.PlasticUtils;
+import org.apache.tapestry5.services.*;
 import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 
 import java.util.ArrayList;
@@ -44,17 +42,19 @@ import java.util.Set;
  * Both a simplification of the Tapestry {@link Palette} component, and an extension in that it supports
  * adding new values on the fly, using a form located inside a Modalbox modal dialog. Specifically
  * limited to editing a <em>Set</em> of values: element order is immaterial, and the UI keeps
- * the values sorted in alphabetical order by {@linkplain MultipleSelectModel#toLabel(Object) label}.
- * <p>
+ * the values sorted in alphabetical order by {@linkplain MultipleSelectModel#toLabel(Object) label},
+ * or via an alternate property (defined by the sortProperty parameter).
+ * <p/>
  * The UI includes an "Add" button to add a new value of the type appropriate to the set. This sets up a modal dialog on
  * the client side, and a uses a server-side {@link BeanEditor} to render the form. Informal blocks bound do this
  * component will, in turn, be provided to the BeanEditor component for use as property overrides.
- * <p>
+ * <p/>
  * TODO: Rename this to SetEditor and delete the current SetEditor.
  */
 @Import(stack = "tapx-core")
 @SuppressWarnings("rawtypes")
 @SupportsInformalParameters
+@Events("configureNewValue: allows the container to configure a new value prior to it being saved")
 public class MultipleSelect implements Field
 {
     /**
@@ -99,6 +99,14 @@ public class MultipleSelect implements Field
     @Property(write = false)
     @Parameter(defaultPrefix = BindingConstants.LITERAL, value = "message:tapx-multiple-select-available-column-label")
     private String availableColumnLabel;
+
+    /**
+     * Property used when sorting the options. If null (the default), the sorting is based on the label.
+     * The property should be a String property, or a numeric value. Numbers are converted to zero-padded strings.
+     * Really only meant for positive numbers. Floats or decimals will cause a runtime exception.
+     */
+    @Parameter(defaultPrefix = BindingConstants.LITERAL)
+    private String sortProperty;
 
     /**
      * Alternate label used to represent a "single" instance of the value; this is used as part of
@@ -146,6 +154,10 @@ public class MultipleSelect implements Field
     @Inject
     private BeanModelSource beanModelSource;
 
+    @Inject
+
+    private PropertyConduitSource propertyConduitSource;
+
     Object defaultBeanModel()
     {
         return new AbstractBinding()
@@ -158,39 +170,78 @@ public class MultipleSelect implements Field
 
             public Object get()
             {
-                if (newValue == null)
-                    return null;
+                Object instance =
+                        newValue != null ? newValue : model.createEmptyInstance();
 
-                return beanModelSource.createEditModel(newValue.getClass(), resources.getContainerMessages());
+                return beanModelSource.createEditModel(instance.getClass(), resources.getContainerMessages());
             }
         };
     }
 
-    private static class Pair implements Comparable<Pair>
+    private static class Option implements Comparable<Option>
     {
         final String label;
 
         final String clientValue;
 
-        public Pair(String label, String clientValue)
+        final String sortKey;
+
+        public Option(String label, String clientValue, String sortKey)
         {
             this.label = label;
             this.clientValue = clientValue;
+            this.sortKey = sortKey;
         }
 
-        public int compareTo(Pair o)
+        public int compareTo(Option o)
         {
-            return this.label.compareTo(o.label);
+            return this.sortKey.compareTo(o.sortKey);
         }
     }
 
-    private final Mapper<Object, Pair> toPair = new Mapper<Object, Pair>()
+    private final Mapper<Object, Option> toPair = new Mapper<Object, Option>()
     {
-        public Pair map(Object value)
+        public Option map(Object value)
         {
-            return new Pair(model.toLabel(value), model.toClient(value));
+
+            String sortValue = toSortKey(value);
+
+            return new Option(model.toLabel(value), model.toClient(value), sortValue);
         }
     };
+
+    private String toSortKey(Object value)
+    {
+
+        if (sortProperty == null)
+        {
+            return model.toLabel(value);
+        }
+
+
+        PropertyConduit conduit = propertyConduitSource.create(value.getClass(), sortProperty);
+
+        Class propertyType = conduit.getPropertyType();
+        Object rawKey = conduit.get(value);
+
+        if (propertyType == String.class)
+        {
+            return rawKey.toString();
+        }
+
+        if (Number.class.isInstance(rawKey))
+        {
+            // 19 digits is enough to encode a long value. That's overkill. In the future, we can use a StrategyRegistry
+            // to adapt this to the type appropriately.
+
+            return String.format("%019d", rawKey);
+        }
+
+        throw new IllegalArgumentException(String.format("Sort property '%s' of %s is type %s which can not be converted to a sort key.",
+                sortProperty,
+                PlasticUtils.toTypeName(value.getClass()),
+                PlasticUtils.toTypeName(propertyType)));
+    }
 
     public static class ProcessSubmission implements ComponentAction<MultipleSelect>
     {
@@ -234,13 +285,17 @@ public class MultipleSelect implements Field
         return label;
     }
 
-    /** Always returns false. */
+    /**
+     * Always returns false.
+     */
     public boolean isDisabled()
     {
         return false;
     }
 
-    /** Always returns false. */
+    /**
+     * Always returns false.
+     */
     public boolean isRequired()
     {
         return false;
@@ -274,9 +329,9 @@ public class MultipleSelect implements Field
 
         Flow<Object> valuesFlow = F.flow(model.getAvailableValues());
 
-        for (Pair pair : valuesFlow.map(toPair).sort())
+        for (Option option : valuesFlow.map(toPair).sort())
         {
-            spec.append("model", new JSONArray(pair.clientValue, pair.label));
+            spec.append("model", new JSONArray(option.clientValue, option.label, option.sortKey));
         }
 
         jss.addInitializerCall("tapxMultipleSelect", spec);
@@ -339,13 +394,17 @@ public class MultipleSelect implements Field
         return editor;
     }
 
-    /** Event handler triggered when the modal dialog is submitted. */
+    /**
+     * Event handler triggered when the modal dialog is submitted.
+     */
     void onPrepareForSubmitFromNewValue(String clientId)
     {
         this.clientId = clientId;
     }
 
-    /** Event handler when preparing to render or submit the new value form; creates a new empty instance. */
+    /**
+     * Event handler when preparing to render or submit the new value form; creates a new empty instance.
+     */
     void onPrepareFromNewValue()
     {
         newValue = model.createEmptyInstance();
@@ -353,6 +412,8 @@ public class MultipleSelect implements Field
 
     Object onSuccessFromNewValue()
     {
+        resources.triggerEvent("configureNewValue", new Object[]{newValue}, null);
+
         // Save the new value to the database (or whatever it takes to assign a propery id to it).
 
         model.persistNewInstance(newValue);
@@ -365,8 +426,10 @@ public class MultipleSelect implements Field
 
     void onWriteSuccessJavaScript()
     {
-        JSONObject spec = new JSONObject("clientId", clientId, "clientValue", model.toClient(newValue), "label",
-                model.toLabel(newValue));
+        JSONObject spec = new JSONObject("clientId", clientId,
+                "clientValue", model.toClient(newValue),
+                "label", model.toLabel(newValue),
+                "sort", toSortKey(newValue));
 
         jss.addInitializerCall("tapxMultipleSelectNewValue", spec);
     }
