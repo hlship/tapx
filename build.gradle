@@ -1,10 +1,9 @@
 description = "Collection of add-ons for Tapestry 5"
 
-ext.tapestryVersion = "5.3.4"
+ext.tapestryVersion = "5.3.6"
 
 if (!project.hasProperty('deployUserName')) ext.deployUserName = '*UNSET-USERNAME*'
 if (!project.hasProperty('deployPassword')) ext.deployPassword = '*UNSET-PASSWORD*'
-
 
 apply plugin: 'idea'
 
@@ -19,7 +18,7 @@ subprojects {
     sourceCompatibility = '1.5'
     targetCompatibility = '1.5'
     
-    version = '1.2-SNAPSHOT'
+    version = '1.2'
 
     group = 'com.howardlewisship'
     
@@ -34,7 +33,7 @@ subprojects {
 
     	// Latest preview packages
 
-		mavenRepo name: "Apache Staging", url: "https://repository.apache.org/content/groups/staging"
+      mavenRepo name: "Apache Staging", url: "https://repository.apache.org/content/groups/staging"
     }
     
     configurations {
@@ -79,10 +78,14 @@ subprojects {
         repositories.mavenDeployer {
             configuration = configurations.deployerJars
             // deployUserName and deployPassword should be specified in ~/.gradle/gradle.properties
+
             snapshotRepository(url: "ftp://howardlewisship.com/snapshot-repository") {
               authentication(userName: deployUserName, password: deployPassword)
             }
             
+            repository(url: "ftp://howardlewisship.com/repository") {
+              authentication(userName: deployUserName, password: deployPassword)
+            }
         }
     }
     
@@ -93,5 +96,5 @@ subprojects {
 }
 
 idea.project {
-  javaVersion = "1.6"
+  languageLevel = "1.6"
 }

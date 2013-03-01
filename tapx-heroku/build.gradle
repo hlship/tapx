@@ -1,6 +1,6 @@
 description = "Common general components"
 
-versions = [
+ext.versions = [
         jetty : "8.0.3.v20111011",
         mongo : "2.6.5"
 ]

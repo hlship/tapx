@@ -27,13 +27,15 @@ import org.apache.tapestry5.ioc.services.CoercionTuple;
 import java.util.List;
 
 @SubModule(
-{ CoreModule.class, DateFieldModule.class })
+        {CoreModule.class, DateFieldModule.class})
 public class AppModule
 {
     public static void contributeApplicationDefaults(MappedConfiguration<String, String> configuration)
     {
         configuration.add(SymbolConstants.PRODUCTION_MODE, "false");
         configuration.add(SymbolConstants.SUPPORTED_LOCALES, "en,fr,de");
+
+        configuration.add(SymbolConstants.HMAC_PASSPHRASE, "I want some more");
     }
 
     @SuppressWarnings("rawtypes")

@@ -1,3 +1,4 @@
 include "tapx-core", "tapx-datefield", "tapx-plainmessage"
 include "tapx-templating", "tapx-yui"
-include "tapx-json", "tapx-jms-core", "tapx-heroku"
+include "tapx-heroku"
+// include "tapx-json", "tapx-jms-core", 

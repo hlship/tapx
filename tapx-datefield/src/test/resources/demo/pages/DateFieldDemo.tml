@@ -4,7 +4,7 @@
   <tx:timezoneidentifier/>
 
   <t:form>
-    <tx:datefield t:id="date" time="time"  min="minDate" max="maxDate"
+    <tx:datefield t:id="date" time="time"
       timezone="prop:timezonevisibility"/>
 
     <br/>

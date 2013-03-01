@@ -82,6 +82,9 @@ public class DateFieldDemo
         time = false;
     }
 
+    // Use of minDate/maxDate currently break the test suite; for the moment we are not
+    // testing min/max date logic.
+
     public Date getMinDate()
     {
         return nowOffset(Calendar.DAY_OF_YEAR, -30);
