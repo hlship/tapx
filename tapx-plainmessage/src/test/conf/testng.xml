@@ -5,9 +5,4 @@
             <package name="com.howardlewisship.tapx.plainmessage.internal.services"/>
         </packages>
     </test>
-    <test name="Integration Tests">
-        <packages>
-            <package name="com.howardlewisship.tapx.plainmessage.integration"/>
-        </packages>
-    </test>
 </suite>

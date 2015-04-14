@@ -65,8 +65,7 @@ public class ClientTimeZoneTrackerImpl implements ClientTimeZoneTracker
         if (timeZone == null)
         {
             timeZone = TimeZone.getDefault();
-        }
-        else
+        } else
         {
             identified = true;
         }

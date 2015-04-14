@@ -1,5 +1,3 @@
-// Copyright 2009 Howard M. Lewis Ship
-//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -14,20 +12,18 @@
 
 package com.howardlewisship.tapx.plainmessage.internal.services;
 
-import com.howardlewisship.tapx.plainmessage.internal.services.MessageScrubberImpl;
 import com.howardlewisship.tapx.plainmessage.services.MessageScrubber;
-
 import org.apache.tapestry5.ioc.MessageFormatter;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.internal.util.MessagesImpl;
-import org.apache.tapestry5.ioc.test.TestBase;
+import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public class MessageScrubberImplTest extends TestBase
+public class MessageScrubberImplTest extends Assert
 {
     private MessageScrubber scrubber = new MessageScrubberImpl();
 
@@ -36,20 +32,20 @@ public class MessageScrubberImplTest extends TestBase
     {
         return new Object[][]
                 {
-                        { "plain text is unchanged", "plain text is unchanged" },
-                        { "a simple <code>element</code> is removed", "a simple element is removed" },
-                        { "more complex <code id='foo'>elements (some with <em>nested elements</em>)</code> are removed",
-                                "more complex elements (some with nested elements) are removed" },
-                        { "text can include entities: &lt;, &gt;, &amp; and soon, unicode escapes",
-                                "text can include entities: <, >, & and soon, unicode escapes" },
-                        { "less common: &quot; (quot), &apos; (apos), &nbsp; (nbsp)",
-                                "less common: \" (quot), ' (apos), \u00a0 (nbsp)" },
+                        {"plain text is unchanged", "plain text is unchanged"},
+                        {"a simple <code>element</code> is removed", "a simple element is removed"},
+                        {"more complex <code id='foo'>elements (some with <em>nested elements</em>)</code> are removed",
+                                "more complex elements (some with nested elements) are removed"},
+                        {"text can include entities: &lt;, &gt;, &amp; and soon, unicode escapes",
+                                "text can include entities: <, >, & and soon, unicode escapes"},
+                        {"less common: &quot; (quot), &apos; (apos), &nbsp; (nbsp)",
+                                "less common: \" (quot), ' (apos), \u00a0 (nbsp)"},
 
                         // Note extra space in scrubbed string.
 
-                        { "comments <!-- like this one --> are removed", "comments  are removed" },
+                        {"comments <!-- like this one --> are removed", "comments  are removed"},
 
-                        { "XML escape: &#38;", "XML escape: &" }
+                        {"XML escape: &#38;", "XML escape: &"}
                 };
     }
 
@@ -67,6 +63,16 @@ public class MessageScrubberImplTest extends TestBase
         assertSame(scrubber.scrub(input), input);
     }
 
+    private void unreachable()
+    {
+        throw new IllegalStateException("Unreachable.");
+    }
+
+    private void assertMessageContains(Throwable e, String m)
+    {
+        assertTrue(e.getMessage().contains(m));
+    }
+
     @Test
     public void invalid_entity_escape()
     {
@@ -74,8 +80,7 @@ public class MessageScrubberImplTest extends TestBase
         {
             scrubber.scrub("&#abc;");
             unreachable();
-        }
-        catch (RuntimeException ex)
+        } catch (RuntimeException ex)
         {
             assertMessageContains(ex, "Unknown XML entity: '&#abc;'.");
         }
@@ -88,8 +93,7 @@ public class MessageScrubberImplTest extends TestBase
         {
             scrubber.scrub("&abc;");
             unreachable();
-        }
-        catch (RuntimeException ex)
+        } catch (RuntimeException ex)
         {
             assertMessageContains(ex, "Unknown XML entity: '&abc;'.");
         }

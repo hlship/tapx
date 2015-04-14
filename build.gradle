@@ -1,6 +1,10 @@
 description = "Collection of add-ons for Tapestry 5"
 
-ext.tapestryVersion = "5.3.6"
+ext.tapestryVersion = "5.3.8"
+
+ext.versions = [
+    selenium: "2.35.0"
+]
 
 if (!project.hasProperty('deployUserName')) ext.deployUserName = '*UNSET-USERNAME*'
 if (!project.hasProperty('deployPassword')) ext.deployPassword = '*UNSET-PASSWORD*'
@@ -18,7 +22,7 @@ subprojects {
     sourceCompatibility = '1.5'
     targetCompatibility = '1.5'
     
-    version = '1.2'
+    version = '1.3'
 
     group = 'com.howardlewisship'
     
@@ -26,14 +30,23 @@ subprojects {
         mavenCentral()
                
         // All things JBoss/Javassist/Hibernate
-        mavenRepo name: "JBoss", url: "https://repository.jboss.org/nexus/content/repositories/releases/"
+        maven {
+            name "JBoss" 
+            url "https://repository.jboss.org/nexus/content/repositories/releases/"
+        }
         
         // For the Kaptcha library
-        mavenRepo name: "HLS", url: "http://howardlewisship.com/repository/"
+        maven {
+            name "HLS"
+            url "http://howardlewisship.com/repository/"
+        }
 
     	// Latest preview packages
 
-      mavenRepo name: "Apache Staging", url: "https://repository.apache.org/content/groups/staging"
+        maven { 
+            name "Apache Staging" 
+            url "https://repository.apache.org/content/groups/staging"
+        }
     }
     
     configurations {
@@ -42,19 +55,27 @@ subprojects {
     }
 
     // See http://jira.codehaus.org/browse/GRADLE-784
-    
+
     sourceSets {
-      main { 
-        compileClasspath += configurations.provided 
-      }
+        main {
+            compileClasspath += [configurations.provided]
+        }
+        test {
+            compileClasspath += [configurations.provided]
+            runtimeClasspath += [configurations.provided]
+        }
+    }
+
+    idea.module {
+        scopes.PROVIDED.plus += [configurations.provided]
     }
     
     dependencies {
-        compile "org.apache.tapestry:tapestry-core:$tapestryVersion"        
-        testCompile "org.apache.tapestry:tapestry-test:$tapestryVersion"        
+        compile "org.apache.tapestry:tapestry-core:$tapestryVersion"
+        provided "org.mortbay.jetty:servlet-api:3.0.20100224"
         testCompile "org.easymock:easymock:3.0"
-        groovy "org.codehaus.groovy:groovy-all:1.7.10"
-        
+        testCompile "org.codehaus.groovy:groovy-all:2.4.3"
+        testCompile "org.testng:testng:6.8.21"
         deployerJars "org.apache.maven.wagon:wagon-ftp:1.0-beta-2"        
     }
     
@@ -90,8 +111,7 @@ subprojects {
     }
     
     idea.module {
-      scopes.PROVIDED.plus += configurations.provided
-      javaVersion = "inherited"
+      jdkName = "inherited"
     }
 }
 
